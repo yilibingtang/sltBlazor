@@ -1,0 +1,57 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "YX/1.0.0": {
+        "dependencies": {
+          "MathNet.Numerics": "5.0.0",
+          "Plotly.Blazor": "6.0.2"
+        },
+        "runtime": {
+          "YX.dll": {}
+        }
+      },
+      "MathNet.Numerics/5.0.0": {
+        "runtime": {
+          "lib/net6.0/MathNet.Numerics.dll": {
+            "assemblyVersion": "5.0.0.0",
+            "fileVersion": "5.0.0.0"
+          }
+        }
+      },
+      "Plotly.Blazor/6.0.2": {
+        "runtime": {
+          "lib/net9.0/Plotly.Blazor.dll": {
+            "assemblyVersion": "6.0.2.0",
+            "fileVersion": "6.0.2.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "YX/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "MathNet.Numerics/5.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-pg1W2VwaEQMAiTpGK840hZgzavnqjlCMTVSbtVCXVyT+7AX4mc1o89SPv4TBlAjhgCOo9c1Y+jZ5m3ti2YgGgA==",
+      "path": "mathnet.numerics/5.0.0",
+      "hashPath": "mathnet.numerics.5.0.0.nupkg.sha512"
+    },
+    "Plotly.Blazor/6.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-nqP3CWGDCbl952keh16jetVf5FhsHKsgzvB36/LZ9IDXAeZHbz7gB7+hM9DwEZI6CKbbGz+2OL/ogk+KD3JuUA==",
+      "path": "plotly.blazor/6.0.2",
+      "hashPath": "plotly.blazor.6.0.2.nupkg.sha512"
+    }
+  }
+}
