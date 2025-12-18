@@ -30,29 +30,30 @@
     {
         <div class="alert alert-success">@SuccessMessage</div>
     }
-    <section class="dataset-list">
-        <label>已保存电机组</label>
-        <div class="dataset-controls">
-            <select value="@SelectedIndex" @onchange="OnSelectChanged">
-                @if (SavedMotors == null || SavedMotors.Count == 0)
-                {
-                    <option value="-1">(无)</option>
-                }
-                else
-                {
-                    @for (int i = 0; i < SavedMotors.Count; i++)
+    <div>
+        <section class="dataset-list">
+            <label>已保存数据组</label>
+            <div class="dataset-controls">
+                <select value="@SelectedIndex" @onchange="OnSelectChanged">
+                    @if (SavedMotors == null || SavedMotors.Count == 0)
                     {
-                        <option value="@i">@SavedMotors[i].MotorName</option>
+                        <option value="-1">(无)</option>
                     }
-                    <option value="-1">-- 新建 --</option>
-                }
-            </select>
-            <button class="btn" @onclick="NewGroup">新建</button>
-            <button class="btn primary" @onclick="SaveGroup">保存</button>
-            <button class="btn danger" @onclick="DeleteGroup" disabled="@(SelectedIndex < 0)">删除</button>
-        </div>
-    </section>
-
+                    else
+                    {
+                        @for (int i = 0; i < SavedMotors.Count; i++)
+                        {
+                            <option value="@i">@SavedMotors[i].MotorName</option>
+                        }
+                        <option value="-1">-- 新建 --</option>
+                    }
+                </select>
+                <button class="btn" @onclick="NewGroup">新建</button>
+                <button class="btn primary" @onclick="SaveGroup">保存</button>
+                <button class="btn danger" @onclick="DeleteGroup" disabled="@(SelectedIndex < 0)">删除</button>
+            </div>
+        </section>
+    </div>
     <section class="basic-info">
         @if (!string.IsNullOrEmpty(PageAlertMessage))
         {
@@ -96,7 +97,7 @@
                 <InputNumber TValue="double" class="form-control" @bind-Value="EditingMotor.Voltage" />
                 <ValidationMessage For="() => EditingMotor.Voltage" />
             </div>
-            </EditForm>
+        </EditForm>
     </section>
 
     <section class="placeholder">
@@ -146,7 +147,10 @@
         <section class="fit-results">
             <h4>拟合曲线</h4>
             <div style="width:700px;height:380px;">
-                <MotorPlot Torques="@(EditingPoints.Select(p => p.Torque).ToArray())" Speeds="@(EditingPoints.Select(p => p.Speed).ToArray())" Currents="@(EditingPoints.Select(p => p.Current).ToArray())" Title="@(EditingMotor?.MotorName ?? "Motor")" />
+                <MotorPlot Torques="@(EditingPoints.Select(p => p.Torque).ToArray())"
+                    Speeds="@(EditingPoints.Select(p => p.Speed).ToArray())"
+                    Currents="@(EditingPoints.Select(p => p.Current).ToArray())"
+                    Title="@(EditingMotor?.MotorName ?? "Motor")" />
             </div>
 
             <h5>关键点</h5>
