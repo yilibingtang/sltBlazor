@@ -12,6 +12,13 @@ builder.Services.AddRazorComponents()
 builder.Services.AddDbContext<MotorDbContext>(options =>
     options.UseSqlite("Data Source=motors.db"));
 
+// Notification service for Blazor toasts
+builder.Services.AddSingleton<YX.Services.NotificationService>();
+// Motor services
+builder.Services.AddScoped<YX.Services.MotorManager>();
+builder.Services.AddSingleton<YX.Services.MotorCalculator>();
+builder.Services.AddSingleton<YX.Services.MotorValidator>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

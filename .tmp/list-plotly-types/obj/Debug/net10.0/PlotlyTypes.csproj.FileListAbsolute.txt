@@ -1,0 +1,15 @@
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\list-plotly-types\bin\Debug\net10.0\PlotlyTypes.exe
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\list-plotly-types\bin\Debug\net10.0\PlotlyTypes.deps.json
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\list-plotly-types\bin\Debug\net10.0\PlotlyTypes.runtimeconfig.json
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\list-plotly-types\bin\Debug\net10.0\PlotlyTypes.dll
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\list-plotly-types\bin\Debug\net10.0\PlotlyTypes.pdb
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\list-plotly-types\obj\Debug\net10.0\PlotlyTypes.GeneratedMSBuildEditorConfig.editorconfig
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\list-plotly-types\obj\Debug\net10.0\PlotlyTypes.AssemblyInfoInputs.cache
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\list-plotly-types\obj\Debug\net10.0\PlotlyTypes.AssemblyInfo.cs
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\list-plotly-types\obj\Debug\net10.0\PlotlyTypes.csproj.CoreCompileInputs.cache
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\list-plotly-types\obj\Debug\net10.0\PlotlyTypes.sourcelink.json
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\list-plotly-types\obj\Debug\net10.0\PlotlyTypes.dll
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\list-plotly-types\obj\Debug\net10.0\refint\PlotlyTypes.dll
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\list-plotly-types\obj\Debug\net10.0\PlotlyTypes.pdb
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\list-plotly-types\obj\Debug\net10.0\PlotlyTypes.genruntimeconfig.cache
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\list-plotly-types\obj\Debug\net10.0\ref\PlotlyTypes.dll

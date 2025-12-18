@@ -1,0 +1,45 @@
+@using Microsoft.JSInterop
+@inject IJSRuntime JS
+
+<div id="@ElementId" style="width:100%;height:100%;"></div>
+
+@code {
+    [Parameter] public double[]? Torques { get; set; }
+    [Parameter] public double[]? Speeds { get; set; }
+    [Parameter] public double[]? Currents { get; set; }
+    [Parameter] public string? Title { get; set; }
+
+    string ElementId = "motorplot-" + Guid.NewGuid().ToString("N");
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Torques == null || (Speeds == null && Currents == null)) return;
+        var speedTrace = new
+        {
+            x = Torques,
+            y = Speeds ?? Array.Empty<double>(),
+            mode = "lines+markers",
+            name = "Speed (rpm)",
+            line = new { color = "#1f77b4" }
+        };
+        var currentTrace = new
+        {
+            x = Torques,
+            y = Currents ?? Array.Empty<double>(),
+            mode = "lines+markers",
+            name = "Current (A)",
+            yaxis = "y2",
+            line = new { color = "#ff7f0e" }
+        };
+        var layout = new
+        {
+            title = Title ?? "Motor",
+            xaxis = new { title = "Torque (Nm)" },
+            yaxis = new { title = "Speed (rpm)", side = "left" },
+            yaxis2 = new { title = "Current (A)", overlaying = "y", side = "right" },
+            legend = new { x = 0.01, y = 0.99 }
+        };
+
+        await JS.InvokeVoidAsync("plotlyInterop.plot", ElementId, new object[] { speedTrace, currentTrace }, layout);
+    }
+}

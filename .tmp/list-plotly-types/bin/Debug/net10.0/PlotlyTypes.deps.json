@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "PlotlyTypes/1.0.0": {
+        "runtime": {
+          "PlotlyTypes.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "PlotlyTypes/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

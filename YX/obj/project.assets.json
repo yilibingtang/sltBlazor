@@ -605,11 +605,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Users\\Administrator\\Desktop\\工具\\Cnet\\Blazor\\YX\\YX.csproj",
+      "projectUniqueName": "d:\\Users\\Administrator\\Desktop\\工具\\Cnet\\Blazor\\YX\\YX.csproj",
       "projectName": "YX",
-      "projectPath": "D:\\Users\\Administrator\\Desktop\\工具\\Cnet\\Blazor\\YX\\YX.csproj",
+      "projectPath": "d:\\Users\\Administrator\\Desktop\\工具\\Cnet\\Blazor\\YX\\YX.csproj",
       "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-      "outputPath": "D:\\Users\\Administrator\\Desktop\\工具\\Cnet\\Blazor\\YX\\obj\\",
+      "outputPath": "d:\\Users\\Administrator\\Desktop\\工具\\Cnet\\Blazor\\YX\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -1,0 +1,15 @@
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-xml-search\bin\Debug\net10.0\PlotlyXmlSearch.exe
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-xml-search\bin\Debug\net10.0\PlotlyXmlSearch.deps.json
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-xml-search\bin\Debug\net10.0\PlotlyXmlSearch.runtimeconfig.json
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-xml-search\bin\Debug\net10.0\PlotlyXmlSearch.dll
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-xml-search\bin\Debug\net10.0\PlotlyXmlSearch.pdb
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-xml-search\obj\Debug\net10.0\PlotlyXmlSearch.GeneratedMSBuildEditorConfig.editorconfig
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-xml-search\obj\Debug\net10.0\PlotlyXmlSearch.AssemblyInfoInputs.cache
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-xml-search\obj\Debug\net10.0\PlotlyXmlSearch.AssemblyInfo.cs
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-xml-search\obj\Debug\net10.0\PlotlyXmlSearch.csproj.CoreCompileInputs.cache
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-xml-search\obj\Debug\net10.0\PlotlyXmlSearch.sourcelink.json
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-xml-search\obj\Debug\net10.0\PlotlyXmlSearch.dll
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-xml-search\obj\Debug\net10.0\refint\PlotlyXmlSearch.dll
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-xml-search\obj\Debug\net10.0\PlotlyXmlSearch.pdb
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-xml-search\obj\Debug\net10.0\PlotlyXmlSearch.genruntimeconfig.cache
+d:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-xml-search\obj\Debug\net10.0\ref\PlotlyXmlSearch.dll

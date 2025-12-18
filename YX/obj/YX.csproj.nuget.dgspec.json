@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "d:\\Users\\Administrator\\Desktop\\工具\\Cnet\\Blazor\\YX\\YX.csproj": {}
+    "D:\\Users\\Administrator\\Desktop\\工具\\Cnet\\Blazor\\YX\\YX.csproj": {}
   },
   "projects": {
-    "d:\\Users\\Administrator\\Desktop\\工具\\Cnet\\Blazor\\YX\\YX.csproj": {
+    "D:\\Users\\Administrator\\Desktop\\工具\\Cnet\\Blazor\\YX\\YX.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "d:\\Users\\Administrator\\Desktop\\工具\\Cnet\\Blazor\\YX\\YX.csproj",
+        "projectUniqueName": "D:\\Users\\Administrator\\Desktop\\工具\\Cnet\\Blazor\\YX\\YX.csproj",
         "projectName": "YX",
-        "projectPath": "d:\\Users\\Administrator\\Desktop\\工具\\Cnet\\Blazor\\YX\\YX.csproj",
+        "projectPath": "D:\\Users\\Administrator\\Desktop\\工具\\Cnet\\Blazor\\YX\\YX.csproj",
         "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "d:\\Users\\Administrator\\Desktop\\工具\\Cnet\\Blazor\\YX\\obj\\",
+        "outputPath": "D:\\Users\\Administrator\\Desktop\\工具\\Cnet\\Blazor\\YX\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

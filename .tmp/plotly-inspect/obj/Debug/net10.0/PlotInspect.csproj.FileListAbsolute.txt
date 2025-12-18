@@ -1,0 +1,15 @@
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-inspect\bin\Debug\net10.0\PlotInspect.exe
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-inspect\bin\Debug\net10.0\PlotInspect.deps.json
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-inspect\bin\Debug\net10.0\PlotInspect.runtimeconfig.json
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-inspect\bin\Debug\net10.0\PlotInspect.dll
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-inspect\bin\Debug\net10.0\PlotInspect.pdb
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-inspect\obj\Debug\net10.0\PlotInspect.GeneratedMSBuildEditorConfig.editorconfig
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-inspect\obj\Debug\net10.0\PlotInspect.AssemblyInfoInputs.cache
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-inspect\obj\Debug\net10.0\PlotInspect.AssemblyInfo.cs
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-inspect\obj\Debug\net10.0\PlotInspect.csproj.CoreCompileInputs.cache
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-inspect\obj\Debug\net10.0\PlotInspect.sourcelink.json
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-inspect\obj\Debug\net10.0\PlotInspect.dll
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-inspect\obj\Debug\net10.0\refint\PlotInspect.dll
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-inspect\obj\Debug\net10.0\PlotInspect.pdb
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-inspect\obj\Debug\net10.0\PlotInspect.genruntimeconfig.cache
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\.tmp\plotly-inspect\obj\Debug\net10.0\ref\PlotInspect.dll

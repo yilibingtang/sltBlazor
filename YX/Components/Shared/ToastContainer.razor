@@ -1,0 +1,24 @@
+@using YX.Services
+@inject NotificationService Notifications
+
+<div class="toast-container" aria-live="polite">
+    @foreach (var m in Notifications.Messages)
+    {
+        <div class="toast-item @(m.IsError ? "toast-error" : "toast-success")">
+            <div class="toast-body">@m.Message</div>
+            <button class="toast-close" @onclick="() => Notifications.Remove(m.Id)">×</button>
+        </div>
+    }
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        Notifications.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        Notifications.OnChange -= StateHasChanged;
+    }
+}

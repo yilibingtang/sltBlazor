@@ -5,18 +5,12 @@
 @using System.Text
 @using Microsoft.AspNetCore.Components.Forms
 @using System.ComponentModel.DataAnnotations
-@inject IJSRuntime JS
 
-@using Plotly.Blazor
-@using Plotly.Blazor.Traces
-@using Plotly.Blazor.Traces.ScatterLib
-@using Plotly.Blazor.LayoutLib
-@inject MotorDbContext Db
-
+@inherits MotorBase
 @rendermode InteractiveServer
 <PageTitle>Motor Management</PageTitle>
 
-<h3>电机数据管理</h3>
+<h3>直流减速电机机械特性数据管理系统</h3>
 
 <div class="motor-form">
     @* Page-level alerts *@
@@ -99,9 +93,10 @@
 
             <div class="row">
                 <label>额定电压 (V)</label>
-                <InputNumber<double> class="form-control" @bind-Value="EditingMotor.Voltage" />
-                    <ValidationMessage For="() => EditingMotor.Voltage" />
+                <InputNumber TValue="double" class="form-control" @bind-Value="EditingMotor.Voltage" />
+                <ValidationMessage For="() => EditingMotor.Voltage" />
             </div>
+            </EditForm>
     </section>
 
     <section class="placeholder">
@@ -126,13 +121,13 @@
                     <tr>
                         <td>@(i + 1)</td>
                         <td>
-                            <InputNumber<double> @bind-Value="EditingPoints[i].Torque" />
+                            <InputNumber TValue="double" @bind-Value="EditingPoints[i].Torque" />
                         </td>
                         <td>
-                            <InputNumber<double> @bind-Value="EditingPoints[i].Speed" />
+                            <InputNumber TValue="double" @bind-Value="EditingPoints[i].Speed" />
                         </td>
                         <td>
-                            <InputNumber<double> @bind-Value="EditingPoints[i].Current" />
+                            <InputNumber TValue="double" @bind-Value="EditingPoints[i].Current" />
                         </td>
                         <td><button class="btn small" @onclick="(() => RemovePoint(i))">删除</button></td>
                     </tr>
@@ -151,7 +146,7 @@
         <section class="fit-results">
             <h4>拟合曲线</h4>
             <div style="width:700px;height:380px;">
-                <PlotlyChart Data="PlotData" Layout="PlotLayout" />
+                <MotorPlot Torques="@(EditingPoints.Select(p => p.Torque).ToArray())" Speeds="@(EditingPoints.Select(p => p.Speed).ToArray())" Currents="@(EditingPoints.Select(p => p.Current).ToArray())" Title="@(EditingMotor?.MotorName ?? "Motor")" />
             </div>
 
             <h5>关键点</h5>
@@ -175,401 +170,4 @@
             </table>
         </section>
     }
-    </section>
 </div>
-
-@code {
-    // 列表从数据库加载
-    List<MotorModel> SavedMotors { get; set; } = new List<MotorModel>();
-    MotorModel EditingMotor { get; set; } = new MotorModel();
-    protected override async Task OnInitializedAsync()
-    {
-        // load persisted motors from SQLite
-        SavedMotors = await Db.Motors.AsNoTracking().OrderBy(m => m.Id).ToListAsync();
-        SelectedIndex = -1;
-        editContext = new EditContext(EditingMotor);
-    }
-    // 选项改变
-    int SelectedIndex { get; set; } = -1;
-    async Task OnSelectChanged(ChangeEventArgs e)
-    {
-        if (!int.TryParse(e?.Value?.ToString(), out var idx)) idx = -1;
-        SelectedIndex = idx;
-        await LoadSelectedAsync();
-    }
-    // 改变后数据变更
-    async Task LoadSelectedAsync()
-    {
-        if (SelectedIndex >= 0 && SelectedIndex < SavedMotors.Count)
-        {
-            var src = SavedMotors[SelectedIndex];
-            // copy values into editing model
-            EditingMotor = new MotorModel
-            {
-                Id = src.Id,
-                MotorName = src.MotorName,
-                MotorType = src.MotorType,
-                Voltage = src.Voltage,
-                MotorEfficiency = src.MotorEfficiency,
-                MaxEfficiencyLoadRatio = src.MaxEfficiencyLoadRatio,
-                NoLoadPoint = src.NoLoadPoint,
-                StallPoint = src.StallPoint
-            };
-            // load points for this motor
-            EditingPoints = (await Db.DataPoints.AsNoTracking().Where(d => d.MotorId == src.Id).OrderBy(d => d.Id).ToListAsync())
-            .Select(d => new MotorDataPoint
-            {
-                Id = d.Id,
-                MotorId = d.MotorId,
-                Torque = d.Torque,
-                Speed = d.Speed,
-                Current =
-            d.Current
-            }).ToList();
-        }
-        else
-        {
-            EditingMotor = new MotorModel();
-            EditingPoints = new List<MotorDataPoint>();
-        }
-        // reset EditContext for new editing instance
-        editContext = new EditContext(EditingMotor);
-        ValidationErrors.Clear(); PageAlertMessage = null;
-        StateHasChanged();
-    }
-
-    // 编辑时的数据点（绑定表格）
-    List<MotorDataPoint> EditingPoints { get; set; } = new List<MotorDataPoint>();
-
-    // 拟合结果
-    double[] CurrentCoeffs = Array.Empty<double>();
-    double[] SpeedCoeffs = Array.Empty<double>();
-    bool HasFit { get; set; } = false;
-    double plotXMin, plotXMax, plotYMin, plotYMax;
-    // Plotly.Blazor bindings
-    List<TraceBase> PlotData { get; set; } = new List<TraceBase>();
-    LayoutLib.Layout? PlotLayout { get; set; }
-    double NoLoadSpeed, StallTorque, NoLoadCurrent, StallCurrent;
-
-    // validation messages for UI
-    List<string> ErrorMessages { get; set; } = new List<string>();
-    string? SuccessMessage { get; set; }
-
-
-
-    EditContext? editContext;
-    List<string> ValidationErrors { get; set; } = new List<string>();
-    string? PageAlertMessage { get; set; }
-    bool PageAlertIsError { get; set; }
-
-
-
-    void NewGroup()
-    {
-        SelectedIndex = -1;
-        EditingMotor = new MotorModel();
-        EditingPoints = new List<MotorDataPoint>();
-        editContext = new EditContext(EditingMotor);
-    }
-
-    async Task SaveGroup()
-    {
-        if (SelectedIndex >= 0 && SelectedIndex < SavedMotors.Count)
-        {
-            // update existing
-            var entity = await Db.Motors.FindAsync(SavedMotors[SelectedIndex].Id);
-            if (entity != null)
-            {
-                entity.MotorName = EditingMotor.MotorName;
-                entity.MotorType = EditingMotor.MotorType;
-                entity.Voltage = EditingMotor.Voltage;
-                await Db.SaveChangesAsync();
-                // update points: delete existing and insert new
-                var existing = Db.DataPoints.Where(d => d.MotorId == entity.Id);
-                Db.DataPoints.RemoveRange(existing);
-                await Db.SaveChangesAsync();
-                foreach (var p in EditingPoints)
-                {
-                    var dp = new MotorDataPoint { MotorId = entity.Id, Torque = p.Torque, Speed = p.Speed, Current = p.Current };
-                    Db.DataPoints.Add(dp);
-                }
-                await Db.SaveChangesAsync();
-            }
-        }
-        else
-        {
-            var added = new MotorModel
-            {
-                MotorName = string.IsNullOrWhiteSpace(EditingMotor.MotorName) ? "未命名" : EditingMotor.MotorName,
-                MotorType = EditingMotor.MotorType,
-                Voltage = EditingMotor.Voltage
-            };
-            Db.Motors.Add(added);
-            await Db.SaveChangesAsync();
-            // reload list and select the new one
-            SavedMotors = await Db.Motors.AsNoTracking().OrderBy(m => m.Id).ToListAsync();
-            SelectedIndex = SavedMotors.FindIndex(m => m.Id == added.Id);
-            await LoadSelectedAsync();
-            // save points for new motor
-            if (EditingPoints.Count > 0)
-            {
-                foreach (var p in EditingPoints)
-                {
-                    Db.DataPoints.Add(new MotorDataPoint { MotorId = added.Id, Torque = p.Torque, Speed = p.Speed, Current = p.Current });
-                }
-                await Db.SaveChangesAsync();
-                SavedMotors = await Db.Motors.AsNoTracking().OrderBy(m => m.Id).ToListAsync();
-                SelectedIndex = SavedMotors.FindIndex(m => m.Id == added.Id);
-                await LoadSelectedAsync();
-            }
-            return;
-        }
-
-        // reload list to reflect changes
-        SavedMotors = await Db.Motors.AsNoTracking().OrderBy(m => m.Id).ToListAsync();
-        // keep current selection where possible
-        if (EditingMotor.Id != 0)
-        {
-            SelectedIndex = SavedMotors.FindIndex(m => m.Id == EditingMotor.Id);
-        }
-        else
-        {
-            SelectedIndex = -1;
-        }
-        await LoadSelectedAsync();
-    }
-
-    // Validate point list using DataAnnotations for each point
-    bool ValidatePoints(out List<string> errors)
-    {
-        errors = new List<string>();
-        if (EditingPoints == null || EditingPoints.Count == 0)
-        {
-            errors.Add("请至少添加一组测试点。");
-            return false;
-        }
-        var idx = 1;
-        foreach (var p in EditingPoints)
-        {
-            var ctx = new ValidationContext(p);
-            var list = new List<ValidationResult>();
-            if (!Validator.TryValidateObject(p, ctx, list, true))
-            {
-                foreach (var r in list)
-                {
-                    errors.Add($"第{idx}行: {r.ErrorMessage}");
-                }
-            }
-            idx++;
-        }
-        // require at least 2 points for fitting
-        if (EditingPoints.Count < 2)
-        {
-            errors.Add("至少需要两组测试点以进行拟合。");
-        }
-        return errors.Count == 0;
-    }
-
-    async Task HandleValidSubmit()
-    {
-        ValidationErrors.Clear(); PageAlertMessage = null;
-        if (!ValidatePoints(out var errs))
-        {
-            ValidationErrors = errs;
-            PageAlertIsError = true;
-            PageAlertMessage = "表单验证未通过，请修正下列错误。";
-            StateHasChanged();
-            return;
-        }
-        try
-        {
-            await SaveGroup();
-            PageAlertMessage = "保存成功"; PageAlertIsError = false;
-            await JS.InvokeVoidAsync("plotlyInterop.toast", "保存成功", false);
-        }
-        catch (Exception ex)
-        {
-            PageAlertMessage = "保存失败：" + ex.Message;
-            PageAlertIsError = true;
-            await JS.InvokeVoidAsync("plotlyInterop.toast", "保存失败: " + ex.Message, true);
-        }
-    }
-
-    void HandleInvalidSubmit(EditContext ctx)
-    {
-        ValidationErrors = ctx.GetValidationMessages().ToList();
-        PageAlertIsError = true; PageAlertMessage = "表单验证未通过，请检查输入。";
-    }
-
-    async Task TriggerFormSubmit()
-    {
-        if (editContext == null)
-        {
-            editContext = new EditContext(EditingMotor);
-        }
-        if (editContext.Validate())
-        {
-            await HandleValidSubmit();
-        }
-        else
-        {
-            HandleInvalidSubmit(editContext);
-        }
-    }
-
-    async Task DeleteGroup()
-    {
-        if (SelectedIndex >= 0 && SelectedIndex < SavedMotors.Count)
-        {
-            var entity = await Db.Motors.FindAsync(SavedMotors[SelectedIndex].Id);
-            if (entity != null)
-            {
-                Db.Motors.Remove(entity);
-                await Db.SaveChangesAsync();
-            }
-            SavedMotors = await Db.Motors.AsNoTracking().OrderBy(m => m.Id).ToListAsync();
-            SelectedIndex = -1;
-            EditingMotor = new MotorModel();
-            EditingPoints = new List<MotorDataPoint>();
-            StateHasChanged();
-        }
-    }
-
-    void AddPoint()
-    {
-        EditingPoints.Add(new MotorDataPoint { Torque = 0, Speed = 0, Current = 0 });
-    }
-
-    void RemovePoint(int idx)
-    {
-        if (idx >= 0 && idx < EditingPoints.Count)
-            EditingPoints.RemoveAt(idx);
-    }
-
-    static double EvalPoly(double[] coeffs, double x)
-    {
-        double y = 0;
-        for (int i = 0; i < coeffs.Length; i++) y += coeffs[i] * Math.Pow(x, i);
-        return y;
-    }
-
-    RenderFragment RenderAxes(double xmin, double xmax, double ymin, double ymax) => builder =>
-    {
-        var w = 700; var h = 380; var margin = 40;
-        builder.OpenElement(0, "rect");
-        builder.AddAttribute(1, "x", 0);
-        builder.AddAttribute(2, "y", 0);
-        builder.AddAttribute(3, "width", w);
-        builder.AddAttribute(4, "height", h);
-        builder.AddAttribute(5, "fill", "#fff");
-        builder.AddAttribute(6, "stroke", "#ddd");
-        builder.CloseElement();
-    };
-
-    RenderFragment RenderPoints(IEnumerable<(double x, double y)> pts, double xmin, double xmax, double ymin, double ymax,
-    string color) => builder =>
-    {
-        var w = 700; var h = 380; var margin = 40; int seq = 0;
-        foreach (var p in pts)
-        {
-            if (double.IsNaN(p.x) || double.IsNaN(p.y)) continue;
-            var cx = margin + (p.x - xmin) / (xmax - xmin) * (w - margin * 2);
-            var cy = margin + (1 - (p.y - ymin) / (ymax - ymin)) * (h - margin * 2);
-            builder.OpenElement(seq++, "circle");
-            builder.AddAttribute(seq++, "cx", cx);
-            builder.AddAttribute(seq++, "cy", cy);
-            builder.AddAttribute(seq++, "r", 3);
-            builder.AddAttribute(seq++, "fill", color);
-            builder.CloseElement();
-        }
-    };
-
-    RenderFragment RenderCurve(double[] coeffs, double xmin, double xmax, double ymin, double ymax, string color) => builder
-    =>
-    {
-        if (coeffs == null || coeffs.Length == 0) return;
-        var w = 700; var h = 380; var margin = 40; int points = 120; var path = new StringBuilder();
-        for (int i = 0; i <= points; i++)
-        {
-            var t = xmin + (xmax - xmin) * i / (double)points;
-            var y = EvalPoly(coeffs, t);
-            var cx = margin + (t - xmin) / (xmax - xmin) * (w - margin * 2);
-            var cy = margin + (1 - (y - ymin) / (ymax - ymin)) * (h - margin * 2);
-            if (i == 0) path.Append($"M {cx} {cy} "); else path.Append($"L {cx} {cy} ");
-        }
-        builder.OpenElement(0, "path");
-        builder.AddAttribute(1, "d", path.ToString());
-        builder.AddAttribute(2, "fill", "none");
-        builder.AddAttribute(3, "stroke", color);
-        builder.AddAttribute(4, "stroke-width", 2);
-        builder.CloseElement();
-    };
-
-    void ComputeFits()
-    {
-        HasFit = false;
-        if (EditingPoints == null || EditingPoints.Count < 2) return;
-        var torques = EditingPoints.Select(p => p.Torque).ToArray();
-        var currents = EditingPoints.Select(p => p.Current).ToArray();
-        var speeds = EditingPoints.Select(p => p.Speed).ToArray();
-
-        CurrentCoeffs = Fit.Polynomial(torques, currents, 1);
-        SpeedCoeffs = Fit.Polynomial(torques, speeds, 1);
-
-        // compute key values
-        NoLoadSpeed = EvalPoly(SpeedCoeffs, 0);
-        NoLoadCurrent = EvalPoly(CurrentCoeffs, 0);
-        // stall torque: speed = 0 -> solve for torque
-        var a0 = SpeedCoeffs.Length > 0 ? SpeedCoeffs[0] : 0;
-        var a1 = SpeedCoeffs.Length > 1 ? SpeedCoeffs[1] : 0;
-        if (Math.Abs(a1) > 1e-12) StallTorque = -a0 / a1; else StallTorque = double.NaN;
-        StallCurrent = double.IsNaN(StallTorque) ? double.NaN : EvalPoly(CurrentCoeffs, StallTorque);
-
-        // plot bounds
-        plotXMin = torques.Min(); plotXMax = torques.Max();
-        if (Math.Abs(plotXMax - plotXMin) < 1e-6) { plotXMin -= 1; plotXMax += 1; }
-        var yVals = speeds.Concat(currents).ToArray();
-        plotYMin = yVals.Min(); plotYMax = yVals.Max();
-        if (Math.Abs(plotYMax - plotYMin) < 1e-6) { plotYMin -= 1; plotYMax += 1; }
-
-        HasFit = true;
-
-        // prepare traces for Plotly.Blazor
-        var torques = EditingPoints.Select(p => (object)p.Torque).ToList();
-        var speeds = EditingPoints.Select(p => (object)p.Speed).ToList();
-        var currents = EditingPoints.Select(p => (object)p.Current).ToList();
-
-        // create Scatter traces
-        PlotData = new List<TraceBase>
-{
-new Scatter
-{
-X = torques,
-Y = speeds,
-Mode = ModeFlag.Lines | ModeFlag.Markers,
-Name = "Speed (rpm)",
-Line = new Plotly.Blazor.Traces.ScatterLib.Line { Color = "#1f77b4" }
-},
-new Scatter
-{
-X = torques,
-Y = currents,
-Mode = ModeFlag.Lines | ModeFlag.Markers,
-Name = "Current (A)",
-YAxis = "y2",
-Line = new Plotly.Blazor.Traces.ScatterLib.Line { Color = "#ff7f0e" }
-}
-};
-
-        PlotLayout = new LayoutLib.Layout
-        {
-            Title = new LayoutLib.Title { Text = EditingMotor.MotorName ?? "Motor" },
-            XAxis = new LayoutLib.Xaxis { Title = new LayoutLib.Title { Text = "Torque (Nm)" } },
-            YAxis = new LayoutLib.Yaxis { Title = new LayoutLib.Title { Text = "Speed (rpm)" } },
-            YAxis2 = new LayoutLib.Yaxis { Title = new LayoutLib.Title { Text = "Current (A)" }, Overlaying = "y", Side = "right" },
-            Legend = new LayoutLib.Legend { X = 0.01, Y = 0.99 }
-        };
-
-        StateHasChanged();
-    }
-}
