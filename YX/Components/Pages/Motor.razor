@@ -5,52 +5,47 @@
 @using System.Text
 @using Microsoft.AspNetCore.Components.Forms
 @using System.ComponentModel.DataAnnotations
-
+@using Microsoft.AspNetCore.Components.QuickGrid
 @inherits MotorBase
 @rendermode InteractiveServer
 <PageTitle>Motor Management</PageTitle>
 
 <h3>直流减速电机机械特性数据管理系统</h3>
-
 <div class="motor-form">
     @* Page-level alerts *@
-    @if (ErrorMessages?.Count > 0)
-    {
-        <div class="alert alert-danger">
-            <strong>请修正以下错误：</strong>
-            <ul>
-                @foreach (var msg in ErrorMessages)
-                {
-                    <li>@msg</li>
-                }
-            </ul>
-        </div>
-    }
-    else if (!string.IsNullOrEmpty(SuccessMessage))
-    {
-        <div class="alert alert-success">@SuccessMessage</div>
-    }
     <div>
         <section class="dataset-list">
             <label>已保存数据组</label>
+            
             <div class="dataset-controls">
-                <select value="@SelectedIndex" @onchange="OnSelectChanged">
-                    @if (SavedMotors == null || SavedMotors.Count == 0)
-                    {
-                        <option value="-1">(无)</option>
-                    }
-                    else
-                    {
-                        @for (int i = 0; i < SavedMotors.Count; i++)
-                        {
-                            <option value="@i">@SavedMotors[i].MotorName</option>
-                        }
-                        <option value="-1">-- 新建 --</option>
-                    }
-                </select>
+                @if (SavedMotors == null || SavedMotors.Count == 0)
+                {
+                    <div>(无已保存数据)</div>
+                }
+                else
+                {
+                    <QuickGrid TItem="MotorModel" Items="SavedMotors.AsQueryable()">
+                        <Columns>
+                            <QuickGridColumn Title="名称">
+                                <ChildContent Context="m">@m.MotorName</ChildContent>
+                            </QuickGridColumn>
+                            <QuickGridColumn Title="类型">
+                                <ChildContent Context="m">@m.MotorType</ChildContent>
+                            </QuickGridColumn>
+                            <QuickGridColumn Title="额定电压 (V)">
+                                <ChildContent Context="m">@m.Voltage</ChildContent>
+                            </QuickGridColumn>
+                            <QuickGridColumn Title="操作">
+                                <ChildContent Context="m">
+                                    <button class="btn" @onclick="() => LoadMotorById(m.Id)">加载</button>
+                                    <button class="btn danger" @onclick="() => DeleteMotorById(m.Id)">删除</button>
+                                </ChildContent>
+                            </QuickGridColumn>
+                        </Columns>
+                    </QuickGrid>
+                }
                 <button class="btn" @onclick="NewGroup">新建</button>
                 <button class="btn primary" @onclick="SaveGroup">保存</button>
-                <button class="btn danger" @onclick="DeleteGroup" disabled="@(SelectedIndex < 0)">删除</button>
             </div>
         </section>
     </div>

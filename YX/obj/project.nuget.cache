@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "KpcX4zSmFy0=",
+  "dgSpecHash": "DnnmpeD2tgU=",
   "success": true,
-  "projectFilePath": "d:\\Users\\Administrator\\Desktop\\工具\\Cnet\\Blazor\\YX\\YX.csproj",
+  "projectFilePath": "D:\\Users\\Administrator\\Desktop\\工具\\Cnet\\Blazor\\YX\\YX.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Administrator\\.nuget\\packages\\mathnet.numerics\\5.0.0\\mathnet.numerics.5.0.0.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.aspnetcore.app.internal.assets\\10.0.0\\microsoft.aspnetcore.app.internal.assets.10.0.0.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.aspnetcore.components.quickgrid\\10.0.1\\microsoft.aspnetcore.components.quickgrid.10.0.1.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.data.sqlite.core\\8.0.0\\microsoft.data.sqlite.core.8.0.0.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.entityframeworkcore\\8.0.0\\microsoft.entityframeworkcore.8.0.0.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\8.0.0\\microsoft.entityframeworkcore.abstractions.8.0.0.nupkg.sha512",
@@ -20,15 +21,5 @@
     "C:\\Users\\Administrator\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.1.6\\sqlitepclraw.lib.e_sqlite3.2.1.6.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\sqlitepclraw.provider.e_sqlite3\\2.1.6\\sqlitepclraw.provider.e_sqlite3.2.1.6.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1900",
-      "level": "Warning",
-      "message": "Error occurred while getting package vulnerability data: Unable to load the service index for source https://api.nuget.org/v3/index.json.",
-      "projectPath": "d:\\Users\\Administrator\\Desktop\\工具\\Cnet\\Blazor\\YX\\YX.csproj",
-      "warningLevel": 1,
-      "filePath": "d:\\Users\\Administrator\\Desktop\\工具\\Cnet\\Blazor\\YX\\YX.csproj",
-      "targetGraphs": []
-    }
-  ]
+  "logs": []
 }

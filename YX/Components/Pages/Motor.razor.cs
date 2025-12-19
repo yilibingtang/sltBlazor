@@ -204,6 +204,45 @@ public partial class MotorBase : ComponentBase
         }
     }
 
+    // Load a motor by its Id (used by QuickGrid row action)
+    protected async Task LoadMotorById(int id)
+    {
+        var idx = SavedMotors.FindIndex(m => m.Id == id);
+        if (idx >= 0)
+        {
+            SelectedIndex = idx;
+            await LoadSelectedAsync();
+        }
+    }
+
+    // Delete a motor by its Id (used by QuickGrid row action)
+    protected async Task DeleteMotorById(int id)
+    {
+        try
+        {
+            await MotorManager.DeleteMotorAsync(id);
+        }
+        catch (Exception ex)
+        {
+            PageAlertIsError = true;
+            PageAlertMessage = "删除失败: " + ex.Message;
+            Notifications.Show(PageAlertMessage, true, 4000);
+            StateHasChanged();
+            return;
+        }
+        SavedMotors = await MotorManager.GetAllMotorsAsync();
+        // if we deleted the currently selected item, reset editing state
+        if (EditingMotor != null && EditingMotor.Id == id)
+        {
+            SelectedIndex = -1;
+            EditingMotor = new MotorModel();
+            EditingPoints = new List<MotorDataPoint>();
+        }
+        PageAlertIsError = false; PageAlertMessage = "删除成功";
+        Notifications.Show("删除成功", false);
+        StateHasChanged();
+    }
+
     protected void AddPoint()
     {
         EditingPoints.Add(new MotorDataPoint { Torque = 0, Speed = 0, Current = 0 });
