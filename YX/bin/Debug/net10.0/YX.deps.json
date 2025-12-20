@@ -9,6 +9,7 @@
       "YX/1.0.0": {
         "dependencies": {
           "MathNet.Numerics": "5.0.0",
+          "Microsoft.AspNetCore.Components.QuickGrid": "10.0.1",
           "Microsoft.EntityFrameworkCore.Sqlite": "8.0.0",
           "Plotly.Blazor": "6.0.2"
         },
@@ -21,6 +22,14 @@
           "lib/net6.0/MathNet.Numerics.dll": {
             "assemblyVersion": "5.0.0.0",
             "fileVersion": "5.0.0.0"
+          }
+        }
+      },
+      "Microsoft.AspNetCore.Components.QuickGrid/10.0.1": {
+        "runtime": {
+          "lib/net10.0/Microsoft.AspNetCore.Components.QuickGrid.dll": {
+            "assemblyVersion": "10.0.1.0",
+            "fileVersion": "10.0.125.57005"
           }
         }
       },
@@ -249,6 +258,13 @@
       "sha512": "sha512-pg1W2VwaEQMAiTpGK840hZgzavnqjlCMTVSbtVCXVyT+7AX4mc1o89SPv4TBlAjhgCOo9c1Y+jZ5m3ti2YgGgA==",
       "path": "mathnet.numerics/5.0.0",
       "hashPath": "mathnet.numerics.5.0.0.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.Components.QuickGrid/10.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-p7+IZRNQgJg72k5uEVdceDUNbtt3j49G7PTp9lkIv2ALY6/kdzYWgp5IKBo1Vfogto4I6b6Gcz4rq4teI/YePA==",
+      "path": "microsoft.aspnetcore.components.quickgrid/10.0.1",
+      "hashPath": "microsoft.aspnetcore.components.quickgrid.10.0.1.nupkg.sha512"
     },
     "Microsoft.Data.Sqlite.Core/8.0.0": {
       "type": "package",
