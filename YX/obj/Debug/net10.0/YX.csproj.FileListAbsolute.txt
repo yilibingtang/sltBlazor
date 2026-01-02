@@ -126,3 +126,4 @@ D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\scopedcss
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\scopedcss\Components\Pages\MotorPerformanceCal.razor.rz.scp.css
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\4y0sj68s2q-{0}-km67vi5gwd-km67vi5gwd.gz
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\ztq8iq9rm7-{0}-dwcy1xt67k-dwcy1xt67k.gz
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt

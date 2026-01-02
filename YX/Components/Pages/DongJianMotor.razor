@@ -170,9 +170,9 @@
                 @foreach (var (point, index) in DataPoints.Select((p, i) => (p, i)))
                 {
                     <tr @onclick="() => SelectRow(index)" class="@(SelectedIndex == index ? "selected" : "")">
-                        <td><input type="number" step="0.01" @bind="point.Torque" /></td>
-                        <td><input type="number" step="0.01" @bind="point.Current" /></td>
-                        <td><input type="number" step="1" @bind="point.Speed" /></td>
+                        <td><input type="number" @bind="point.Torque" /></td>
+                        <td><input type="number" @bind="point.Current" /></td>
+                        <td><input type="number" @bind="point.Speed" /></td>
                     </tr>
                 }
             </tbody>
