@@ -1,0 +1,208 @@
+﻿@page "/MotorAssessCal"
+@rendermode InteractiveServer
+<PageTitle>电机性能计算器</PageTitle>
+
+<div class="container">
+    <h2>电机性能综合计算器</h2>
+
+    <!-- 1. 客户要求性能输入区 -->
+    <div class="section">
+        <h3>1. 客户要求性能</h3>
+        <table>
+            <tr>
+                <td><label>空载转速</label></td>
+                <td><input @bind="customerNoLoadRpm" type="number" step="any" @bind:event="oninput" /></td>
+                <td class="unit">rpm</td>
+                <td><label>负载扭矩</label></td>
+                <td><input @bind="customerLoadTorque" type="number" step="any" @bind:event="oninput" /></td>
+                <td class="unit">g.cm</td>
+                <td><label>负载转速</label></td>
+                <td><input @bind="customerLoadRpm" type="number" step="any" @bind:event="oninput" /></td>
+                <td class="unit">rpm</td>
+            </tr>
+            <tr>
+                <td><label>堵转扭矩</label></td>
+                <td><input @bind="customerStallTorque" type="number" step="any" @bind:event="oninput" /></td>
+                <td class="unit">g.cm</td>
+                <td colspan="6"></td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 2. 减速箱参数输入区 -->
+    <div class="section">
+        <h3>2. 减速箱参数</h3>
+        <table>
+            <tr>
+                <td><label>减速比</label></td>
+                <td><input @bind="gearRatio" type="number" step="any" @bind:event="oninput" /></td>
+                <td></td>
+                <td><label>减速箱效率</label></td>
+                <td><input @bind="gearboxEfficiency" type="number" step="0.001" min="0" max="1" @bind:event="oninput" /></td>
+                <td class="unit">(0-1)</td>
+                <td><label>电机电压</label></td>
+                <td><input @bind="motorVoltage" type="number" step="any" @bind:event="oninput" /></td>
+                <td class="unit">V</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 3. 电机参数输入区 -->
+    <div class="section">
+        <h3>3. 电机参数（供应商彩页）</h3>
+        <table>
+            <tr>
+                <td><label>电机型号</label></td>
+                <td><input @bind="motorModel" type="text" /></td>
+                <td></td>
+                <td><label>电机类型</label></td>
+                <td><input @bind="motorType" type="text" /></td>
+                <td colspan="4"></td>
+            </tr>
+            <tr>
+                <td><label>电机空载转速</label></td>
+                <td><input @bind="motorNoLoadRpm" type="number" step="any" @bind:event="oninput" /></td>
+                <td class="unit">rpm</td>
+                <td><label>电机堵转扭矩</label></td>
+                <td><input @bind="motorStallTorque" type="number" step="any" @bind:event="oninput" /></td>
+                <td class="unit">g.cm</td>
+                <td><label>电机效率</label></td>
+                <td><input @bind="motorEfficiency" type="number" step="0.001" min="0" max="1" @bind:event="oninput" /></td>
+                <td class="unit">(0-1)</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 计算按钮 -->
+    <button class="calc-btn" @onclick="CalculateAll">执行计算</button>
+
+    <!-- 4. 计算结果展示区 -->
+    <div class="section">
+        <h3>4. 计算结果</h3>
+        <table>
+            <tr>
+                <td><label>电机负载扭矩</label></td>
+                <td><input value="@calculatedMotorLoadTorque.ToString("F2")" readonly /></td>
+                <td class="unit">g.cm</td>
+                <td><label>电机负载转速</label></td>
+                <td><input value="@calculatedMotorLoadRpm.ToString("F2")" readonly /></td>
+                <td class="unit">rpm</td>
+                <td><label>效率位置</label></td>
+                <td><input value="@efficiencyPosition.ToString("F4")" readonly /></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><label>电机效率电流</label></td>
+                <td><input value="@calculatedMotorEffCurrent.ToString("F2")" readonly /></td>
+                <td class="unit">mA</td>
+                <td><label>电机空载电流</label></td>
+                <td><input value="@calculatedMotorNoLoadCurrent.ToString("F2")" readonly /></td>
+                <td class="unit">mA</td>
+                <td><label>电机堵转电流</label></td>
+                <td><input value="@calculatedMotorStallCurrent.ToString("F2")" readonly /></td>
+                <td class="unit">A</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 5. 减速电机输出性能 -->
+    <div class="section">
+        <h3>5. 减速电机输出性能</h3>
+        <table>
+            <tr>
+                <td><label>输出空载转速</label></td>
+                <td><input value="@outputNoLoadRpm.ToString("F2")" readonly /></td>
+                <td class="unit">rpm</td>
+                <td><label>输出负载扭矩</label></td>
+                <td><input value="@outputLoadTorque.ToString("F2")" readonly /></td>
+                <td class="unit">kg.cm</td>
+                <td><label>输出负载转速</label></td>
+                <td><input value="@outputLoadRpm.ToString("F2")" readonly /></td>
+                <td class="unit">rpm</td>
+            </tr>
+            <tr>
+                <td><label>输出堵转扭矩</label></td>
+                <td><input value="@outputStallTorque.ToString("F2")" readonly /></td>
+                <td class="unit">kg.cm</td>
+                <td><label>总效率</label></td>
+                <td><input value="@totalEfficiency.ToString("F4")" readonly /></td>
+                <td class="unit">(0-1)</td>
+                <td colspan="3"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+@code {
+    // 1. 客户要求性能
+    double customerNoLoadRpm { get; set; } = 2700;    // 客户要求空载转速 (rpm)
+    double customerLoadTorque { get; set; } = 2700;   // 客户要求负载扭矩 (g.cm)
+    double customerLoadRpm { get; set; } = 70;        // 客户要求负载转速 (rpm)
+    double customerStallTorque { get; set; } = 18000; // 客户要求堵转扭矩 (g.cm)
+
+    // 2. 减速箱参数
+    double gearRatio { get; set; } = 162;             // 减速比
+    double gearboxEfficiency { get; set; } = 0.614;   // 减速箱效率 (0-1)
+    double motorVoltage { get; set; } = 24;           // 电机电压 (V)
+
+    // 3. 电机参数
+    string motorModel { get; set; } = "050";          // 电机型号
+    string motorType { get; set; } = "有刷";          // 电机类型
+    double motorNoLoadRpm { get; set; } = 14500;      // 电机空载转速 (rpm)
+    double motorStallTorque { get; set; } = 140.72;   // 电机堵转扭矩 (g.cm)
+    double motorEfficiency { get; set; } = 0.75;      // 电机效率 (0-1)
+
+    // 4. 计算结果（自动计算）
+    double calculatedMotorLoadTorque { get; set; }    // 计算得到的电机负载扭矩 (g.cm)
+    double calculatedMotorLoadRpm { get; set; }       // 计算得到的电机负载转速 (rpm)
+    double efficiencyPosition { get; set; }           // 效率位置
+    double calculatedMotorEffCurrent { get; set; }    // 电机效率电流 (mA)
+    double calculatedMotorNoLoadCurrent { get; set; } // 电机空载电流 (mA)
+    double calculatedMotorStallCurrent { get; set; }  // 电机堵转电流 (A)
+
+    // 5. 减速电机输出性能
+    double outputNoLoadRpm { get; set; }              // 输出空载转速 (rpm)
+    double outputLoadTorque { get; set; }             // 输出负载扭矩 (kg.cm)
+    double outputLoadRpm { get; set; }                // 输出负载转速 (rpm)
+    double outputStallTorque { get; set; }            // 输出堵转扭矩 (kg.cm)
+    double totalEfficiency { get; set; }              // 总效率 (电机效率×减速箱效率)
+
+    // 核心计算逻辑（基于Excel中的公式推导）
+    void CalculateAll()
+    {
+        // 计算电机侧负载扭矩（客户负载扭矩 ÷ 减速比 ÷ 减速箱效率）
+        calculatedMotorLoadTorque = customerLoadTorque / (gearRatio * gearboxEfficiency);
+
+        // 计算电机侧负载转速（客户负载转速 × 减速比）
+        calculatedMotorLoadRpm = customerLoadRpm * gearRatio;
+
+        // 计算效率位置（电机负载转速 ÷ 电机空载转速）
+        efficiencyPosition = calculatedMotorLoadRpm / motorNoLoadRpm;
+
+        // 计算电机效率电流（公式：T×n×0.0980665 ÷ (9.5493×U×η)，单位转换为mA）
+        // T: 扭矩(g.cm) → 转换为N.m需要 ×1e-5；n: 转速(rpm)；U: 电压(V)；η: 效率
+        calculatedMotorEffCurrent = (calculatedMotorLoadTorque * calculatedMotorLoadRpm * 0.0980665)
+                                  / (9.5493 * motorVoltage * motorEfficiency) * 1000;
+
+        // 计算电机空载电流（基于效率的经验公式：效率电流 × (1 - √效率)）
+        calculatedMotorNoLoadCurrent = calculatedMotorEffCurrent * (1 - Math.Sqrt(motorEfficiency));
+
+        // 计算电机堵转电流（基于功率平衡公式推导）
+        calculatedMotorStallCurrent = (motorStallTorque * motorNoLoadRpm * 0.0980665)
+                                    / (9549.3 * motorVoltage * motorEfficiency);
+
+        // 计算减速电机输出性能
+        outputNoLoadRpm = motorNoLoadRpm / gearRatio;                          // 输出空载转速
+        outputLoadTorque = (calculatedMotorLoadTorque * motorEfficiency * gearboxEfficiency) / 1000; // 转换为kg.cm
+        outputLoadRpm = calculatedMotorLoadRpm / gearRatio;                    // 输出负载转速
+        outputStallTorque = (motorStallTorque * gearboxEfficiency) / 1000;    // 输出堵转扭矩（kg.cm）
+        totalEfficiency = motorEfficiency * gearboxEfficiency;                // 总效率
+    }
+
+    // 页面初始化时执行一次计算
+    protected override void OnInitialized()
+    {
+        CalculateAll();
+        base.OnInitialized();
+    }
+}

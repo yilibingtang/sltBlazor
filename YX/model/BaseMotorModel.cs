@@ -44,10 +44,13 @@ public abstract class BaseMotorModel
 /// 空载特性点
 /// </summary>
 public MotorDataPoint NoLoadPoint { get; set; } = new MotorDataPoint();
-
-/// <summary>
-/// 堵转特性点
-/// </summary>
-public MotorDataPoint StallPoint { get; set; } = new MotorDataPoint();
+    /// <summary>
+    /// 负载特性点
+    /// </summary>
+    public MotorDataPoint LoadPoint { get; set; } = new MotorDataPoint();
+    /// <summary>
+    /// 堵转特性点
+    /// </summary>
+    public MotorDataPoint StallPoint { get; set; } = new MotorDataPoint();
 #endregion
 }

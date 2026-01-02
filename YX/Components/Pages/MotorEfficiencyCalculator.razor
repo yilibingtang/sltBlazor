@@ -1,0 +1,92 @@
+﻿@page "/motorefficiency"
+@rendermode InteractiveServer
+<PageTitle>MotorEfficiencyCalculator</PageTitle>
+<h2>计算效率</h2>
+<h3>实测数据</h3>
+<table>
+    <tr>
+        <td><label>空载转速</label></td>
+        <td><input class="w-120" @bind-value="NoLoadRpm" @bind-value:event="oninput" type="number" /></td>
+        <td class="unit">rpm</td>
+        <td width="50"></td>
+        <td><label>效率扭矩</label></td>
+        <td><input class="w-120" @bind-value="EffTorque" @bind-value:event="oninput" type="number" /></td>
+        <td class="unit">g.cm</td>
+    </tr>
+    <tr>
+        <td><label>效率转速</label></td>
+        <td><input class="w-120" value="@EffRpm.ToString("F2")" readonly /></td>
+        <td class="unit">rpm</td>
+        <td width="50"></td>
+        <td><label>堵转力矩</label></td>
+        <td><input class="w-120" @bind-value="StallTorque" @bind-value:event="oninput" type="number" /></td>
+        <td class="unit">g.cm</td>
+    </tr>
+    <tr>
+        <td><label>减速比</label></td>
+        <td><input class="w-120" @bind-value="GearRatio" @bind-value:event="oninput" type="number" step="any" /></td>
+        <td></td>
+        <td width="50"></td>
+        <td><label>电压</label></td>
+        <td><input class="w-120" @bind-value="Voltage" @bind-value:event="oninput" type="number" step="any" /></td>
+        <td class="unit">V</td>
+    </tr>
+</table>
+
+<h3>单电机数据</h3>
+<table>
+    <tr>
+        <td><label>空载转速</label></td>
+        <td><input class="w-120" value="@SingleNoLoadRpm.ToString("F2")" readonly /></td>
+        <td class="unit">rpm</td>
+        <td width="50"></td>
+        <td><label>效率扭矩</label></td>
+        <td><input class="w-120" value="@SingleEffTorque.ToString("F2")" readonly /></td>
+        <td class="unit">g.cm</td>
+    </tr>
+    <tr>
+        <td><label>效率转速</label></td>
+        <td><input class="w-120" value="@SingleEffRpm.ToString("F2")" readonly /></td>
+        <td class="unit">rpm</td>
+        <td width="50"></td>
+        <td><label>堵转力矩</label></td>
+        <td><input class="w-120" value="@SingleStallTorque.ToString("F2")" readonly /></td>
+        <td class="unit">g.cm</td>
+    </tr>
+</table>
+
+<h3>效率计算</h3>
+<table>
+    <tr>
+        <td><label>总效率</label></td>
+        <td><input class="w-120" value="@TotalEfficiency.ToString("F3")" readonly /></td>
+    </tr>
+    <tr>
+        <td><label>假设电机效率</label></td>
+        <td><input class="w-120" @bind-value="AssumedMotorEff" @bind-value:event="oninput" type="number" step="any" /></td>
+    </tr>
+    <tr>
+        <td><label>计算齿轮箱效率</label></td>
+        <td><input class="w-120" value="@GearboxEfficiency.ToString("F3")" readonly /></td>
+    </tr>
+    <tr>
+        <td><label>齿轮箱级数</label></td>
+        <td><input class="w-120" @bind-value="GearStages" @bind-value:event="oninput" type="number" /></td>
+    </tr>
+    <tr>
+        <td><label>效率位置</label></td>
+        <td><input class="w-120" value="@EffPosition.ToString("F3")" readonly /></td>
+    </tr>
+    <tr>
+        <td><label>效率电流</label></td>
+        <td><input class="w-120" value="@EffCurrent.ToString("F2")" readonly /></td>
+    </tr>
+    <tr>
+        <td><label>空载电流</label></td>
+        <td><input class="w-120" value="@NoLoadCurrent.ToString("F2")" readonly /></td>
+    </tr>
+    <tr>
+        <td><label>堵转</label></td>
+        <td><input class="w-120" @bind-value="StallValue" @bind-value:event="oninput" type="number" step="any" /></td>
+    </tr>
+</table>

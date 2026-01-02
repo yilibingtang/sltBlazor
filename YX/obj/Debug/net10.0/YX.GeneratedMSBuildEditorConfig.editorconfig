@@ -46,8 +46,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNb3Rvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/MotorAssessCal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNb3RvckFzc2Vzc0NhbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/MotorPlot.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNb3RvclBsb3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/MotorPowerCal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNb3RvclBvd2VyQ2FsLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/NotFound.razor]
@@ -81,3 +89,11 @@ build_metadata.AdditionalFiles.CssScope = b-nc1w5e508z
 [D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Layout/ReconnectModal.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcUmVjb25uZWN0TW9kYWwucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-2nvvrtztym
+
+[D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/MotorEfficiencyCalculator.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNb3RvckVmZmljaWVuY3lDYWxjdWxhdG9yLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-31670p407v
+
+[D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/MotorPerformanceCal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNb3RvclBlcmZvcm1hbmNlQ2FsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-vs41jim1sd

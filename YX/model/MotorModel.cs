@@ -7,7 +7,6 @@ public class MotorModel : BaseMotorModel
 {
     // Primary key for EF Core
     public int Id { get; set; }
-
     /// <summary>
     /// 总减速比
     /// </summary>

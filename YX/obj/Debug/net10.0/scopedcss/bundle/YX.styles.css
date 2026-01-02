@@ -363,3 +363,104 @@ main[b-rq72ru2x7m] {
         opacity: 0;
     }
 }
+/* /Components/Pages/MotorEfficiencyCalculator.razor.rz.scp.css */
+p[b-31670p407v] {
+    margin: 0;
+    line-height: 30px;
+}
+
+.w-120[b-31670p407v] {
+    width: 120px;
+    display: inline-block;
+}
+
+label[b-31670p407v] {
+    padding-right: 10px;
+}
+
+.unit[b-31670p407v] {
+    color: #888;
+    padding-left: 4px;
+}
+
+table[b-31670p407v] {
+    margin-bottom: 16px;
+}
+/* /Components/Pages/MotorPerformanceCal.razor.rz.scp.css */
+
+.container[b-vs41jim1sd] {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 0 20px;
+    font-family: Arial, sans-serif;
+}
+
+h2[b-vs41jim1sd] {
+    color: #2c3e50;
+    margin-bottom: 25px;
+    font-size: 1.8em;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 10px;
+}
+
+.data-grid[b-vs41jim1sd] {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+
+    .data-grid td[b-vs41jim1sd] {
+        padding: 8px 12px;
+        vertical-align: middle;
+        border: 1px solid #dee2e6;
+        font-size: 0.95em;
+    }
+
+    .data-grid th[b-vs41jim1sd] {
+        background-color: #f8f9fa;
+        padding: 10px 12px;
+        text-align: left;
+        border: 1px solid #dee2e6;
+        color: #2c3e50;
+    }
+
+.label-cell[b-vs41jim1sd] {
+    width: 100px;
+    color: #34495e;
+    font-weight: 500;
+}
+
+.value-cell[b-vs41jim1sd] {
+    width: 120px;
+}
+
+.unit-cell[b-vs41jim1sd] {
+    width: 60px;
+    color: #6c757d;
+    font-size: 0.9em;
+}
+
+.section-title[b-vs41jim1sd] {
+    font-size: 1.2em;
+    color: #2c3e50;
+    margin: 20px 0 10px 0;
+    font-weight: 600;
+}
+
+.divider[b-vs41jim1sd] {
+    height: 1px;
+    background-color: #e9ecef;
+    margin: 15px 0;
+}
+
+.highlight[b-vs41jim1sd] {
+    background-color: #fafafa;
+}
+
+input[readonly][b-vs41jim1sd] {
+    border: none;
+    background: transparent;
+    width: 100%;
+    font-size: 0.95em;
+    color: #2c3e50;
+}

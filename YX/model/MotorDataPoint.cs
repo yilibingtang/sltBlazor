@@ -5,9 +5,16 @@ using System.ComponentModel.DataAnnotations;
 /// </summary>
 public class MotorDataPoint
 {
+    /// <summary>
+    /// 数据点ID
+    /// </summary>
     public int Id { get; set; }
+    
+    /// <summary>
+    /// 关联的电机ID
+    /// </summary>
     public int MotorId { get; set; }
-
+    
     /// <summary>
     /// 扭矩 (N·m)
     /// </summary>

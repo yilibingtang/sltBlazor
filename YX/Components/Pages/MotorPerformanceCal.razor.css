@@ -1,0 +1,77 @@
+﻿
+.container {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 0 20px;
+    font-family: Arial, sans-serif;
+}
+
+h2 {
+    color: #2c3e50;
+    margin-bottom: 25px;
+    font-size: 1.8em;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 10px;
+}
+
+.data-grid {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+
+    .data-grid td {
+        padding: 8px 12px;
+        vertical-align: middle;
+        border: 1px solid #dee2e6;
+        font-size: 0.95em;
+    }
+
+    .data-grid th {
+        background-color: #f8f9fa;
+        padding: 10px 12px;
+        text-align: left;
+        border: 1px solid #dee2e6;
+        color: #2c3e50;
+    }
+
+.label-cell {
+    width: 100px;
+    color: #34495e;
+    font-weight: 500;
+}
+
+.value-cell {
+    width: 120px;
+}
+
+.unit-cell {
+    width: 60px;
+    color: #6c757d;
+    font-size: 0.9em;
+}
+
+.section-title {
+    font-size: 1.2em;
+    color: #2c3e50;
+    margin: 20px 0 10px 0;
+    font-weight: 600;
+}
+
+.divider {
+    height: 1px;
+    background-color: #e9ecef;
+    margin: 15px 0;
+}
+
+.highlight {
+    background-color: #fafafa;
+}
+
+input[readonly] {
+    border: none;
+    background: transparent;
+    width: 100%;
+    font-size: 0.95em;
+    color: #2c3e50;
+}

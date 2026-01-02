@@ -15,7 +15,7 @@
           }
         }
       },
-      "Microsoft.AspNetCore.App.Internal.Assets/10.0.0": {
+      "Microsoft.AspNetCore.App.Internal.Assets/10.0.1": {
         "type": "package",
         "build": {
           "build/Microsoft.AspNetCore.App.Internal.Assets.props": {},
@@ -337,10 +337,10 @@
         "mathnet.numerics.nuspec"
       ]
     },
-    "Microsoft.AspNetCore.App.Internal.Assets/10.0.0": {
-      "sha512": "0gZrESKwnlmbE8Br8XIy3kk7Pj0++9T2Ly+A8BFYYgo5EgfqWEln26cho+l92KOaHUzclhvz314RiwE910s24g==",
+    "Microsoft.AspNetCore.App.Internal.Assets/10.0.1": {
+      "sha512": "rafnWkNfJPA0nCZ5u9bFLiIhCv+aGDWBPJMejuROFMHEpsNhTdv8Cvhv+2jIH+b5485FhndbiwOQJUBMeBa6BQ==",
       "type": "package",
-      "path": "microsoft.aspnetcore.app.internal.assets/10.0.0",
+      "path": "microsoft.aspnetcore.app.internal.assets/10.0.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -356,7 +356,7 @@
         "build/Microsoft.AspNetCore.App.Internal.Assets.targets",
         "buildMultiTargeting/Microsoft.AspNetCore.App.Internal.Assets.targets",
         "buildTransitive/Microsoft.AspNetCore.App.Internal.Assets.targets",
-        "microsoft.aspnetcore.app.internal.assets.10.0.0.nupkg.sha512",
+        "microsoft.aspnetcore.app.internal.assets.10.0.1.nupkg.sha512",
         "microsoft.aspnetcore.app.internal.assets.nuspec"
       ]
     },
@@ -635,7 +635,7 @@
   "projectFileDependencyGroups": {
     "net10.0": [
       "MathNet.Numerics >= 5.0.0",
-      "Microsoft.AspNetCore.App.Internal.Assets >= 10.0.0",
+      "Microsoft.AspNetCore.App.Internal.Assets >= 10.0.1",
       "Microsoft.AspNetCore.Components.QuickGrid >= 10.0.1",
       "Microsoft.EntityFrameworkCore.Sqlite >= 8.0.0",
       "Plotly.Blazor >= 6.0.2"
@@ -698,7 +698,7 @@
           "Microsoft.AspNetCore.App.Internal.Assets": {
             "suppressParent": "All",
             "target": "Package",
-            "version": "[10.0.0, )",
+            "version": "[10.0.1, )",
             "autoReferenced": true
           },
           "Microsoft.AspNetCore.Components.QuickGrid": {
@@ -733,7 +733,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",

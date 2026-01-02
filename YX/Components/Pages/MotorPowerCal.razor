@@ -1,0 +1,14 @@
+﻿@page "/MotorPowerCal"
+@rendermode InteractiveServer
+<PageTitle>MotorPowerCal</PageTitle>
+<h2>计算平均数</h2>
+<input @bind="shuruAString" type="number"/>
+<input @bind="shuruBString" type="number"/>
+<p>平均数为 @shuruCString</p>
+
+@code {
+    double shuruAString { get; set; } =0;
+    double shuruBString { get; set; } =0;
+    double shuruCString => shuruAString / 2 + shuruBString / 2;
+
+}

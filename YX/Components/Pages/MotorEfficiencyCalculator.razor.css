@@ -1,0 +1,22 @@
+﻿p {
+    margin: 0;
+    line-height: 30px;
+}
+
+.w-120 {
+    width: 120px;
+    display: inline-block;
+}
+
+label {
+    padding-right: 10px;
+}
+
+.unit {
+    color: #888;
+    padding-left: 4px;
+}
+
+table {
+    margin-bottom: 16px;
+}

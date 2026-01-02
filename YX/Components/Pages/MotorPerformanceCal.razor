@@ -1,0 +1,88 @@
+﻿@page "/MotorPerformanceCal"
+@rendermode InteractiveServer
+
+<PageTitle>电机性能计算器</PageTitle>
+
+<div class="container">
+
+    <!-- 基础性能参数 -->
+    <div class="section-title">电机性能</div>
+    <table class="data-grid">
+        <tr>
+            <td class="label-cell">空载转速</td>
+            <td class="value-cell"><input @bind="Motor.NoLoadPoint.Speed"/></td>
+            <td class="unit-cell">rpm</td>
+            <td class="label-cell">负载扭矩</td>
+            <td class="value-cell"><input @bind="Motor.LoadPoint.Torque" /></td>
+            <td class="unit-cell">g.cm</td>
+        </tr>
+        <tr class="highlight">
+            <td class="label-cell">负载转速</td>
+            <td class="value-cell"><input @bind="Motor.LoadPoint.Speed" /></td>
+            <td class="unit-cell">rpm</td>
+            <td class="label-cell">堵转扭矩</td>
+            <td class="value-cell"><input value="@CalculatedStallTorque.ToString("F2")" readonly /></td>
+            <td class="unit-cell">g.cm</td>
+        </tr>
+        <tr>
+            <td class="label-cell">负载位置</td>
+            <td class="value-cell"><input value="@SpeedRatio.ToString("F2")" readonly /></td>
+            <td class="unit-cell"></td>
+            <td class="label-cell"></td>
+            <td class="value-cell"></td>
+            <td class="unit-cell"></td>
+        </tr>
+    </table>
+
+    <!-- 电机信息 -->
+    <div class="divider"></div>
+    <div class="section-title">电机信息</div>
+    <table class="data-grid">
+        <tr>
+            <td class="label-cell">最大效率点位置</td>
+            <td class="value-cell"><input value="@(Motor.MaxEfficiencyLoadRatio / 100).ToString("F1")" readonly /></td>
+            <td class="unit-cell"></td>
+            <td class="label-cell">效率</td>
+            <td class="value-cell"><input value="@(Motor.MotorEfficiency / 100).ToString("F2")" readonly /></td>
+            <td class="unit-cell"></td>
+        </tr>
+        <tr class="highlight">
+            <td class="label-cell">电压</td>
+            <td class="value-cell"><input value="@Motor.Voltage.ToString("N0")" readonly /></td>
+            <td class="unit-cell">V</td>
+            <td class="label-cell"></td>
+            <td class="value-cell"></td>
+            <td class="unit-cell"></td>
+        </tr>
+    </table>
+
+    <!-- 电流参数 -->
+    <div class="divider"></div>
+    <div class="section-title">电流参数</div>
+    <table class="data-grid">
+        <tr>
+            <td class="label-cell">空载</td>
+            <td class="value-cell"><input value="@Motor.NoLoadPoint.Current.ToString("F6")" readonly /></td>
+            <td class="unit-cell">mA</td>
+        </tr>
+        <tr>
+            <td class="label-cell">负载电流</td>
+            <td class="value-cell"><input value="@Motor.LoadPoint.Current.ToString("F6")" readonly /></td>
+            <td class="unit-cell">mA</td>
+        </tr>
+    </table>
+
+    <!-- 堵转参数 -->
+    <div class="divider"></div>
+    <div class="section-title">堵转参数</div>
+    <table class="data-grid">
+        <tr>
+            <td class="label-cell">堵转电流</td>
+            <td class="value-cell"><input value="@Motor.StallPoint.Current.ToString("F6")" readonly /></td>
+            <td class="unit-cell">A</td>
+            <td class="unit-cell"></td>
+            <td class="unit-cell"></td>
+            <td class="unit-cell"></td>
+        </tr>
+    </table>
+</div>
