@@ -1,10 +1,22 @@
 using System.ComponentModel.DataAnnotations;
 
-/// <summary>
-/// 电机测试数据点（用于持久化）
-/// </summary>
-public class MotorDataPoint
+namespace YX.Models
 {
+    /// <summary>
+    /// 数据点类型枚举
+    /// </summary>
+    public enum DataPointType
+    {
+        NoLoad,
+        Load,
+        Stall
+    }
+    
+    /// <summary>
+    /// 电机测试数据点（用于持久化）
+    /// </summary>
+    public class MotorDataPoint
+    {
     /// <summary>
     /// 数据点ID
     /// </summary>
@@ -14,6 +26,11 @@ public class MotorDataPoint
     /// 关联的电机ID
     /// </summary>
     public int MotorId { get; set; }
+    
+    /// <summary>
+    /// 数据点类型
+    /// </summary>
+    public DataPointType Type { get; set; }
     
     /// <summary>
     /// 扭矩 (N·m)
@@ -35,4 +52,5 @@ public class MotorDataPoint
         [Required(ErrorMessage = "电流不能为空")]
     [Range(0, double.MaxValue, ErrorMessage = "电流需为非负数")]
     public double Current { get; set; }
+    }
 }

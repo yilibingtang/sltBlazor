@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using YX.Models;
 
 public class MotorDbContext : DbContext
 {

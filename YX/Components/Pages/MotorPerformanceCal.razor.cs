@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
-using YX.model;
+using Microsoft.AspNetCore.Components;
+using YX.Models;
 using YX.Services;
 
 namespace YX.Components.Pages
@@ -11,7 +11,7 @@ namespace YX.Components.Pages
         public BaseMotorModel Motor { get; set; } = new MotorModel
         {
             MotorName = "电机性能计算",
-            MotorType = ReductionMotorType.SingleMotor,
+            MotorType = MotorType.SingleMotor,
             Voltage = 24,
             MotorEfficiency = 75,
             MaxEfficiencyLoadRatio = 90,

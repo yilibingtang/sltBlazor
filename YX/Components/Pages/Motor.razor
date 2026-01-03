@@ -6,7 +6,7 @@
 @using Microsoft.AspNetCore.Components.Forms
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Components.QuickGrid
-@using YX.model
+@using YX.Models
 @inherits MotorBase
 @rendermode InteractiveServer
 <PageTitle>Motor Management</PageTitle>
@@ -65,8 +65,8 @@
             <div class="row">
                 <label>电机类型</label>
                 <InputSelect @bind-Value="EditingMotor.MotorType">
-                    <option value="ReductionMotorType.SingleMotor">SingleMotor</option>
-                    <option value="ReductionMotorType.IntegratedMotor">IntegratedMotor</option>
+                    <option value="MotorType.SingleMotor">SingleMotor</option>
+                    <option value="MotorType.IntegratedMotor">IntegratedMotor</option>
                 </InputSelect>
                 <ValidationMessage For="() => EditingMotor.MotorType" />
             </div>

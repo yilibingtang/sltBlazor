@@ -9,12 +9,13 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 using Microsoft.EntityFrameworkCore;
 using MathNet.Numerics;
+using YX.Models;
 
 public partial class MotorBase : ComponentBase
 {
     [Inject] public IJSRuntime JS { get; set; } = default!;
     [Inject] public YX.Services.MotorManager MotorManager { get; set; } = default!;
-    [Inject] public YX.Services.MotorCalculator MotorCalculator { get; set; } = default!;
+
     [Inject] public YX.Services.MotorValidator MotorValidator { get; set; } = default!;
     [Inject] public YX.Services.NotificationService Notifications { get; set; } = default!;
 
@@ -254,17 +255,10 @@ public partial class MotorBase : ComponentBase
             EditingPoints.RemoveAt(idx);
     }
 
-    protected static double EvalPoly(double[] coeffs, double x)
-    {
-        double y = 0;
-        for (int i = 0; i < coeffs.Length; i++) y += coeffs[i] * Math.Pow(x, i);
-        return y;
-    }
-
     protected void ComputeFits()
     {
         HasFit = false;
-        var fit = MotorCalculator.ComputeFits(EditingPoints);
+        var fit = YX.Services.MotorCalculator.ComputeFits(EditingPoints);
         if (fit == null || fit.Torques == null || fit.Torques.Length < 2) return;
 
         CurrentCoeffs = fit.CurrentCoeffs;

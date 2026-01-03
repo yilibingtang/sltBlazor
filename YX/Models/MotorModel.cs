@@ -1,9 +1,11 @@
 using System.ComponentModel.DataAnnotations; // 必须保留此命名空间
 
-/// <summary>
-/// 整机模型（含减速机构属性）
-/// </summary>
-public class MotorModel : BaseMotorModel
+namespace YX.Models
+{
+    /// <summary>
+    /// 整机模型（含减速机构属性）
+    /// </summary>
+    public class MotorModel : BaseMotorModel
 {
     // Primary key for EF Core
     public int Id { get; set; }
@@ -24,4 +26,5 @@ public class MotorModel : BaseMotorModel
     /// </summary>
     [RangeAttribute(0, 100, ErrorMessage = "总效率需在0-100之间")]
     public double TotalEfficiency { get; set; }
+    }
 }

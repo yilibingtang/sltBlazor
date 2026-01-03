@@ -9,7 +9,15 @@
     <div class="input-row">
         <div class="input-group">
             <label for="motorName">电机名称</label>
-            <input type="text" id="motorName" @bind="MotorName" placeholder="请输入电机名称" />
+            <input type="text" id="motorName" @bind="Motor.MotorName" placeholder="请输入电机名称" />
+        </div>
+    </div>
+    
+    <!-- 电压输入 -->
+    <div class="input-row">
+        <div class="input-group">
+            <label for="voltage">电压 (V)</label>
+            <input type="number" id="voltage" @bind="Motor.Voltage" placeholder="请输入电压" step="0.1" min="0" />
         </div>
     </div>
     
@@ -55,11 +63,81 @@
             <h3>拟合结果</h3>
             <div class="equation">
                 <span class="equation-label">电流-扭矩关系：</span>
-                <span class="equation-value">y = @CurrentFit.A.ToString("F8")x + @CurrentFit.B.ToString("F8")</span>
+                <span class="equation-value">y = @FitResult.CurrentCoeffs[1].ToString("F8")x + @FitResult.CurrentCoeffs[0].ToString("F8")</span>
             </div>
             <div class="equation">
                 <span class="equation-label">转速-扭矩关系：</span>
-                <span class="equation-value">y = @SpeedFit.A.ToString("F8")x + @SpeedFit.B.ToString("F8")</span>
+                <span class="equation-value">y = @FitResult.SpeedCoeffs[1].ToString("F8")x + @FitResult.SpeedCoeffs[0].ToString("F8")</span>
+            </div>
+        </div>
+    }
+    
+    <!-- 特性点结果 -->
+    @if (ShowResults)
+    {
+        <div class="results-container">
+            <h3>特性点结果</h3>
+            <h4>空载点</h4>
+            <div class="efficiency-result">
+                <div class="result-item">
+                    <span class="result-label">扭矩：</span>
+                    <span class="result-value">@Motor.NoLoadPoint.Torque.ToString("F8") N·m</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">转速：</span>
+                    <span class="result-value">@Motor.NoLoadPoint.Speed.ToString("F8") rpm</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">电流：</span>
+                    <span class="result-value">@Motor.NoLoadPoint.Current.ToString("F8") A</span>
+                </div>
+            </div>
+            
+            <h4>堵转点</h4>
+            <div class="efficiency-result">
+                <div class="result-item">
+                    <span class="result-label">扭矩：</span>
+                    <span class="result-value">@Motor.StallPoint.Torque.ToString("F8") N·m</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">转速：</span>
+                    <span class="result-value">@Motor.StallPoint.Speed.ToString("F8") rpm</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">电流：</span>
+                    <span class="result-value">@Motor.StallPoint.Current.ToString("F8") A</span>
+                </div>
+            </div>
+        </div>
+    }
+    
+    <!-- 效率计算结果 -->
+    @if (ShowEfficiencyResults)
+    {
+        <div class="results-container">
+            <h3>效率计算结果</h3>
+            <div class="equation">
+                <span class="equation-label">效率变化方程：</span>
+                <span class="equation-value">η' = @EfficiencyDerivativeEquation</span>
+            </div>
+            <h4>最大效率点</h4>
+            <div class="efficiency-result">
+                <div class="result-item">
+                    <span class="result-label">最大效率：</span>
+                    <span class="result-value">@MaxEfficiencyValue.ToString("F8")</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">对应扭矩：</span>
+                    <span class="result-value">@MaxEfficiencyPoint.Torque.ToString("F8") N·m</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">对应转速：</span>
+                    <span class="result-value">@MaxEfficiencyPoint.Speed.ToString("F8") rpm</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">对应电流：</span>
+                    <span class="result-value">@MaxEfficiencyPoint.Current.ToString("F8") A</span>
+                </div>
             </div>
         </div>
     }

@@ -1,14 +1,21 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-/// <summary>
-/// 电机基础抽象模型
-/// </summary>
-public enum ReductionMotorType
+namespace YX.Models
 {
-    SingleMotor,
-    IntegratedMotor
-}
-public abstract class BaseMotorModel
+    /// <summary>
+    /// 电机类型枚举
+    /// </summary>
+    public enum MotorType
+    {
+        SingleMotor,
+        IntegratedMotor
+    }
+    
+    /// <summary>
+    /// 电机基础抽象模型
+    /// </summary>
+    public abstract class BaseMotorModel
 {
     /// <summary>
     /// 电机名称
@@ -17,9 +24,9 @@ public abstract class BaseMotorModel
     public string MotorName { get; set; } = string.Empty;
 
     /// <summary>
-    /// 减速电机分类
+    /// 电机类型
     /// </summary>
-    public ReductionMotorType MotorType { get; set; }
+    public MotorType MotorType { get; set; }
 
     /// <summary>
     /// 额定电压（V）
@@ -43,14 +50,18 @@ public abstract class BaseMotorModel
 /// <summary>
 /// 空载特性点
 /// </summary>
+[NotMapped]
 public MotorDataPoint NoLoadPoint { get; set; } = new MotorDataPoint();
     /// <summary>
     /// 负载特性点
     /// </summary>
+    [NotMapped]
     public MotorDataPoint LoadPoint { get; set; } = new MotorDataPoint();
     /// <summary>
     /// 堵转特性点
     /// </summary>
+    [NotMapped]
     public MotorDataPoint StallPoint { get; set; } = new MotorDataPoint();
 #endregion
+    }
 }

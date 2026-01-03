@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using YX.Models;
 
 namespace YX.Services
 {
@@ -9,11 +10,8 @@ namespace YX.Services
     {
         readonly MotorDbContext _db;
 
-        public MotorManager(MotorDbContext db)
-        {
-            _db = db;
-        }
-
+        public MotorManager(MotorDbContext db) => _db = db;
+       
         public async Task<List<MotorModel>> GetAllMotorsAsync()
         {
             return await _db.Motors.AsNoTracking().OrderBy(m => m.Id).ToListAsync();
@@ -32,18 +30,24 @@ namespace YX.Services
             {
                 MotorName = string.IsNullOrWhiteSpace(motor.MotorName) ? "未命名" : motor.MotorName,
                 MotorType = motor.MotorType,
-                Voltage = motor.Voltage
+                Voltage = motor.Voltage,
+                MotorEfficiency = motor.MotorEfficiency,
+                MaxEfficiencyLoadRatio = motor.MaxEfficiencyLoadRatio,
+                TotalReductionRatio = motor.TotalReductionRatio,
+                ReductionStageCount = motor.ReductionStageCount,
+                TotalEfficiency = motor.TotalEfficiency
             };
             _db.Motors.Add(added);
-            await _db.SaveChangesAsync();
+            
             if (points?.Count > 0)
             {
                 foreach (var p in points)
                 {
-                    _db.DataPoints.Add(new MotorDataPoint { MotorId = added.Id, Torque = p.Torque, Speed = p.Speed, Current = p.Current });
+                    _db.DataPoints.Add(new MotorDataPoint { MotorId = added.Id, Torque = p.Torque, Speed = p.Speed, Current = p.Current, Type = p.Type });
                 }
-                await _db.SaveChangesAsync();
             }
+            
+            await _db.SaveChangesAsync();
             return added.Id;
         }
 
@@ -52,32 +56,49 @@ namespace YX.Services
             var entity = await _db.Motors.FindAsync(id);
             if (entity != null)
             {
+                // 更新电机基本信息
                 entity.MotorName = editingMotor.MotorName;
                 entity.MotorType = editingMotor.MotorType;
                 entity.Voltage = editingMotor.Voltage;
-                await _db.SaveChangesAsync();
-
+                entity.MotorEfficiency = editingMotor.MotorEfficiency;
+                entity.MaxEfficiencyLoadRatio = editingMotor.MaxEfficiencyLoadRatio;
+                entity.TotalReductionRatio = editingMotor.TotalReductionRatio;
+                entity.ReductionStageCount = editingMotor.ReductionStageCount;
+                entity.TotalEfficiency = editingMotor.TotalEfficiency;
+                
+                // 更新测试数据点
                 var existing = _db.DataPoints.Where(d => d.MotorId == entity.Id);
                 _db.DataPoints.RemoveRange(existing);
-                await _db.SaveChangesAsync();
+                
                 if (points?.Count > 0)
                 {
                     foreach (var p in points)
                     {
-                        _db.DataPoints.Add(new MotorDataPoint { MotorId = entity.Id, Torque = p.Torque, Speed = p.Speed, Current = p.Current });
+                        _db.DataPoints.Add(new MotorDataPoint { MotorId = entity.Id, Torque = p.Torque, Speed = p.Speed, Current = p.Current, Type = p.Type });
                     }
-                    await _db.SaveChangesAsync();
                 }
+                
+                // 单次保存所有更改
+                await _db.SaveChangesAsync();
             }
         }
 
         public async Task DeleteMotorAsync(int id)
         {
-            var entity = await _db.Motors.FindAsync(id);
-            if (entity != null)
+            try
             {
-                _db.Motors.Remove(entity);
-                await _db.SaveChangesAsync();
+                var entity = await _db.Motors.FindAsync(id);
+                if (entity != null)
+                {
+                    _db.Motors.Remove(entity);
+                    await _db.SaveChangesAsync();
+                }
+            }
+            catch (Exception)
+            {
+                // 记录错误日志
+                // 可以考虑添加重试逻辑或其他错误处理
+                throw;
             }
         }
     }

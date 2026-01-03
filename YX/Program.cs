@@ -1,8 +1,16 @@
 using YX.Components;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add logging configuration
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+builder.Logging.AddEventSourceLogger();
+builder.Logging.SetMinimumLevel(LogLevel.Information);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -16,7 +24,6 @@ builder.Services.AddDbContext<MotorDbContext>(options =>
 builder.Services.AddSingleton<YX.Services.NotificationService>();
 // Motor services
 builder.Services.AddScoped<YX.Services.MotorManager>();
-builder.Services.AddSingleton<YX.Services.MotorCalculator>();
 builder.Services.AddSingleton<YX.Services.MotorValidator>();
 
 var app = builder.Build();

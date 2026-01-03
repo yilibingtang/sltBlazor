@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using MathNet.Numerics;
+using YX.Models;
 
 namespace YX.Services
 {
@@ -35,7 +36,7 @@ namespace YX.Services
         /// <param name="coeffs">多项式系数</param>
         /// <param name="x">自变量值</param>
         /// <returns>计算结果</returns>
-        private double EvalPoly(double[] coeffs, double x)
+        public static double EvalPoly(double[] coeffs, double x)
         {
             double y = 0;
             for (int i = 0; i < coeffs.Length; i++) 
@@ -50,7 +51,7 @@ namespace YX.Services
         /// </summary>
         /// <param name="points">电机测试数据点集合</param>
         /// <returns>拟合结果</returns>
-        public MotorFitResult ComputeFits(System.Collections.Generic.IEnumerable<MotorDataPoint> points)
+        public static MotorFitResult ComputeFits(System.Collections.Generic.IEnumerable<MotorDataPoint> points)
         {
             var list = points?.ToList() ?? new System.Collections.Generic.List<MotorDataPoint>();
             var result = new MotorFitResult();
