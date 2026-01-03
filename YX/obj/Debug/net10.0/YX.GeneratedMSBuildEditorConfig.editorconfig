@@ -30,10 +30,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb3VudGVyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/DongJianMotor.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEb25nSmlhbk1vdG9yLnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
 [D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/Error.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -89,6 +85,10 @@ build_metadata.AdditionalFiles.CssScope = b-nc1w5e508z
 [D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Layout/ReconnectModal.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcUmVjb25uZWN0TW9kYWwucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-2nvvrtztym
+
+[D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/DongJianMotor.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEb25nSmlhbk1vdG9yLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-jgp5qjl2mz
 
 [D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/MotorEfficiencyCalculator.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNb3RvckVmZmljaWVuY3lDYWxjdWxhdG9yLnJhem9y

@@ -1,4 +1,4 @@
-﻿@page "/MotorPerformanceCal"
+@page "/MotorPerformanceCal"
 @rendermode InteractiveServer
 
 <PageTitle>电机性能计算器</PageTitle>
@@ -40,10 +40,10 @@
     <table class="data-grid">
         <tr>
             <td class="label-cell">最大效率点位置</td>
-            <td class="value-cell"><input value="@(Motor.MaxEfficiencyLoadRatio / 100).ToString("F1")" readonly /></td>
+            <td class="value-cell"><input value="@((Motor.MaxEfficiencyLoadRatio / 100).ToString("F1"))" readonly /></td>
             <td class="unit-cell"></td>
             <td class="label-cell">效率</td>
-            <td class="value-cell"><input value="@(Motor.MotorEfficiency / 100).ToString("F2")" readonly /></td>
+            <td class="value-cell"><input value="@((Motor.MotorEfficiency / 100).ToString("F2"))" readonly /></td>
             <td class="unit-cell"></td>
         </tr>
         <tr class="highlight">

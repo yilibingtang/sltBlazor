@@ -124,6 +124,6 @@ D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compresse
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\w7rk6f7wrg-{0}-2lgipwaf5j-2lgipwaf5j.gz
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\scopedcss\Components\Pages\MotorEfficiencyCalculator.razor.rz.scp.css
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\scopedcss\Components\Pages\MotorPerformanceCal.razor.rz.scp.css
-D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\4y0sj68s2q-{0}-km67vi5gwd-km67vi5gwd.gz
-D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\ztq8iq9rm7-{0}-dwcy1xt67k-dwcy1xt67k.gz
-D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\scopedcss\Components\Pages\DongJianMotor.razor.rz.scp.css
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\4y0sj68s2q-{0}-z376z7e7z3-z376z7e7z3.gz
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\ztq8iq9rm7-{0}-wzlnvr4zuc-wzlnvr4zuc.gz
