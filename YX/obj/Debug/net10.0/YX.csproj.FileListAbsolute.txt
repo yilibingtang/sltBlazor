@@ -114,8 +114,6 @@ D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compresse
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\5s0yap0hyi-{0}-wmp8iwak4q-wmp8iwak4q.gz
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\w7rk6f7wrg-{0}-2lgipwaf5j-2lgipwaf5j.gz
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\1x45lb54o8-{0}-boiwgh0w5b-boiwgh0w5b.gz
-D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\4y0sj68s2q-{0}-z376z7e7z3-z376z7e7z3.gz
-D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\ztq8iq9rm7-{0}-wzlnvr4zuc-wzlnvr4zuc.gz
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\staticwebassets.build.json
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\staticwebassets.build.json.cache
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\staticwebassets.development.json
@@ -127,3 +125,14 @@ D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\refint\YX
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\YX.pdb
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\YX.genruntimeconfig.cache
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\ref\YX.dll
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\bin\Debug\net10.0\ChartJs.Blazor.dll
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\bin\Debug\net10.0\CsvHelper.dll
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\bin\Debug\net10.0\Newtonsoft.Json.dll
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\kkwjpfsf8x-{0}-rd7kpyao0h-rd7kpyao0h.gz
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\9pozex28tv-{0}-rxs4m3fo3f-rxs4m3fo3f.gz
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\l7flew2gq1-{0}-bv7wdkbct1-bv7wdkbct1.gz
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\q71a8qrays-{0}-zyqspy8l5n-zyqspy8l5n.gz
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\uxbqkokfu0-{0}-lzs9hmhw5n-lzs9hmhw5n.gz
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\137ic4jcgc-{0}-ft71q750bt-ft71q750bt.gz
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\4y0sj68s2q-{0}-exz5fvh2zi-exz5fvh2zi.gz
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\ztq8iq9rm7-{0}-9rcp9upzms-9rcp9upzms.gz

@@ -1,6 +1,9 @@
 @page "/DongJianMotor"
 @rendermode InteractiveServer
+@using YX.Services
 <PageTitle>东箭电机数据分析</PageTitle>
+
+@inject IJSRuntime JSRuntime
 
 <div class="container">
     <h2>东箭电机数据分析</h2>
@@ -54,6 +57,7 @@
     <!-- 计算按钮 -->
     <div class="button-group">
         <button class="btn btn-primary" @onclick="CalculateFits">计算拟合直线</button>
+        <button class="btn export-btn" @onclick="ExportData">导出数据 (CSV)</button>
     </div>
     
     <!-- 拟合结果 -->
@@ -68,6 +72,67 @@
             <div class="equation">
                 <span class="equation-label">转速-扭矩关系：</span>
                 <span class="equation-value">y = @FitResult.SpeedCoeffs[1].ToString("F8")x + @FitResult.SpeedCoeffs[0].ToString("F8")</span>
+            </div>
+            <div class="equation">
+                <span class="equation-label">空载转速(n₀)：</span>
+                <span class="equation-value">@FitResult.NoLoadSpeed.ToString("F6") rpm</span>
+            </div>
+            <div class="equation">
+                <span class="equation-label">空载电流(I₀)：</span>
+                <span class="equation-value">@FitResult.NoLoadCurrent.ToString("F6") A</span>
+            </div>
+            <div class="equation">
+                <span class="equation-label">堵转扭矩(Tₖ)：</span>
+                <span class="equation-value">@FitResult.StallTorque.ToString("F6") N·m</span>
+            </div>
+            <div class="equation">
+                <span class="equation-label">堵转电流(Iₖ)：</span>
+                <span class="equation-value">@FitResult.StallCurrent.ToString("F6") A</span>
+            </div>
+            
+            <h4>拟合质量分析</h4>
+            <div class="fit-quality">
+                <div class="quality-row">
+                    <div class="quality-group">
+                        <h5>电流-扭矩拟合</h5>
+                        <div class="result-item">
+                            <span class="result-label">决定系数(R²)：</span>
+                            <span class="result-value">@FitResult.CurrentR2.ToString("F8")</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">均方误差(MSE)：</span>
+                            <span class="result-value">@FitResult.CurrentMSE.ToString("F8")</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">均方根误差(RMSE)：</span>
+                            <span class="result-value">@FitResult.CurrentRMSE.ToString("F8")</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">平均绝对误差(MAE)：</span>
+                            <span class="result-value">@FitResult.CurrentMAE.ToString("F8")</span>
+                        </div>
+                    </div>
+                    
+                    <div class="quality-group">
+                        <h5>转速-扭矩拟合</h5>
+                        <div class="result-item">
+                            <span class="result-label">决定系数(R²)：</span>
+                            <span class="result-value">@FitResult.SpeedR2.ToString("F8")</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">均方误差(MSE)：</span>
+                            <span class="result-value">@FitResult.SpeedMSE.ToString("F8")</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">均方根误差(RMSE)：</span>
+                            <span class="result-value">@FitResult.SpeedRMSE.ToString("F8")</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">平均绝对误差(MAE)：</span>
+                            <span class="result-value">@FitResult.SpeedMAE.ToString("F8")</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     }
@@ -139,6 +204,15 @@
                     <span class="result-value">@MaxEfficiencyPoint.Current.ToString("F8") A</span>
                 </div>
             </div>
+        </div>
+    }
+    
+    <!-- 电机性能曲线图表 -->
+    @if (ShowResults)
+    {
+        <div class="chart-container">
+            <h3>电机性能曲线</h3>
+            <div id="@ChartElementId" style="width: 100%; height: 500px;"></div>
         </div>
     }
 </div>
