@@ -1,4 +1,4 @@
-﻿﻿﻿namespace YX.Models
+﻿﻿﻿﻿﻿﻿namespace YX.Models
 {
     public enum TorqueUnit
     {

@@ -55,6 +55,9 @@ D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\rjsmcshtm
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\scopedcss\Components\Layout\MainLayout.razor.rz.scp.css
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\scopedcss\Components\Layout\NavMenu.razor.rz.scp.css
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\scopedcss\Components\Layout\ReconnectModal.razor.rz.scp.css
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\scopedcss\Components\Pages\DongJianMotor.razor.rz.scp.css
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\scopedcss\Components\Pages\MotorEfficiencyCalculator.razor.rz.scp.css
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\scopedcss\Components\Pages\MotorPerformanceCal.razor.rz.scp.css
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\scopedcss\bundle\YX.styles.css
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\scopedcss\projectbundle\YX.bundle.scp.css
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\56dafjgwsz-{0}-dvhmdzxed1-dvhmdzxed1.gz
@@ -108,7 +111,11 @@ D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compresse
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\z5mzjvaf3z-{0}-0j3bgjxly4-0j3bgjxly4.gz
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\7w2oy845mn-{0}-f3wa7qylhs-f3wa7qylhs.gz
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\6hf04cib7h-{0}-13ja33weya-13ja33weya.gz
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\5s0yap0hyi-{0}-wmp8iwak4q-wmp8iwak4q.gz
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\w7rk6f7wrg-{0}-2lgipwaf5j-2lgipwaf5j.gz
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\1x45lb54o8-{0}-boiwgh0w5b-boiwgh0w5b.gz
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\4y0sj68s2q-{0}-z376z7e7z3-z376z7e7z3.gz
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\ztq8iq9rm7-{0}-wzlnvr4zuc-wzlnvr4zuc.gz
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\staticwebassets.build.json
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\staticwebassets.build.json.cache
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\staticwebassets.development.json
@@ -120,10 +127,3 @@ D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\refint\YX
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\YX.pdb
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\YX.genruntimeconfig.cache
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\ref\YX.dll
-D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\5s0yap0hyi-{0}-wmp8iwak4q-wmp8iwak4q.gz
-D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\w7rk6f7wrg-{0}-2lgipwaf5j-2lgipwaf5j.gz
-D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\scopedcss\Components\Pages\MotorEfficiencyCalculator.razor.rz.scp.css
-D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\scopedcss\Components\Pages\MotorPerformanceCal.razor.rz.scp.css
-D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\scopedcss\Components\Pages\DongJianMotor.razor.rz.scp.css
-D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\4y0sj68s2q-{0}-z376z7e7z3-z376z7e7z3.gz
-D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\ztq8iq9rm7-{0}-wzlnvr4zuc-wzlnvr4zuc.gz
