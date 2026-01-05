@@ -11,89 +11,89 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = YX
 build_property.RootNamespace = YX
-build_property.ProjectDir = D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\
+build_property.ProjectDir = d:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX
+build_property.MSBuildProjectDirectory = d:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
-[D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/App.razor]
+[d:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/App.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/Counter.razor]
+[d:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/Counter.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb3VudGVyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/Error.razor]
+[d:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/Error.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/Home.razor]
+[d:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/Motor.razor]
+[d:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/Motor.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNb3Rvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/MotorAssessCal.razor]
+[d:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/MotorAssessCal.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNb3RvckFzc2Vzc0NhbC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/MotorPlot.razor]
+[d:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/MotorPlot.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNb3RvclBsb3QucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/MotorPowerCal.razor]
+[d:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/MotorPowerCal.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNb3RvclBvd2VyQ2FsLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/NotFound.razor]
+[d:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/NotFound.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xOb3RGb3VuZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/Weather.razor]
+[d:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/Weather.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xXZWF0aGVyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Routes.razor]
+[d:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Routes.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Shared/ToastContainer.razor]
+[d:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Shared/ToastContainer.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcVG9hc3RDb250YWluZXIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/_Imports.razor]
+[d:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSW1wb3J0cy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Layout/MainLayout.razor]
+[d:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Layout/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTWFpbkxheW91dC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-rq72ru2x7m
 
-[D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Layout/NavMenu.razor]
+[d:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Layout/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTmF2TWVudS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-nc1w5e508z
 
-[D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Layout/ReconnectModal.razor]
+[d:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Layout/ReconnectModal.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcUmVjb25uZWN0TW9kYWwucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-2nvvrtztym
 
-[D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/DongJianMotor.razor]
+[d:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/DongJianMotor.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEb25nSmlhbk1vdG9yLnJhem9y
 build_metadata.AdditionalFiles.CssScope = b-jgp5qjl2mz
 
-[D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/MotorEfficiencyCalculator.razor]
+[d:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/MotorEfficiencyCalculator.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNb3RvckVmZmljaWVuY3lDYWxjdWxhdG9yLnJhem9y
 build_metadata.AdditionalFiles.CssScope = b-31670p407v
 
-[D:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/MotorPerformanceCal.razor]
+[d:/Users/Administrator/Desktop/工具/Cnet/Blazor/YX/Components/Pages/MotorPerformanceCal.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNb3RvclBlcmZvcm1hbmNlQ2FsLnJhem9y
 build_metadata.AdditionalFiles.CssScope = b-vs41jim1sd
