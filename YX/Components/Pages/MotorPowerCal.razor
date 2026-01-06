@@ -1,5 +1,6 @@
 ﻿@page "/MotorPowerCal"
 @rendermode InteractiveServer
+@using YX.Models
 <PageTitle>平均数计算器</PageTitle>
 
 <div class="container">
@@ -40,4 +41,31 @@
         </div>
     </div>
 </div>
+ <table>
+            <tr>
+                <td>扭矩</td>
+                <td>转速</td>
+                <td>电流</td>
+            </tr>
+            <tr>
+                <td><input type="type" name="name" @bind="motorone.Torque" /></td>
+        <td><input type="type" name="name" @bind="motorone.Speed" /></td>
+        <td><input type="type" name="name" @bind="motorone.Current" /></td>
+            </tr>
+    <tr>
+        <td><input type="type" name="name" @bind="motortwo.Torque" /></td>
+        <td><input type="type" name="name" @bind="motortwo.Speed" /></td>
+        <td><input type="type" name="name" @bind="motortwo.Current" /></td>
+    </tr>
+        </table>
 
+@code{
+    MotorDataPoint motorone = new MotorDataPoint()
+    {
+        Torque = 0
+    };
+    MotorDataPoint motortwo = new MotorDataPoint()
+    {
+        Torque = 45887.229584
+    };
+}
