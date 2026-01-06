@@ -1,6 +1,5 @@
 using CsvHelper;
 using Microsoft.AspNetCore.Components;
-using System;
 using System.Globalization;
 using System.Text;
 using YX.Models;
@@ -38,9 +37,6 @@ namespace YX.Components.Pages
         public double MaxEfficiencyValue { get; set; } = 0;
         public string EfficiencyDerivativeEquation { get; set; } = string.Empty;
         
-        // 图表相关
-        private string ChartElementId = "motor-chart-" + Guid.NewGuid().ToString("N");
-        
         // 选择行
         public void SelectRow(int index)
         {
@@ -73,18 +69,18 @@ namespace YX.Components.Pages
         }
         
         // 计算入口
-        public void CalculateFits()
+        public async Task CalculateFits()
         {
             // 1. 先计算拟合结果
             FitResult = MotorCalculator.ComputeFits(DataPoints);
             
             // 2. 再计算效率结果
-            CalculateEfficiencyResults();
+            await CalculateEfficiencyResults();
             ShowResults = true;
         }
         
         // 核心：计算理论精准的最大效率点
-        private void CalculateEfficiencyResults()
+        private async Task CalculateEfficiencyResults()
         {
             // 从拟合结果中获取基础参数
             double n0 = FitResult.NoLoadSpeed;       // 空载转速
@@ -172,128 +168,11 @@ namespace YX.Components.Pages
             // 导数方程（显示用）
             EfficiencyDerivativeEquation = $"dη/dt = {n0*Tk/(K*U):F4} * ({I0:F4}*t² - {2*I0*Tk:F4}*t + {I0*Tk*Tk:F4}) / [(Ik-I0)*t + I0*Tk]^2";
             
-            // 更新图表
-            UpdateChart(n0, I0, Tk, Ik, U, K);
-            
             ShowEfficiencyResults = true;
         }
         
-        // 更新电机性能曲线图表
-        private async void UpdateChart(double n0, double I0, double Tk, double Ik, double U, double K)
-        {
-            // 生成扭矩数据点（从0到堵转扭矩）
-            int pointsCount = 100;
-            var torques = new List<double>();
-            var speeds = new List<double>();
-            var currents = new List<double>();
-            var efficiencies = new List<double>();
-            
-            for (int i = 0; i <= pointsCount; i++)
-            {
-                double torque = i * Tk / pointsCount;
-                torques.Add(torque);
-                
-                // 计算转速：n = n0 * (1 - torque / Tk)
-                double speed = n0 * (1 - torque / Tk);
-                speeds.Add(speed);
-                
-                // 计算电流：I = I0 + (Ik - I0) * torque / Tk
-                double current = I0 + (Ik - I0) * torque / Tk;
-                currents.Add(current);
-                
-                // 计算效率：η = (speed * torque) / (K * U * current)
-                double efficiency = 0;
-                if (current != 0)
-                {
-                    efficiency = (speed * torque) / (K * U * current);
-                }
-                efficiencies.Add(efficiency);
-            }
-            
-            // 创建轨迹
-            var speedTrace = new
-            {
-                x = torques,
-                y = speeds,
-                mode = "lines",
-                name = "转速 (rpm)",
-                line = new { color = "#1f77b4" }
-            };
-            
-            var currentTrace = new
-            {
-                x = torques,
-                y = currents,
-                mode = "lines",
-                name = "电流 (A)",
-                line = new { color = "#ff7f0e" }
-            };
-            
-            var efficiencyTrace = new
-            {
-                x = torques,
-                y = efficiencies,
-                mode = "lines",
-                name = "效率",
-                yaxis = "y2",
-                line = new { color = "#2ca02c" }
-            };
-            
-            var maxEffSpeedTrace = new
-            {
-                x = new List<double> { MaxEfficiencyPoint.Torque },
-                y = new List<double> { MaxEfficiencyPoint.Speed },
-                mode = "markers",
-                name = "最大效率点（转速）",
-                marker = new { color = "#1f77b4", size = 8, symbol = "star" }
-            };
-            
-            var maxEffTrace = new
-            {
-                x = new List<double> { MaxEfficiencyPoint.Torque },
-                y = new List<double> { MaxEfficiencyValue },
-                mode = "markers",
-                name = "最大效率点（效率）",
-                yaxis = "y2",
-                marker = new { color = "#2ca02c", size = 8, symbol = "star" }
-            };
-            
-            var originalSpeedTrace = new
-            {
-                x = DataPoints.Select(p => p.Torque).ToList(),
-                y = DataPoints.Select(p => p.Speed).ToList(),
-                mode = "markers",
-                name = "原始数据（转速）",
-                marker = new { color = "#aec7e8", size = 6 }
-            };
-            
-            var originalCurrentTrace = new
-            {
-                x = DataPoints.Select(p => p.Torque).ToList(),
-                y = DataPoints.Select(p => p.Current).ToList(),
-                mode = "markers",
-                name = "原始数据（电流）",
-                marker = new { color = "#ffbb78", size = 6 }
-            };
-            
-            // 创建布局
-            var layout = new
-            {
-                title = "电机性能曲线",
-                xaxis = new { title = "扭矩 (Nm)" },
-                yaxis = new { title = "转速/电流", side = "left" },
-                yaxis2 = new { title = "效率", overlaying = "y", side = "right" },
-                legend = new { x = 0.01, y = 0.99 }
-            };
-            
-            // 调用JavaScript互操作绘制图表
-            await JSRuntime.InvokeAsync<object>("plotlyInterop.plot", new object?[] { ChartElementId, 
-                new object[] { speedTrace, currentTrace, efficiencyTrace, maxEffSpeedTrace, maxEffTrace, originalSpeedTrace, originalCurrentTrace }, 
-                layout });
-        }
-        
         // 导出数据为CSV格式
-        public async Task ExportData()
+        public void ExportData()
         {
             try
             {
@@ -426,19 +305,13 @@ namespace YX.Components.Pages
                     }
                 }
                 
-                // 下载CSV文件
+                // 保存CSV文件到本地桌面
                 var fileName = $"电机数据_{DateTime.Now:yyyyMMddHHmmss}.csv";
-                var byteArray = Encoding.UTF8.GetBytes(csvContent.ToString());
-                var base64 = Convert.ToBase64String(byteArray);
-                var dataUrl = $"data:text/csv;base64,{base64}";
-                await JSRuntime.InvokeAsync<object>("eval", new object?[] { $@"
-                    const link = document.createElement('a');
-                    link.href = '{dataUrl}';
-                    link.download = '{fileName}';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                "});
+                var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);
+                File.WriteAllText(filePath, csvContent.ToString(), Encoding.UTF8);
+                
+                // 输出保存路径到控制台
+                System.Console.WriteLine($"CSV文件已保存到：{filePath}");
             }
             catch (Exception ex)
             {

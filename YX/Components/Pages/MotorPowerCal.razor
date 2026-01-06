@@ -1,14 +1,43 @@
 ﻿@page "/MotorPowerCal"
 @rendermode InteractiveServer
-<PageTitle>MotorPowerCal</PageTitle>
-<h2>计算平均数</h2>
-<input @bind="shuruAString" type="number"/>
-<input @bind="shuruBString" type="number"/>
-<p>平均数为 @shuruCString</p>
+<PageTitle>平均数计算器</PageTitle>
 
-@code {
-    double shuruAString { get; set; } =0;
-    double shuruBString { get; set; } =0;
-    double shuruCString => shuruAString / 2 + shuruBString / 2;
+<div class="container">
+    <h2>平均数计算器</h2>
+    
+    <div class="card">
+        <!-- 输入区域 -->
+        <div class="input-section">
+            <h3 style="margin-top: 0; margin-bottom: 20px; color: #2c3e50;">输入数据</h3>
+            
+            <div class="input-row">
+                <div class="input-group">
+                    <label for="number1">第一个数</label>
+                    <input id="number1" type="number" step="any" @bind="Number1" placeholder="输入第一个数" />
+                </div>
+                
+                <div class="input-group">
+                    <label for="number2">第二个数</label>
+                    <input id="number2" type="number" step="any" @bind="Number2" placeholder="输入第二个数" />
+                </div>
+            </div>
+        </div>
+        
+        <!-- 结果显示 -->
+        <div class="result-section">
+            <div class="result-title">计算结果</div>
+            
+            <div class="result-item">
+                <span class="result-label">平均数：</span>
+                <span class="result-value">@Average.ToString("F2")</span>
+            </div>
+        </div>
+        
+        <!-- 公式说明 -->
+        <div class="formula-section">
+            <div class="formula-title">计算公式</div>
+            <div class="formula">平均数 = (第一个数 + 第二个数) / 2</div>
+        </div>
+    </div>
+</div>
 
-}
