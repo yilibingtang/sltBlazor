@@ -68,4 +68,17 @@
     {
         Torque = 45887.229584
     };
+    MotorDataPoint motorCalone = new MotorDataPoint();
+    MotorDataPoint motorCaltwo = new MotorDataPoint();
+    MotorDataPoint motorCalthr = new MotorDataPoint();
+    decimal caltorque()
+    {
+        return (motorone.Speed - motorCalone.Speed) * motortwo.Torque / (motorone.Speed - motortwo.Speed);
+    }
+    void calmotor(){
+        motorCalone.Speed = Math.Floor( motorone.Speed);
+        motorCaltwo.Speed = Math.Floor(motortwo.Speed);
+        motorCalthr.Speed = 2*motorCaltwo.Speed-motorCalone.Speed;
+        motorCalone.Torque = ;
+    }
 }
