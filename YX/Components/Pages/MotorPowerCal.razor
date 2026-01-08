@@ -1,84 +1,109 @@
 ﻿@page "/MotorPowerCal"
 @rendermode InteractiveServer
-@using YX.Models
-<PageTitle>平均数计算器</PageTitle>
+<PageTitle>电机功率计算器</PageTitle>
 
 <div class="container">
-    <h2>平均数计算器</h2>
+    <h2>电机功率计算器</h2>
     
+    <!-- 平均数计算器 -->
     <div class="card">
-        <!-- 输入区域 -->
-        <div class="input-section">
-            <h3 style="margin-top: 0; margin-bottom: 20px; color: #2c3e50;">输入数据</h3>
-            
-            <div class="input-row">
-                <div class="input-group">
-                    <label for="number1">第一个数</label>
-                    <input id="number1" type="number" step="any" @bind="Number1" placeholder="输入第一个数" />
-                </div>
-                
-                <div class="input-group">
-                    <label for="number2">第二个数</label>
-                    <input id="number2" type="number" step="any" @bind="Number2" placeholder="输入第二个数" />
-                </div>
+        <h3>平均数计算器</h3>
+        <div class="input-row">
+            <div class="input-group">
+                <label>第一个数</label>
+                <input type="number" step="any" @bind="Number1" placeholder="输入第一个数" />
+            </div>
+            <div class="input-group">
+                <label>第二个数</label>
+                <input type="number" step="any" @bind="Number2" placeholder="输入第二个数" />
             </div>
         </div>
-        
-        <!-- 结果显示 -->
-        <div class="result-section">
-            <div class="result-title">计算结果</div>
-            
-            <div class="result-item">
-                <span class="result-label">平均数：</span>
-                <span class="result-value">@Average.ToString("F2")</span>
-            </div>
+        <div class="result-item">
+            <span class="result-label">平均数：</span>
+            <span class="result-value">@Average.ToString("F2")</span>
         </div>
+    </div>
+    
+    <!-- 电机性能计算 -->
+    <div class="card">
+        <h3>电机性能计算</h3>
+        <div style="margin-bottom: 10px;">
+            <table class="motor-table">
+                <thead>
+                    <tr>
+                        <th>扭矩</th>
+                        <th>转速</th>
+                        <th>电流</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="number" step="any" @bind="MotorOne.Torque" /></td>
+                        <td><input type="number" step="any" @bind="MotorOne.Speed" /></td>
+                        <td><input type="number" step="any" @bind="MotorOne.Current" /></td>
+                    </tr>
+                    <tr>
+                        <td><input type="number" step="any" @bind="MotorTwo.Torque" /></td>
+                        <td><input type="number" step="any" @bind="MotorTwo.Speed" /></td>
+                        <td><input type="number" step="any" @bind="MotorTwo.Current" /></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <button class="btn" @onclick="CalculateMotor">计算</button>
         
-        <!-- 公式说明 -->
-        <div class="formula-section">
-            <div class="formula-title">计算公式</div>
-            <div class="formula">平均数 = (第一个数 + 第二个数) / 2</div>
+        <!-- 计算结果 -->
+        <div style="margin-top: 15px;">
+            <table class="motor-table">
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>计算转速</th>
+                        <th>计算扭矩</th>
+                        <th>计算电流</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>@Math.Round(MotorCalOne.Speed, 2).ToString("F2")</td>
+                        <td>@Math.Round(MotorCalOne.Torque, 2).ToString("F2")</td>
+                        <td>@Math.Round(MotorCalOne.Current, 2).ToString("F2")</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>@Math.Round(MotorCalTwo.Speed, 2).ToString("F2")</td>
+                        <td>@Math.Round(MotorCalTwo.Torque, 2).ToString("F2")</td>
+                        <td>@Math.Round(MotorCalTwo.Current, 2).ToString("F2")</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>@Math.Round(MotorCalThree.Speed, 2).ToString("F2")</td>
+                        <td>@Math.Round(MotorCalThree.Torque, 2).ToString("F2")</td>
+                        <td>@Math.Round(MotorCalThree.Current, 2).ToString("F2")</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
- <table>
-            <tr>
-                <td>扭矩</td>
-                <td>转速</td>
-                <td>电流</td>
-            </tr>
-            <tr>
-                <td><input type="number"  @bind="motorone.Torque" /></td>
-        <td><input type="number"  @bind="motorone.Speed" /></td>
-        <td><input type="number"  @bind="motorone.Current" /></td>
-            </tr>
-    <tr>
-        <td><input type="number"  @bind="motortwo.Torque" /></td>
-        <td><input type="number"  @bind="motortwo.Speed" /></td>
-        <td><input type="number"  @bind="motortwo.Current" /></td>
-    </tr>
-        </table>
 
-@code{
-    MotorDataPoint motorone = new MotorDataPoint()
-    {
-        Torque = 0
-    };
-    MotorDataPoint motortwo = new MotorDataPoint()
-    {
-        Torque = 45887.229584
-    };
-    MotorDataPoint motorCalone = new MotorDataPoint();
-    MotorDataPoint motorCaltwo = new MotorDataPoint();
-    MotorDataPoint motorCalthr = new MotorDataPoint();
-    decimal caltorque()
-    {
-        return (motorone.Speed - motorCalone.Speed) * motortwo.Torque / (motorone.Speed - motortwo.Speed);
-    }
-    void calmotor(){
-        motorCalone.Speed = Math.Floor( motorone.Speed);
-        motorCaltwo.Speed = Math.Floor(motortwo.Speed);
-        motorCalthr.Speed = 2*motorCaltwo.Speed-motorCalone.Speed;
-        motorCalone.Torque = ;
-    }
-}
+<style>
+    .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+    h2 { color: #2c3e50; margin-bottom: 20px; }
+    .card { background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 20px; }
+    h3 { color: #3498db; margin-top: 0; margin-bottom: 15px; font-size: 1.2em; }
+    .input-row { display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
+    .input-group { flex: 1; min-width: 150px; }
+    .input-group label { display: block; margin-bottom: 5px; color: #555; font-size: 0.9em; }
+    .input-group input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+    .result-item { margin-top: 10px; display: flex; gap: 10px; font-size: 1.1em; }
+    .result-label { font-weight: bold; color: #555; }
+    .result-value { color: #27ae60; font-weight: bold; }
+    .motor-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+    .motor-table th, .motor-table td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+    .motor-table th { background-color: #f5f5f5; font-weight: bold; color: #555; }
+    .motor-table input { width: 100%; padding: 5px; box-sizing: border-box; }
+    .btn { background-color: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 1em; }
+    .btn:hover { background-color: #2980b9; }
+</style>

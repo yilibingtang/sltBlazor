@@ -246,7 +246,7 @@ public partial class MotorBase : ComponentBase
 
     protected void AddPoint()
     {
-        EditingPoints.Add(new MotorDataPoint { Torque = 0, Speed = 0, Current = 0 });
+        EditingPoints.Add(new MotorDataPoint { Torque = 0m, Speed = 0m, Current = 0m });
     }
 
     protected void RemovePoint(int idx)
@@ -271,30 +271,6 @@ public partial class MotorBase : ComponentBase
 
         HasFit = true;
 
-        var speedTrace = new {
-            x = fit.Torques,
-            y = fit.Speeds,
-            mode = "lines+markers",
-            name = "Speed (rpm)",
-            line = new { color = "#1f77b4" }
-        };
-        var currentTrace = new {
-            x = fit.Torques,
-            y = fit.Currents,
-            mode = "lines+markers",
-            name = "Current (A)",
-            yaxis = "y2",
-            line = new { color = "#ff7f0e" }
-        };
-
-        var layout = new {
-            title = EditingMotor.MotorName ?? "Motor",
-            xaxis = new { title = "Torque (Nm)" },
-            yaxis = new { title = "Speed (rpm)", side = "left" },
-            yaxis2 = new { title = "Current (A)", overlaying = "y", side = "right" },
-            legend = new { x = 0.01, y = 0.99 }
-        };
-
-        _ = JS.InvokeVoidAsync("plotlyInterop.plot", "plotly-motor-plot", new object[] { speedTrace, currentTrace }, layout);
+        // 拟合结果已在HasFit=true后显示在UI上，无需JavaScript调用
     }
 }

@@ -13,19 +13,19 @@ namespace YX.Components.Pages
         public BaseMotorModel Motor { get; set; } = new MotorModel
         {
             MotorName = string.Empty,
-            Voltage = 12.2, // 默认电压12.2V
+            Voltage = 12.2m, // 默认电压12.2V
             // 默认特性点（后续会被拟合结果覆盖）
-            NoLoadPoint = { Speed = 0, Current = 0 },
-            LoadPoint = { Torque = 4.5, Current = 7.4, Speed = 43.545 },
-            StallPoint = { Torque = 0, Current = 0, Speed = 0 }
+            NoLoadPoint = { Speed = 0m, Current = 0m },
+            LoadPoint = { Torque = 4.5m, Current = 7.4m, Speed = 43.545m },
+            StallPoint = { Torque = 0m, Current = 0m, Speed = 0m }
         };
         
         // 数据和状态
         public List<MotorDataPoint> DataPoints { get; set; } = new List<MotorDataPoint>
         {
-            new MotorDataPoint { Torque = 0, Current = 1.905, Speed = 48.5 },
-            new MotorDataPoint { Torque = 4.5, Current = 7.4, Speed = 43.545 },
-            new MotorDataPoint { Torque = 9, Current = 11.505, Speed = 38.68 }
+            new MotorDataPoint { Torque = 0m, Current = 1.905m, Speed = 48.5m },
+            new MotorDataPoint { Torque = 4.5m, Current = 7.4m, Speed = 43.545m },
+            new MotorDataPoint { Torque = 9m, Current = 11.505m, Speed = 38.68m }
         };
         public int SelectedIndex { get; set; } = 0;
         public bool ShowResults { get; set; } = false;
@@ -87,15 +87,15 @@ namespace YX.Components.Pages
             double I0 = FitResult.NoLoadCurrent;     // 空载电流
             double Tk = FitResult.StallTorque;       // 堵转扭矩
             double Ik = FitResult.StallCurrent;      // 堵转电流
-            double U = Motor.Voltage;                // 电压
+            double U = (double)Motor.Voltage;        // 电压，转换为double用于计算
             double K = PhysicalConstants.MotorEfficiencyConstant; // 9.5493
 
             // 更新模型中的特性点
-            Motor.NoLoadPoint.Speed = n0;
-            Motor.NoLoadPoint.Current = I0;
-            Motor.StallPoint.Torque = Tk;
-            Motor.StallPoint.Current = Ik;
-            Motor.StallPoint.Speed = 0; // 堵转时转速为0
+            Motor.NoLoadPoint.Speed = (decimal)n0;
+            Motor.NoLoadPoint.Current = (decimal)I0;
+            Motor.StallPoint.Torque = (decimal)Tk;
+            Motor.StallPoint.Current = (decimal)Ik;
+            Motor.StallPoint.Speed = 0m; // 堵转时转速为0
 
             // 调试输出
             System.Console.WriteLine($"=== 拟合参数 ===");
@@ -157,13 +157,13 @@ namespace YX.Components.Pages
             System.Console.WriteLine($"==============");
 
             // ========== 结果保留8位小数 ==========
-            MaxEfficiencyPoint.Torque = Math.Round(maxEffTorque, 8);
-            MaxEfficiencyPoint.Speed = Math.Round(maxEffSpeed, 8);
-            MaxEfficiencyPoint.Current = Math.Round(maxEffCurrent, 8);
+            MaxEfficiencyPoint.Torque = (decimal)Math.Round(maxEffTorque, 8);
+            MaxEfficiencyPoint.Speed = (decimal)Math.Round(maxEffSpeed, 8);
+            MaxEfficiencyPoint.Current = (decimal)Math.Round(maxEffCurrent, 8);
             MaxEfficiencyValue = Math.Round(maxEff, 8);
 
             // 更新模型效率（百分比）
-            Motor.MotorEfficiency = MaxEfficiencyValue * 100;
+            Motor.MotorEfficiency = (decimal)(MaxEfficiencyValue * 100);
 
             // 导数方程（显示用）
             EfficiencyDerivativeEquation = $"dη/dt = {n0*Tk/(K*U):F4} * ({I0:F4}*t² - {2*I0*Tk:F4}*t + {I0*Tk*Tk:F4}) / [(Ik-I0)*t + I0*Tk]^2";
@@ -293,7 +293,7 @@ namespace YX.Components.Pages
                             double efficiency = 0;
                             if (current != 0)
                             {
-                                efficiency = (speed * torque) / (K * Motor.Voltage * current);
+                                efficiency = (speed * torque) / (K * (double)Motor.Voltage * current);
                             }
                             
                             csv.WriteField(torque);

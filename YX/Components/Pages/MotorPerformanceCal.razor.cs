@@ -12,28 +12,28 @@ namespace YX.Components.Pages
         {
             MotorName = "电机性能计算",
             MotorType = MotorType.SingleMotor,
-            Voltage = 24,
-            MotorEfficiency = 75,
-            MaxEfficiencyLoadRatio = 90,
+            Voltage = 24m,
+            MotorEfficiency = 75m,
+            MaxEfficiencyLoadRatio = 90m,
             
-            NoLoadPoint = { Speed = 26842, Current = 67.04885348 },
-            LoadPoint = { Torque = 88.24, Speed = 20400, Current = 1126.496992 },
-            StallPoint = { Torque = 360.98, Current = 4401.154874 }
+            NoLoadPoint = { Speed = 26842m, Current = 67.04885348m },
+            LoadPoint = { Torque = 88.24m, Speed = 20400m, Current = 1126.496992m },
+            StallPoint = { Torque = 360.98m, Current = 4401.154874m }
         };
         
         #region 计算属性
         /// <summary>
         /// 转速比 (负载转速/空载转速)
         /// </summary>
-        public double SpeedRatio => Motor.LoadPoint.Speed / Motor.NoLoadPoint.Speed;
+        public double SpeedRatio => (double)Motor.LoadPoint.Speed / (double)Motor.NoLoadPoint.Speed;
         
         /// <summary>
         /// 使用 MotorCalculatorHelper 计算负载转速
         /// </summary>
         public double CalculatedLoadSpeed => MotorCalculatorHelper.CalTorqueRpm(
-            Motor.NoLoadPoint.Speed, 
-            Motor.LoadPoint.Torque, 
-            Motor.StallPoint.Torque);
+            (double)Motor.NoLoadPoint.Speed, 
+            (double)Motor.LoadPoint.Torque, 
+            (double)Motor.StallPoint.Torque);
         
         /// <summary>
         /// 堵转扭矩计算：堵转扭矩 = 空载转速 * 负载扭矩 / (空载转速 - 负载转速)
@@ -43,16 +43,16 @@ namespace YX.Components.Pages
             get
             {
                 // 确保分母不为零，避免除零错误
-                if (Motor.NoLoadPoint.Speed == 0 || Motor.NoLoadPoint.Speed == Motor.LoadPoint.Speed)
+                if (Motor.NoLoadPoint.Speed == 0m || Motor.NoLoadPoint.Speed == Motor.LoadPoint.Speed)
                 {
                     return 0;
                 }
                 
-                double stallTorque = (Motor.NoLoadPoint.Speed * Motor.LoadPoint.Torque) / 
-                                   (Motor.NoLoadPoint.Speed - Motor.LoadPoint.Speed);
+                double stallTorque = ((double)Motor.NoLoadPoint.Speed * (double)Motor.LoadPoint.Torque) / 
+                                   ((double)Motor.NoLoadPoint.Speed - (double)Motor.LoadPoint.Speed);
                 
                 // 将计算结果写入到 Motor.StallPoint.Torque
-                Motor.StallPoint.Torque = stallTorque;
+                Motor.StallPoint.Torque = (decimal)stallTorque;
                 
                 return stallTorque;
             }

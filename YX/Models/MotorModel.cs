@@ -12,8 +12,8 @@ namespace YX.Models
     /// <summary>
     /// 总减速比
     /// </summary>
-    [RangeAttribute(1, double.MaxValue, ErrorMessage = "总减速比必须大于等于1")]
-    public double TotalReductionRatio { get; set; }
+    [RangeAttribute(1, (double)decimal.MaxValue, ErrorMessage = "总减速比必须大于等于1")]
+    public decimal TotalReductionRatio { get; set; }
 
     /// <summary>
     /// 减速级数
@@ -25,6 +25,6 @@ namespace YX.Models
     /// 总效率（%）
     /// </summary>
     [RangeAttribute(0, 100, ErrorMessage = "总效率需在0-100之间")]
-    public double TotalEfficiency { get; set; }
+    public decimal TotalEfficiency { get; set; }
     }
 }

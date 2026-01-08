@@ -1,45 +1,132 @@
-@using Microsoft.JSInterop
-@inject IJSRuntime JS
+@page "/motorplot"
 
-<div id="@ElementId" style="width:100%;height:100%;"></div>
+<div style="width:100%;height:100%;">
+    <h4>@(Title ?? "Motor Performance")</h4>
+    
+    @if (Torques != null && (Speeds != null || Currents != null))
+    {
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+            <!-- Speed vs Torque Chart -->
+            @if (Speeds != null && Speeds.Length > 0)
+            {
+                <div style="border: 1px solid #ccc; border-radius: 4px; padding: 10px;">
+                    <h5>转速-扭矩曲线</h5>
+                    <div style="overflow-x: auto;">
+                        <table class="motor-chart-table">
+                            <thead>
+                                <tr>
+                                    <th>扭矩 (Nm)</th>
+                                    <th>转速 (rpm)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Torques.Length; i++)
+                                {
+                                    <tr>
+                                        <td>@Torques[i].ToString("F2")</td>
+                                        <td>@Speeds[i].ToString("F0")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Simple SVG Chart -->
+                    <svg width="100%" height="300" style="margin-top: 10px;">
+                        <!-- Grid lines -->
+                        <defs>
+                            <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#f0f0f0" stroke-width="0.5"/>
+                            </pattern>
+                        </defs>
+                        <rect width="100%" height="100%" fill="url(#grid)" />
+                        
+                        <!-- Plot points -->
+                        @for (int i = 0; i < Torques.Length; i++)
+                        {
+                            double x = 20 + (Torques[i] - Torques.Min()) * (560 / (Torques.Max() - Torques.Min() > 0 ? Torques.Max() - Torques.Min() : 1));
+                            double y = 280 - (Speeds[i] - Speeds.Min()) * (260 / (Speeds.Max() - Speeds.Min() > 0 ? Speeds.Max() - Speeds.Min() : 1));
+                            <circle cx="@x" cy="@y" r="4" fill="#1f77b4" />
+                        }
+                    </svg>
+                </div>
+            }
+            
+            <!-- Current vs Torque Chart -->
+            @if (Currents != null && Currents.Length > 0)
+            {
+                <div style="border: 1px solid #ccc; border-radius: 4px; padding: 10px;">
+                    <h5>电流-扭矩曲线</h5>
+                    <div style="overflow-x: auto;">
+                        <table class="motor-chart-table">
+                            <thead>
+                                <tr>
+                                    <th>扭矩 (Nm)</th>
+                                    <th>电流 (A)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Torques.Length; i++)
+                                {
+                                    <tr>
+                                        <td>@Torques[i].ToString("F2")</td>
+                                        <td>@Currents[i].ToString("F2")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Simple SVG Chart -->
+                    <svg width="100%" height="300" style="margin-top: 10px;">
+                        <!-- Grid lines -->
+                        <defs>
+                            <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#f0f0f0" stroke-width="0.5"/>
+                            </pattern>
+                        </defs>
+                        <rect width="100%" height="100%" fill="url(#grid)" />
+                        
+                        <!-- Plot points -->
+                        @for (int i = 0; i < Torques.Length; i++)
+                        {
+                            double x = 20 + (Torques[i] - Torques.Min()) * (560 / (Torques.Max() - Torques.Min() > 0 ? Torques.Max() - Torques.Min() : 1));
+                            double y = 280 - (Currents[i] - Currents.Min()) * (260 / (Currents.Max() - Currents.Min() > 0 ? Currents.Max() - Currents.Min() : 1));
+                            <circle cx="@x" cy="@y" r="4" fill="#ff7f0e" />
+                        }
+                    </svg>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div style="display: flex; align-items: center; justify-content: center; height: 200px; color: #666;">
+            无数据可显示
+        </div>
+    }
+</div>
+
+<style>
+    .motor-chart-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    .motor-chart-table th,
+    .motor-chart-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: right;
+    }
+    
+    .motor-chart-table th {
+        background-color: #f5f5f5;
+        font-weight: bold;
+    }
+</style>
 
 @code {
     [Parameter] public double[]? Torques { get; set; }
     [Parameter] public double[]? Speeds { get; set; }
     [Parameter] public double[]? Currents { get; set; }
     [Parameter] public string? Title { get; set; }
-
-    string ElementId = "motorplot-" + Guid.NewGuid().ToString("N");
-
-    protected override async Task OnParametersSetAsync()
-    {
-        if (Torques == null || (Speeds == null && Currents == null)) return;
-        var speedTrace = new
-        {
-            x = Torques,
-            y = Speeds ?? Array.Empty<double>(),
-            mode = "lines+markers",
-            name = "Speed (rpm)",
-            line = new { color = "#1f77b4" }
-        };
-        var currentTrace = new
-        {
-            x = Torques,
-            y = Currents ?? Array.Empty<double>(),
-            mode = "lines+markers",
-            name = "Current (A)",
-            yaxis = "y2",
-            line = new { color = "#ff7f0e" }
-        };
-        var layout = new
-        {
-            title = Title ?? "Motor",
-            xaxis = new { title = "Torque (Nm)" },
-            yaxis = new { title = "Speed (rpm)", side = "left" },
-            yaxis2 = new { title = "Current (A)", overlaying = "y", side = "right" },
-            legend = new { x = 0.01, y = 0.99 }
-        };
-
-        await JS.InvokeVoidAsync("plotlyInterop.plot", ElementId, new object[] { speedTrace, currentTrace }, layout);
-    }
 }

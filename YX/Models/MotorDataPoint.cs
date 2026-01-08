@@ -36,21 +36,21 @@ namespace YX.Models
     /// 扭矩 (N·m)
     /// </summary>
         [Required(ErrorMessage = "扭矩不能为空")]
-    [Range(0, double.MaxValue, ErrorMessage = "扭矩需为非负数")]
-    public double Torque { get; set; }
+    [Range(0, (double)decimal.MaxValue, ErrorMessage = "扭矩需为非负数")]
+    public decimal Torque { get; set; }
 
     /// <summary>
     /// 转速 (rpm)
     /// </summary>
         [Required(ErrorMessage = "转速不能为空")]
-    [Range(0, double.MaxValue, ErrorMessage = "转速需为非负数")]
-    public double Speed { get; set; }
+    [Range(0, (double)decimal.MaxValue, ErrorMessage = "转速需为非负数")]
+    public decimal Speed { get; set; }
 
     /// <summary>
     /// 电流 (A)
     /// </summary>
         [Required(ErrorMessage = "电流不能为空")]
-    [Range(0, double.MaxValue, ErrorMessage = "电流需为非负数")]
-    public double Current { get; set; }
+    [Range(0, (double)decimal.MaxValue, ErrorMessage = "电流需为非负数")]
+    public decimal Current { get; set; }
     }
 }

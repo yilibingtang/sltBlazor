@@ -166,9 +166,9 @@ namespace YX.Services
             var result = new MotorFitResult();
             if (list.Count < 2) return result;
 
-            var torques = list.Select(p => p.Torque).ToArray();
-            var currents = list.Select(p => p.Current).ToArray();
-            var speeds = list.Select(p => p.Speed).ToArray();
+            var torques = list.Select(p => (double)p.Torque).ToArray();
+            var currents = list.Select(p => (double)p.Current).ToArray();
+            var speeds = list.Select(p => (double)p.Speed).ToArray();
 
             // 使用优化的线性拟合，包含误差分析
             var currentFit = CalculateLinearFit(torques, currents);

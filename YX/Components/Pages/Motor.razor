@@ -72,7 +72,7 @@
             </div>
             <div class="row">
                 <label>额定电压 (V)</label>
-                <InputNumber TValue="double" class="form-control" @bind-Value="EditingMotor.Voltage" />
+                <InputNumber TValue="decimal" class="form-control" @bind-Value="EditingMotor.Voltage" />
                 <ValidationMessage For="() => EditingMotor.Voltage" />
             </div>
         </EditForm>
@@ -98,13 +98,13 @@
                     <tr>
                         <td>@(i + 1)</td>
                         <td>
-                            <InputNumber TValue="double" @bind-Value="EditingPoints[i].Torque" />
+                            <InputNumber TValue="decimal" @bind-Value="EditingPoints[i].Torque" />
                         </td>
                         <td>
-                            <InputNumber TValue="double" @bind-Value="EditingPoints[i].Speed" />
+                            <InputNumber TValue="decimal" @bind-Value="EditingPoints[i].Speed" />
                         </td>
                         <td>
-                            <InputNumber TValue="double" @bind-Value="EditingPoints[i].Current" />
+                            <InputNumber TValue="decimal" @bind-Value="EditingPoints[i].Current" />
                         </td>
                         <td><button class="btn small" @onclick="(() => RemovePoint(i))">删除</button></td>
                     </tr>
@@ -122,9 +122,9 @@
         <section class="fit-results">
             <h4>拟合曲线</h4>
             <div style="width:700px;height:380px;">
-                <MotorPlot Torques="@(EditingPoints.Select(p => p.Torque).ToArray())"
-                    Speeds="@(EditingPoints.Select(p => p.Speed).ToArray())"
-                    Currents="@(EditingPoints.Select(p => p.Current).ToArray())"
+                <MotorPlot Torques="@(EditingPoints.Select(p => (double)p.Torque).ToArray())"
+                    Speeds="@(EditingPoints.Select(p => (double)p.Speed).ToArray())"
+                    Currents="@(EditingPoints.Select(p => (double)p.Current).ToArray())"
                     Title="@(EditingMotor?.MotorName ?? "Motor")" />
             </div>
             <h5>关键点</h5>

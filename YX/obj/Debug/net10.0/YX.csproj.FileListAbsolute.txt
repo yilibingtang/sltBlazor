@@ -125,5 +125,6 @@ D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\YX.pdb
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\YX.genruntimeconfig.cache
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\ref\YX.dll
 D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\bin\Debug\net10.0\CsvHelper.dll
-D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\4y0sj68s2q-{0}-exz5fvh2zi-exz5fvh2zi.gz
-D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\ztq8iq9rm7-{0}-9rcp9upzms-9rcp9upzms.gz
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\scopedcss\Components\Pages\MotorPowerCal.razor.rz.scp.css
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\4y0sj68s2q-{0}-hwkw50t8c0-hwkw50t8c0.gz
+D:\Users\Administrator\Desktop\工具\Cnet\Blazor\YX\obj\Debug\net10.0\compressed\ztq8iq9rm7-{0}-dc994rju52-dc994rju52.gz
