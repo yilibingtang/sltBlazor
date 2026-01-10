@@ -25,6 +25,8 @@ builder.Services.AddSingleton<YX.Services.NotificationService>();
 // Motor services
 builder.Services.AddScoped<YX.Services.MotorManager>();
 builder.Services.AddSingleton<YX.Services.MotorValidator>();
+builder.Services.AddScoped<YX.Services.IMotorCalculator, YX.Services.MotorCalculator>();
+builder.Services.AddScoped<YX.Services.ICsvExportService, YX.Services.CsvExportService>();
 
 var app = builder.Build();
 

@@ -47,7 +47,7 @@ namespace YX.Services
     /// <summary>
     /// 电机计算服务类，整合所有电机相关计算逻辑
     /// </summary>
-    public class MotorCalculator
+    public class MotorCalculator : IMotorCalculator
     {
         /// <summary>
         /// 计算多项式值
@@ -55,7 +55,23 @@ namespace YX.Services
         /// <param name="coeffs">多项式系数</param>
         /// <param name="x">自变量值</param>
         /// <returns>计算结果</returns>
-        public static double EvalPoly(double[] coeffs, double x)
+        public double EvalPoly(double[] coeffs, double x)
+        {
+            double y = 0;
+            for (int i = 0; i < coeffs.Length; i++) 
+            {
+                y += coeffs[i] * Math.Pow(x, i);
+            }
+            return y;
+        }
+        
+        /// <summary>
+        /// 静态方法：计算多项式值
+        /// </summary>
+        /// <param name="coeffs">多项式系数</param>
+        /// <param name="x">自变量值</param>
+        /// <returns>计算结果</returns>
+        public static double EvalPolyStatic(double[] coeffs, double x)
         {
             double y = 0;
             for (int i = 0; i < coeffs.Length; i++) 
@@ -125,7 +141,7 @@ namespace YX.Services
             
             for (int i = 0; i < n; i++)
             {
-                double yPred = EvalPoly(result.Coeffs, x[i]);
+                double yPred = EvalPolyStatic(result.Coeffs, x[i]);
                 double error = y[i] - yPred;
                 
                 ssTotal += Math.Pow(y[i] - yMean, 2);
@@ -160,7 +176,7 @@ namespace YX.Services
         /// </summary>
         /// <param name="points">电机测试数据点集合</param>
         /// <returns>拟合结果</returns>
-        public static MotorFitResult ComputeFits(System.Collections.Generic.IEnumerable<MotorDataPoint> points)
+        public MotorFitResult ComputeFits(System.Collections.Generic.IEnumerable<MotorDataPoint> points)
         {
             var list = points?.ToList() ?? new System.Collections.Generic.List<MotorDataPoint>();
             var result = new MotorFitResult();
@@ -223,6 +239,131 @@ namespace YX.Services
             result.Speeds = speeds; 
             result.Currents = currents;
             return result;
+        }
+        
+        /// <summary>
+        /// 静态方法：计算电机数据拟合结果
+        /// </summary>
+        /// <param name="points">电机测试数据点集合</param>
+        /// <returns>拟合结果</returns>
+        public static MotorFitResult ComputeFitsStatic(System.Collections.Generic.IEnumerable<MotorDataPoint> points)
+        {
+            return new MotorCalculator().ComputeFits(points);
+        }
+        
+        /// <summary>
+        /// 生成性能曲线数据
+        /// </summary>
+        /// <param name="fitResult">拟合结果</param>
+        /// <param name="voltage">电压</param>
+        /// <param name="speedStep">转速步长</param>
+        /// <returns>性能曲线数据列表</returns>
+        public List<PerformanceCurvePoint> GeneratePerformanceCurve(MotorFitResult fitResult, decimal voltage, double speedStep = 0.1)
+        {
+            var curveData = new List<PerformanceCurvePoint>();
+            
+            if (fitResult.StallTorque <= 0 || double.IsNaN(fitResult.StallTorque))
+                return curveData;
+            
+            // 从空载转速开始，每次减少0.1，直到转速为0
+            for (double speed = Math.Ceiling(fitResult.NoLoadSpeed); speed >= 0; speed -= speedStep)
+            {
+                double currentSpeed = Math.Round(speed, 1);
+                
+                // 计算扭矩：x = Tk * (1 - n / n0)
+                double torque = fitResult.StallTorque * (1 - currentSpeed / fitResult.NoLoadSpeed);
+                
+                // 计算电流：I = I0 + (Ik - I0) * x / Tk
+                double current = fitResult.NoLoadCurrent + (fitResult.StallCurrent - fitResult.NoLoadCurrent) * torque / fitResult.StallTorque;
+                
+                // 计算效率：η = (n * x) / (K * U * I)
+                double efficiency = 0;
+                if (current != 0)
+                {
+                    efficiency = (currentSpeed * torque) / (PhysicalConstants.MotorEfficiencyConstant * (double)voltage * current);
+                }
+                
+                // 添加到性能曲线数据列表
+                curveData.Add(new PerformanceCurvePoint
+                {
+                    Torque = torque,
+                    Speed = currentSpeed,
+                    Current = current,
+                    Efficiency = efficiency
+                });
+            }
+            
+            return curveData;
+        }
+        
+        /// <summary>
+        /// 计算负载转速
+        /// </summary>
+        /// <param name="noLoadRpm">空载转速</param>
+        /// <param name="loadTorque">负载扭矩</param>
+        /// <param name="stallTorque">堵转扭矩</param>
+        /// <returns>负载转速</returns>
+        public double CalculateLoadSpeed(double noLoadRpm, double loadTorque, double stallTorque)
+        {
+            return noLoadRpm - noLoadRpm * loadTorque / stallTorque;
+        }
+        
+        /// <summary>
+        /// 计算理论最大效率点
+        /// </summary>
+        /// <param name="fitResult">拟合结果</param>
+        /// <param name="voltage">电压</param>
+        /// <returns>最大效率点数据</returns>
+        public MaxEfficiencyResult CalculateMaxEfficiency(MotorFitResult fitResult, decimal voltage)
+        {
+            var result = new MaxEfficiencyResult();
+            
+            // 从拟合结果中获取基础参数
+            double n0 = fitResult.NoLoadSpeed;       // 空载转速
+            double I0 = fitResult.NoLoadCurrent;     // 空载电流
+            double Tk = fitResult.StallTorque;       // 堵转扭矩
+            double Ik = fitResult.StallCurrent;      // 堵转电流
+            double U = (double)voltage;              // 电压，转换为double用于计算
+            double K = PhysicalConstants.MotorEfficiencyConstant; // 9.5493
+            
+            // 核心方程：(Ik−I0)x² + 2I0Tk x − I0Tk² = 0
+            double a = Ik - I0;
+            double b = 2 * I0 * Tk;
+            double c = -I0 * Tk * Tk;
+            double discriminant = b * b - 4 * a * c;
+            double maxEffTorque = 0;
+            
+            if (discriminant >= 0 && a != 0)
+            {
+                maxEffTorque = (-b + Math.Sqrt(discriminant)) / (2 * a);
+                // 确保扭矩在合理范围内
+                maxEffTorque = Math.Max(0, Math.Min(maxEffTorque, Tk));
+            }
+            
+            // 计算对应转速（精准）
+            double maxEffSpeed = n0 * (1 - maxEffTorque / Tk);
+            
+            // 计算对应电流（精准）
+            double maxEffCurrent = I0 + (Ik - I0) * maxEffTorque / Tk;
+            
+            // 计算最大效率（精准）
+            double maxEff = 0;
+            if (maxEffCurrent != 0)
+            {
+                maxEff = (maxEffSpeed * maxEffTorque) / (K * U * maxEffCurrent);
+            }
+            
+            // 导数方程（显示用）
+            string derivativeEquation = $"dη/dt = {n0*Tk/(K*U):F4} * ({I0:F4}*t² - {2*I0*Tk:F4}*t + {I0*Tk*Tk:F4}) / [(Ik-I0)*t + I0*Tk]^2";
+            
+            return new MaxEfficiencyResult
+            {
+                Torque = maxEffTorque,
+                Speed = maxEffSpeed,
+                Current = maxEffCurrent,
+                Efficiency = maxEff,
+                EfficiencyDerivativeEquation = derivativeEquation
+            };
         }
     }
     

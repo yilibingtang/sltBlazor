@@ -15,6 +15,7 @@ public partial class MotorBase : ComponentBase
 {
     [Inject] public IJSRuntime JS { get; set; } = default!;
     [Inject] public YX.Services.MotorManager MotorManager { get; set; } = default!;
+    [Inject] public YX.Services.IMotorCalculator MotorCalculator { get; set; } = default!;
 
     [Inject] public YX.Services.MotorValidator MotorValidator { get; set; } = default!;
     [Inject] public YX.Services.NotificationService Notifications { get; set; } = default!;
@@ -258,7 +259,7 @@ public partial class MotorBase : ComponentBase
     protected void ComputeFits()
     {
         HasFit = false;
-        var fit = YX.Services.MotorCalculator.ComputeFits(EditingPoints);
+        var fit = MotorCalculator.ComputeFits(EditingPoints);
         if (fit == null || fit.Torques == null || fit.Torques.Length < 2) return;
 
         CurrentCoeffs = fit.CurrentCoeffs;

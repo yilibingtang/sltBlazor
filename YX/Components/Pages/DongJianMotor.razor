@@ -1,6 +1,7 @@
 @page "/DongJianMotor"
 @rendermode InteractiveServer
 @using YX.Services
+@using YX.Models
 <PageTitle>东箭电机数据分析</PageTitle>
 
 <div class="container">
@@ -22,14 +23,55 @@
         </div>
     </div>
     
+    <!-- 单位选择 -->
+    <div class="unit-selection">
+        <h3>单位设置</h3>
+        <div class="input-row">
+            <div class="input-group">
+                <label>输入扭矩单位：</label>
+                <select @bind="InputTorqueUnit">
+                    <option value="@TorqueUnit.Nm">Nm</option>
+                    <option value="@TorqueUnit.mNm">mNm</option>
+                    <option value="@TorqueUnit.Kgcm">kg.cm</option>
+                    <option value="@TorqueUnit.gcm">g.cm</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>输入电流单位：</label>
+                <select @bind="InputCurrentUnit">
+                    <option value="@CurrentUnit.A">A</option>
+                    <option value="@CurrentUnit.mA">mA</option>
+                </select>
+            </div>
+        </div>
+        <div class="input-row">
+            <div class="input-group">
+                <label>输出扭矩单位：</label>
+                <select @bind="OutputTorqueUnit">
+                    <option value="@TorqueUnit.Nm">Nm</option>
+                    <option value="@TorqueUnit.mNm">mNm</option>
+                    <option value="@TorqueUnit.Kgcm">kg.cm</option>
+                    <option value="@TorqueUnit.gcm">g.cm</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>输出电流单位：</label>
+                <select @bind="OutputCurrentUnit">
+                    <option value="@CurrentUnit.A">A</option>
+                    <option value="@CurrentUnit.mA">mA</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    
     <!-- 数据表格 -->
     <div class="table-container">
         <h3>电机测试数据</h3>
         <table class="data-table">
             <thead>
                 <tr>
-                    <th>扭矩 (Nm)</th>
-                    <th>电流 (A)</th>
+                    <th>扭矩 (@(InputTorqueUnit.ToString() == "Kgcm" ? "kg.cm" : InputTorqueUnit.ToString()))</th>
+                    <th>电流 (@(InputCurrentUnit.ToString()))</th>
                     <th>转速 (rpm)</th>
                 </tr>
             </thead>
@@ -77,15 +119,22 @@
             </div>
             <div class="equation">
                 <span class="equation-label">空载电流(I₀)：</span>
-                <span class="equation-value">@FitResult.NoLoadCurrent.ToString("F6") A</span>
+                <span class="equation-value">@((OutputCurrentUnit == CurrentUnit.A ? FitResult.NoLoadCurrent : FitResult.NoLoadCurrent * 1000).ToString("F6")) @(OutputCurrentUnit.ToString())</span>
             </div>
             <div class="equation">
                 <span class="equation-label">堵转扭矩(Tₖ)：</span>
-                <span class="equation-value">@FitResult.StallTorque.ToString("F6") N·m</span>
+                <span class="equation-value">@((OutputTorqueUnit switch
+                    {
+                        TorqueUnit.Nm => FitResult.StallTorque,
+                        TorqueUnit.mNm => FitResult.StallTorque * 1000,
+                        TorqueUnit.Kgcm => FitResult.StallTorque / 0.0980665,
+                        TorqueUnit.gcm => FitResult.StallTorque / 0.0000980665,
+                        _ => FitResult.StallTorque
+                    }).ToString("F6")) @(OutputTorqueUnit.ToString() == "Kgcm" ? "kg.cm" : OutputTorqueUnit.ToString())</span>
             </div>
             <div class="equation">
                 <span class="equation-label">堵转电流(Iₖ)：</span>
-                <span class="equation-value">@FitResult.StallCurrent.ToString("F6") A</span>
+                <span class="equation-value">@((OutputCurrentUnit == CurrentUnit.A ? FitResult.StallCurrent : FitResult.StallCurrent * 1000).ToString("F6")) @(OutputCurrentUnit.ToString())</span>
             </div>
             
             <h4>拟合质量分析</h4>
@@ -144,7 +193,14 @@
             <div class="efficiency-result">
                 <div class="result-item">
                     <span class="result-label">扭矩：</span>
-                    <span class="result-value">@Motor.NoLoadPoint.Torque.ToString("F8") N·m</span>
+                    <span class="result-value">@((decimal)(OutputTorqueUnit switch
+                        {
+                            TorqueUnit.Nm => (double)Motor.NoLoadPoint.Torque,
+                            TorqueUnit.mNm => (double)Motor.NoLoadPoint.Torque * 1000,
+                            TorqueUnit.Kgcm => (double)Motor.NoLoadPoint.Torque / 0.0980665,
+                            TorqueUnit.gcm => (double)Motor.NoLoadPoint.Torque / 0.0000980665,
+                            _ => (double)Motor.NoLoadPoint.Torque
+                        })).ToString("F8") @(OutputTorqueUnit.ToString() == "Kgcm" ? "kg.cm" : OutputTorqueUnit.ToString())</span>
                 </div>
                 <div class="result-item">
                     <span class="result-label">转速：</span>
@@ -152,7 +208,7 @@
                 </div>
                 <div class="result-item">
                     <span class="result-label">电流：</span>
-                    <span class="result-value">@Motor.NoLoadPoint.Current.ToString("F8") A</span>
+                    <span class="result-value">@((OutputCurrentUnit == CurrentUnit.A ? (double)Motor.NoLoadPoint.Current : (double)Motor.NoLoadPoint.Current * 1000).ToString("F8")) @(OutputCurrentUnit.ToString())</span>
                 </div>
             </div>
             
@@ -160,7 +216,14 @@
             <div class="efficiency-result">
                 <div class="result-item">
                     <span class="result-label">扭矩：</span>
-                    <span class="result-value">@Motor.StallPoint.Torque.ToString("F8") N·m</span>
+                    <span class="result-value">@((decimal)(OutputTorqueUnit switch
+                        {
+                            TorqueUnit.Nm => (double)Motor.StallPoint.Torque,
+                            TorqueUnit.mNm => (double)Motor.StallPoint.Torque * 1000,
+                            TorqueUnit.Kgcm => (double)Motor.StallPoint.Torque / 0.0980665,
+                            TorqueUnit.gcm => (double)Motor.StallPoint.Torque / 0.0000980665,
+                            _ => (double)Motor.StallPoint.Torque
+                        })).ToString("F8") @(OutputTorqueUnit.ToString() == "Kgcm" ? "kg.cm" : OutputTorqueUnit.ToString())</span>
                 </div>
                 <div class="result-item">
                     <span class="result-label">转速：</span>
@@ -168,7 +231,7 @@
                 </div>
                 <div class="result-item">
                     <span class="result-label">电流：</span>
-                    <span class="result-value">@Motor.StallPoint.Current.ToString("F8") A</span>
+                    <span class="result-value">@((OutputCurrentUnit == CurrentUnit.A ? (double)Motor.StallPoint.Current : (double)Motor.StallPoint.Current * 1000).ToString("F8")) @(OutputCurrentUnit.ToString())</span>
                 </div>
             </div>
         </div>
@@ -191,7 +254,14 @@
                 </div>
                 <div class="result-item">
                     <span class="result-label">对应扭矩：</span>
-                    <span class="result-value">@MaxEfficiencyPoint.Torque.ToString("F8") N·m</span>
+                    <span class="result-value">@((decimal)(OutputTorqueUnit switch
+                        {
+                            TorqueUnit.Nm => (double)MaxEfficiencyPoint.Torque,
+                            TorqueUnit.mNm => (double)MaxEfficiencyPoint.Torque * 1000,
+                            TorqueUnit.Kgcm => (double)MaxEfficiencyPoint.Torque / 0.0980665,
+                            TorqueUnit.gcm => (double)MaxEfficiencyPoint.Torque / 0.0000980665,
+                            _ => (double)MaxEfficiencyPoint.Torque
+                        })).ToString("F8") @(OutputTorqueUnit.ToString() == "Kgcm" ? "kg.cm" : OutputTorqueUnit.ToString())</span>
                 </div>
                 <div class="result-item">
                     <span class="result-label">对应转速：</span>
@@ -199,11 +269,45 @@
                 </div>
                 <div class="result-item">
                     <span class="result-label">对应电流：</span>
-                    <span class="result-value">@MaxEfficiencyPoint.Current.ToString("F8") A</span>
+                    <span class="result-value">@((OutputCurrentUnit == CurrentUnit.A ? (double)MaxEfficiencyPoint.Current : (double)MaxEfficiencyPoint.Current * 1000).ToString("F8")) @(OutputCurrentUnit.ToString())</span>
                 </div>
             </div>
         </div>
+        
+        <!-- 性能曲线数据表格 -->
+        <div class="results-container">
+            <h3>性能曲线数据</h3>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>扭矩 (@(OutputTorqueUnit.ToString() == "Kgcm" ? "kg.cm" : OutputTorqueUnit.ToString()))</th>
+                            <th>转速 (rpm)</th>
+                            <th>电流 (@(OutputCurrentUnit.ToString()))</th>
+                            <th>效率</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var point in PerformanceCurveData)
+                        {
+                            <tr>
+                                <td>@Math.Round((OutputTorqueUnit switch
+                                    {
+                                        TorqueUnit.Nm => point.Torque,
+                                        TorqueUnit.mNm => point.Torque * 1000,
+                                        TorqueUnit.Kgcm => point.Torque / 0.0980665,
+                                        TorqueUnit.gcm => point.Torque / 0.0000980665,
+                                        _ => point.Torque
+                                    }), 2).ToString("F2")</td>
+                                <td>@point.Speed.ToString("F0")</td>
+                                <td>@Math.Round((OutputCurrentUnit == CurrentUnit.A ? point.Current : point.Current * 1000), 2).ToString("F2")</td>
+                                <td>@point.Efficiency.ToString("F4")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     }
-    
     
 </div>

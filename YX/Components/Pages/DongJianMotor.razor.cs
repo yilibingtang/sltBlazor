@@ -9,6 +9,14 @@ namespace YX.Components.Pages
 {
     public partial class DongJianMotor : ComponentBase
     {
+        // 注入电机计算服务
+        [Inject]
+        public IMotorCalculator MotorCalculator { get; set; } = default!;
+        
+        // 注入CSV导出服务
+        [Inject]
+        public ICsvExportService CsvExportService { get; set; } = default!;
+        
         // 初始化模型
         public BaseMotorModel Motor { get; set; } = new MotorModel
         {
@@ -19,6 +27,12 @@ namespace YX.Components.Pages
             LoadPoint = { Torque = 4.5m, Current = 7.4m, Speed = 43.545m },
             StallPoint = { Torque = 0m, Current = 0m, Speed = 0m }
         };
+        
+        // 单位设置
+        public TorqueUnit InputTorqueUnit { get; set; } = TorqueUnit.Nm;
+        public CurrentUnit InputCurrentUnit { get; set; } = CurrentUnit.A;
+        public TorqueUnit OutputTorqueUnit { get; set; } = TorqueUnit.Nm;
+        public CurrentUnit OutputCurrentUnit { get; set; } = CurrentUnit.A;
         
         // 数据和状态
         public List<MotorDataPoint> DataPoints { get; set; } = new List<MotorDataPoint>
@@ -36,6 +50,66 @@ namespace YX.Components.Pages
         public MotorDataPoint MaxEfficiencyPoint { get; set; } = new MotorDataPoint();
         public double MaxEfficiencyValue { get; set; } = 0;
         public string EfficiencyDerivativeEquation { get; set; } = string.Empty;
+        
+        // 性能曲线数据列表
+        public List<PerformanceCurvePoint> PerformanceCurveData { get; set; } = new List<PerformanceCurvePoint>();
+        
+        // 性能曲线数据点类
+        public class PerformanceCurvePoint
+        {
+            public double Torque { get; set; }
+            public double Speed { get; set; }
+            public double Current { get; set; }
+            public double Efficiency { get; set; }
+        }
+        
+        // 扭矩单位转换：将输入单位转换为标准单位（Nm）
+        private decimal ConvertToStandardTorque(decimal value, TorqueUnit unit)
+        {
+            return unit switch
+            {
+                TorqueUnit.Nm => value,
+                TorqueUnit.mNm => value / 1000m,
+                TorqueUnit.Kgcm => value * 0.0980665m,
+                TorqueUnit.gcm => value * 0.0000980665m,
+                _ => value
+            };
+        }
+        
+        // 扭矩单位转换：将标准单位（Nm）转换为显示单位
+        private decimal ConvertFromStandardTorque(decimal value, TorqueUnit unit)
+        {
+            return unit switch
+            {
+                TorqueUnit.Nm => value,
+                TorqueUnit.mNm => value * 1000m,
+                TorqueUnit.Kgcm => value / 0.0980665m,
+                TorqueUnit.gcm => value / 0.0000980665m,
+                _ => value
+            };
+        }
+        
+        // 电流单位转换：将输入单位转换为标准单位（A）
+        private decimal ConvertToStandardCurrent(decimal value, CurrentUnit unit)
+        {
+            return unit switch
+            {
+                CurrentUnit.A => value,
+                CurrentUnit.mA => value / 1000m,
+                _ => value
+            };
+        }
+        
+        // 电流单位转换：将标准单位（A）转换为显示单位
+        private decimal ConvertFromStandardCurrent(decimal value, CurrentUnit unit)
+        {
+            return unit switch
+            {
+                CurrentUnit.A => value,
+                CurrentUnit.mA => value * 1000m,
+                _ => value
+            };
+        }
         
         // 选择行
         public void SelectRow(int index)
@@ -71,8 +145,16 @@ namespace YX.Components.Pages
         // 计算入口
         public async Task CalculateFits()
         {
+            // 转换输入数据为标准单位（Nm和A）
+            var convertedDataPoints = DataPoints.Select(point => new MotorDataPoint
+            {
+                Torque = ConvertToStandardTorque(point.Torque, InputTorqueUnit),
+                Current = ConvertToStandardCurrent(point.Current, InputCurrentUnit),
+                Speed = point.Speed // 转速单位保持不变
+            }).ToList();
+            
             // 1. 先计算拟合结果
-            FitResult = MotorCalculator.ComputeFits(DataPoints);
+            FitResult = MotorCalculator.ComputeFits(convertedDataPoints);
             
             // 2. 再计算效率结果
             await CalculateEfficiencyResults();
@@ -168,7 +250,44 @@ namespace YX.Components.Pages
             // 导数方程（显示用）
             EfficiencyDerivativeEquation = $"dη/dt = {n0*Tk/(K*U):F4} * ({I0:F4}*t² - {2*I0*Tk:F4}*t + {I0*Tk*Tk:F4}) / [(Ik-I0)*t + I0*Tk]^2";
             
+            // 生成性能曲线数据：从空载转速到0，每次减少1
+            GeneratePerformanceCurveData(n0, I0, Tk, Ik, U, K);
+            
             ShowEfficiencyResults = true;
+        }
+        
+        // 生成性能曲线数据
+        private void GeneratePerformanceCurveData(double n0, double I0, double Tk, double Ik, double U, double K)
+        {
+            PerformanceCurveData.Clear();
+            
+            // 从空载转速开始，每次减少0.1，直到转速为0
+            for (double speed = Math.Ceiling(n0); speed >= 0; speed -= 0.1)
+            {
+                double currentSpeed = Math.Round(speed, 1);
+                
+                // 计算扭矩：x = Tk * (1 - n / n0)
+                double torque = Tk * (1 - currentSpeed / n0);
+                
+                // 计算电流：I = I0 + (Ik - I0) * x / Tk
+                double current = I0 + (Ik - I0) * torque / Tk;
+                
+                // 计算效率：η = (n * x) / (K * U * I)
+                double efficiency = 0;
+                if (current != 0)
+                {
+                    efficiency = (currentSpeed * torque) / (K * U * current);
+                }
+                
+                // 添加到性能曲线数据列表
+                PerformanceCurveData.Add(new PerformanceCurvePoint
+                {
+                    Torque = torque,
+                    Speed = currentSpeed,
+                    Current = current,
+                    Efficiency = efficiency
+                });
+            }
         }
         
         // 导出数据为CSV格式
