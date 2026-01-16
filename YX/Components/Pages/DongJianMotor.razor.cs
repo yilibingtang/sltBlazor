@@ -37,9 +37,8 @@ namespace YX.Components.Pages
         // 数据和状态
         public List<MotorDataPoint> DataPoints { get; set; } = new List<MotorDataPoint>
         {
-            new MotorDataPoint { Torque = 0m, Current = 1.905m, Speed = 48.5m },
-            new MotorDataPoint { Torque = 4.5m, Current = 7.4m, Speed = 43.545m },
-            new MotorDataPoint { Torque = 9m, Current = 11.505m, Speed = 38.68m }
+            new MotorDataPoint { Torque = 0m, Current = 85m, Speed = 137.73m },
+            new MotorDataPoint { Torque = 400m, Current = 432.73m, Speed = 111.36m },
         };
         public int SelectedIndex { get; set; } = 0;
         public bool ShowResults { get; set; } = false;
@@ -262,7 +261,7 @@ namespace YX.Components.Pages
             PerformanceCurveData.Clear();
             
             // 从空载转速开始，每次减少0.1，直到转速为0
-            for (double speed = Math.Ceiling(n0); speed >= 0; speed -= 0.1)
+            for (decimal speed = (decimal)Math.Floor(n0); speed >= 0; speed --)
             {
                 double currentSpeed = Math.Round(speed, 1);
                 
