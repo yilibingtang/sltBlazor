@@ -122,9 +122,9 @@
         <section class="fit-results">
             <h4>拟合曲线</h4>
             <div style="width:700px;height:380px;">
-                <MotorPlot Torques="@(EditingPoints.Select(p => (double)p.Torque).ToArray())"
-                    Speeds="@(EditingPoints.Select(p => (double)p.Speed).ToArray())"
-                    Currents="@(EditingPoints.Select(p => (double)p.Current).ToArray())"
+                <MotorPlot Torques="@(EditingPoints.Select(p => p.Torque).ToArray())"
+                    Speeds="@(EditingPoints.Select(p => p.Speed).ToArray())"
+                    Currents="@(EditingPoints.Select(p => p.Current).ToArray())"
                     Title="@(EditingMotor?.MotorName ?? "Motor")" />
             </div>
             <h5>关键点</h5>

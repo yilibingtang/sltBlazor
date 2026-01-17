@@ -11,37 +11,37 @@ namespace YX.Services
     public class MotorFitResult
     {
         // 拟合系数
-        public double[] CurrentCoeffs { get; set; } = Array.Empty<double>();
-        public double[] SpeedCoeffs { get; set; } = Array.Empty<double>();
+        public decimal[] CurrentCoeffs { get; set; } = Array.Empty<decimal>();
+        public decimal[] SpeedCoeffs { get; set; } = Array.Empty<decimal>();
         
         // 电机特性参数
-        public double NoLoadSpeed { get; set; }
-        public double StallTorque { get; set; }
-        public double NoLoadCurrent { get; set; }
-        public double StallCurrent { get; set; }
+        public decimal NoLoadSpeed { get; set; }
+        public decimal StallTorque { get; set; }
+        public decimal NoLoadCurrent { get; set; }
+        public decimal StallCurrent { get; set; }
         
         // 图表范围
-        public double PlotXMin { get; set; }
-        public double PlotXMax { get; set; }
-        public double PlotYMin { get; set; }
-        public double PlotYMax { get; set; }
+        public decimal PlotXMin { get; set; }
+        public decimal PlotXMax { get; set; }
+        public decimal PlotYMin { get; set; }
+        public decimal PlotYMax { get; set; }
         
         // 原始数据
-        public double[] Torques { get; set; } = Array.Empty<double>();
-        public double[] Speeds { get; set; } = Array.Empty<double>();
-        public double[] Currents { get; set; } = Array.Empty<double>();
+        public decimal[] Torques { get; set; } = Array.Empty<decimal>();
+        public decimal[] Speeds { get; set; } = Array.Empty<decimal>();
+        public decimal[] Currents { get; set; } = Array.Empty<decimal>();
         
         // 误差分析（电流拟合）
-        public double CurrentR2 { get; set; }
-        public double CurrentMSE { get; set; }
-        public double CurrentRMSE { get; set; }
-        public double CurrentMAE { get; set; }
+        public decimal CurrentR2 { get; set; }
+        public decimal CurrentMSE { get; set; }
+        public decimal CurrentRMSE { get; set; }
+        public decimal CurrentMAE { get; set; }
         
         // 误差分析（转速拟合）
-        public double SpeedR2 { get; set; }
-        public double SpeedMSE { get; set; }
-        public double SpeedRMSE { get; set; }
-        public double SpeedMAE { get; set; }
+        public decimal SpeedR2 { get; set; }
+        public decimal SpeedMSE { get; set; }
+        public decimal SpeedRMSE { get; set; }
+        public decimal SpeedMAE { get; set; }
     }
 
     /// <summary>
@@ -49,18 +49,70 @@ namespace YX.Services
     /// </summary>
     public class MotorCalculator : IMotorCalculator
     {
+        // Decimal数学运算辅助方法
+        private static decimal DecimalPow(decimal x, int power)
+        {
+            decimal result = 1;
+            for (int i = 0; i < power; i++)
+            {
+                result *= x;
+            }
+            return result;
+        }
+        
+        private static decimal DecimalAbs(decimal value)
+        {
+            return value < 0 ? -value : value;
+        }
+        
+        private static decimal DecimalSqrt(decimal value)
+        {
+            if (value < 0) return 0;
+            if (value == 0) return 0;
+            
+            decimal x = value;
+            decimal prevX;
+            do
+            {
+                prevX = x;
+                x = (x + value / x) / 2;
+            } while (DecimalAbs(x - prevX) > 0.0000000000000000000000000001m);
+            
+            return x;
+        }
+        
+        private static decimal DecimalMax(decimal a, decimal b)
+        {
+            return a > b ? a : b;
+        }
+        
+        private static decimal DecimalMin(decimal a, decimal b)
+        {
+            return a < b ? a : b;
+        }
+        
+        private static decimal DecimalCeiling(decimal value)
+        {
+            return Math.Ceiling(value);
+        }
+        
+        private static decimal DecimalRound(decimal value, int decimals)
+        {
+            return Math.Round(value, decimals);
+        }
+        
         /// <summary>
         /// 计算多项式值
         /// </summary>
         /// <param name="coeffs">多项式系数</param>
         /// <param name="x">自变量值</param>
         /// <returns>计算结果</returns>
-        public double EvalPoly(double[] coeffs, double x)
+        public decimal EvalPoly(decimal[] coeffs, decimal x)
         {
-            double y = 0;
+            decimal y = 0;
             for (int i = 0; i < coeffs.Length; i++) 
             {
-                y += coeffs[i] * Math.Pow(x, i);
+                y += coeffs[i] * DecimalPow(x, i);
             }
             return y;
         }
@@ -71,12 +123,12 @@ namespace YX.Services
         /// <param name="coeffs">多项式系数</param>
         /// <param name="x">自变量值</param>
         /// <returns>计算结果</returns>
-        public static double EvalPolyStatic(double[] coeffs, double x)
+        public static decimal EvalPolyStatic(decimal[] coeffs, decimal x)
         {
-            double y = 0;
+            decimal y = 0;
             for (int i = 0; i < coeffs.Length; i++) 
             {
-                y += coeffs[i] * Math.Pow(x, i);
+                y += coeffs[i] * DecimalPow(x, i);
             }
             return y;
         }
@@ -86,11 +138,11 @@ namespace YX.Services
         /// </summary>
         public class LinearFitResult
         {
-            public double[] Coeffs { get; set; } = Array.Empty<double>();
-            public double R2 { get; set; } // 决定系数
-            public double MSE { get; set; } // 均方误差
-            public double RMSE { get; set; } // 均方根误差
-            public double MAE { get; set; } // 平均绝对误差
+            public decimal[] Coeffs { get; set; } = Array.Empty<decimal>();
+            public decimal R2 { get; set; } // 决定系数
+            public decimal MSE { get; set; } // 均方误差
+            public decimal RMSE { get; set; } // 均方根误差
+            public decimal MAE { get; set; } // 平均绝对误差
         }
 
         /// <summary>
@@ -99,17 +151,17 @@ namespace YX.Services
         /// <param name="x">自变量数组</param>
         /// <param name="y">因变量数组</param>
         /// <returns>拟合结果，包含系数和误差分析</returns>
-        private static LinearFitResult CalculateLinearFit(double[] x, double[] y)
+        private static LinearFitResult CalculateLinearFit(decimal[] x, decimal[] y)
         {
             var result = new LinearFitResult();
             
             if (x.Length != y.Length || x.Length < 2)
             {
-                result.Coeffs = new double[] { 0, 0 };
+                result.Coeffs = new decimal[] { 0, 0 };
                 return result;
             }
 
-            double sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0, sumY2 = 0;
+            decimal sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0, sumY2 = 0;
             int n = x.Length;
 
             for (int i = 0; i < n; i++)
@@ -121,38 +173,38 @@ namespace YX.Services
                 sumY2 += y[i] * y[i];
             }
 
-            double denominator = n * sumX2 - sumX * sumX;
-            if (Math.Abs(denominator) < 1e-12)
+            decimal denominator = n * sumX2 - sumX * sumX;
+            if (DecimalAbs(denominator) < 0.0000000000000000000000000001m)
             {
-                result.Coeffs = new double[] { 0, 0 };
+                result.Coeffs = new decimal[] { 0, 0 };
                 return result;
             }
 
-            double a1 = (n * sumXY - sumX * sumY) / denominator;
-            double a0 = (sumY - a1 * sumX) / n;
+            decimal a1 = (n * sumXY - sumX * sumY) / denominator;
+            decimal a0 = (sumY - a1 * sumX) / n;
             
-            result.Coeffs = new double[] { a0, a1 };
+            result.Coeffs = new decimal[] { a0, a1 };
             
             // 计算误差分析指标
-            double yMean = sumY / n;
-            double ssTotal = 0; // 总平方和
-            double ssResidual = 0; // 残差平方和
-            double sumAbsoluteErrors = 0; // 绝对误差总和
+            decimal yMean = sumY / n;
+            decimal ssTotal = 0; // 总平方和
+            decimal ssResidual = 0; // 残差平方和
+            decimal sumAbsoluteErrors = 0; // 绝对误差总和
             
             for (int i = 0; i < n; i++)
             {
-                double yPred = EvalPolyStatic(result.Coeffs, x[i]);
-                double error = y[i] - yPred;
+                decimal yPred = EvalPolyStatic(result.Coeffs, x[i]);
+                decimal error = y[i] - yPred;
                 
-                ssTotal += Math.Pow(y[i] - yMean, 2);
-                ssResidual += Math.Pow(error, 2);
-                sumAbsoluteErrors += Math.Abs(error);
+                ssTotal += DecimalPow(y[i] - yMean, 2);
+                ssResidual += DecimalPow(error, 2);
+                sumAbsoluteErrors += DecimalAbs(error);
             }
             
             // 计算R²值
-            if (Math.Abs(ssTotal) < 1e-12)
+            if (DecimalAbs(ssTotal) < 0.0000000000000000000000000001m)
             {
-                result.R2 = 1.0; // 所有y值相同，拟合完美
+                result.R2 = 1.0m; // 所有y值相同，拟合完美
             }
             else
             {
@@ -163,7 +215,7 @@ namespace YX.Services
             result.MSE = ssResidual / n;
             
             // 计算均方根误差（RMSE）
-            result.RMSE = Math.Sqrt(result.MSE);
+            result.RMSE = DecimalSqrt(result.MSE);
             
             // 计算平均绝对误差（MAE）
             result.MAE = sumAbsoluteErrors / n;
@@ -182,9 +234,9 @@ namespace YX.Services
             var result = new MotorFitResult();
             if (list.Count < 2) return result;
 
-            var torques = list.Select(p => (double)p.Torque).ToArray();
-            var currents = list.Select(p => (double)p.Current).ToArray();
-            var speeds = list.Select(p => (double)p.Speed).ToArray();
+            var torques = list.Select(p => p.Torque).ToArray();
+            var currents = list.Select(p => p.Current).ToArray();
+            var speeds = list.Select(p => p.Speed).ToArray();
 
             // 使用优化的线性拟合，包含误差分析
             var currentFit = CalculateLinearFit(torques, currents);
@@ -209,19 +261,19 @@ namespace YX.Services
 
             var a0 = result.SpeedCoeffs[0]; // 空载转速
             var a1 = result.SpeedCoeffs[1]; // 转速-扭矩斜率
-            if (Math.Abs(a1) > 1e-12) 
+            if (DecimalAbs(a1) > 0.0000000000000000000000000001m) 
             {
                 result.StallTorque = -a0 / a1; // 堵转扭矩
             } 
             else 
             {
-                result.StallTorque = double.NaN;
+                result.StallTorque = decimal.MinValue;
             }
-            result.StallCurrent = double.IsNaN(result.StallTorque) ? double.NaN : EvalPoly(result.CurrentCoeffs, result.StallTorque);
+            result.StallCurrent = result.StallTorque == decimal.MinValue ? decimal.MinValue : EvalPoly(result.CurrentCoeffs, result.StallTorque);
 
             result.PlotXMin = torques.Min(); 
             result.PlotXMax = torques.Max();
-            if (Math.Abs(result.PlotXMax - result.PlotXMin) < 1e-6) 
+            if (DecimalAbs(result.PlotXMax - result.PlotXMin) < 0.000001m) 
             {
                 result.PlotXMin -= 1; 
                 result.PlotXMax += 1;
@@ -229,7 +281,7 @@ namespace YX.Services
             var yVals = speeds.Concat(currents).ToArray();
             result.PlotYMin = yVals.Min(); 
             result.PlotYMax = yVals.Max();
-            if (Math.Abs(result.PlotYMax - result.PlotYMin) < 1e-6) 
+            if (DecimalAbs(result.PlotYMax - result.PlotYMin) < 0.000001m) 
             {
                 result.PlotYMin -= 1; 
                 result.PlotYMax += 1;
@@ -258,38 +310,38 @@ namespace YX.Services
         /// <param name="voltage">电压</param>
         /// <param name="speedStep">转速步长</param>
         /// <returns>性能曲线数据列表</returns>
-        public List<PerformanceCurvePoint> GeneratePerformanceCurve(MotorFitResult fitResult, decimal voltage, double speedStep = 0.1)
+        public List<PerformanceCurvePoint> GeneratePerformanceCurve(MotorFitResult fitResult, decimal voltage, decimal speedStep = 0.1m)
         {
             var curveData = new List<PerformanceCurvePoint>();
             
-            if (fitResult.StallTorque <= 0 || double.IsNaN(fitResult.StallTorque))
+            if (fitResult.StallTorque <= 0 || fitResult.StallTorque == decimal.MinValue)
                 return curveData;
             
             // 从空载转速开始，每次减少0.1，直到转速为0
-            for (double speed = Math.Ceiling(fitResult.NoLoadSpeed); speed >= 0; speed -= speedStep)
+            for (decimal speed = DecimalCeiling(fitResult.NoLoadSpeed); speed >= 0; speed -= speedStep)
             {
-                double currentSpeed = Math.Round(speed, 1);
+                decimal currentSpeed = DecimalRound(speed, 1);
                 
                 // 计算扭矩：x = Tk * (1 - n / n0)
-                double torque = fitResult.StallTorque * (1 - currentSpeed / fitResult.NoLoadSpeed);
+                decimal torque = fitResult.StallTorque * (1 - currentSpeed / fitResult.NoLoadSpeed);
                 
                 // 计算电流：I = I0 + (Ik - I0) * x / Tk
-                double current = fitResult.NoLoadCurrent + (fitResult.StallCurrent - fitResult.NoLoadCurrent) * torque / fitResult.StallTorque;
+                decimal current = fitResult.NoLoadCurrent + (fitResult.StallCurrent - fitResult.NoLoadCurrent) * torque / fitResult.StallTorque;
                 
                 // 计算效率：η = (n * x) / (K * U * I)
-                double efficiency = 0;
+                decimal efficiency = 0;
                 if (current != 0)
                 {
-                    efficiency = (currentSpeed * torque) / (PhysicalConstants.MotorEfficiencyConstant * (double)voltage * current);
+                    efficiency = (currentSpeed * torque) / (PhysicalConstants.MotorEfficiencyConstant * voltage * current);
                 }
                 
                 // 添加到性能曲线数据列表
                 curveData.Add(new PerformanceCurvePoint
                 {
-                    Torque = torque,
-                    Speed = currentSpeed,
-                    Current = current,
-                    Efficiency = efficiency
+                    Torque = (double)torque,
+                    Speed = (double)currentSpeed,
+                    Current = (double)current,
+                    Efficiency = (double)efficiency
                 });
             }
             
@@ -303,7 +355,7 @@ namespace YX.Services
         /// <param name="loadTorque">负载扭矩</param>
         /// <param name="stallTorque">堵转扭矩</param>
         /// <returns>负载转速</returns>
-        public double CalculateLoadSpeed(double noLoadRpm, double loadTorque, double stallTorque)
+        public decimal CalculateLoadSpeed(decimal noLoadRpm, decimal loadTorque, decimal stallTorque)
         {
             return noLoadRpm - noLoadRpm * loadTorque / stallTorque;
         }
@@ -319,49 +371,49 @@ namespace YX.Services
             var result = new MaxEfficiencyResult();
             
             // 从拟合结果中获取基础参数
-            double n0 = fitResult.NoLoadSpeed;       // 空载转速
-            double I0 = fitResult.NoLoadCurrent;     // 空载电流
-            double Tk = fitResult.StallTorque;       // 堵转扭矩
-            double Ik = fitResult.StallCurrent;      // 堵转电流
-            double U = (double)voltage;              // 电压，转换为double用于计算
-            double K = PhysicalConstants.MotorEfficiencyConstant; // 9.5493
+            decimal n0 = fitResult.NoLoadSpeed;       // 空载转速
+            decimal I0 = fitResult.NoLoadCurrent;     // 空载电流
+            decimal Tk = fitResult.StallTorque;       // 堵转扭矩
+            decimal Ik = fitResult.StallCurrent;      // 堵转电流
+            decimal U = voltage;                    // 电压
+            decimal K = PhysicalConstants.MotorEfficiencyConstant; // 9.5493
             
             // 核心方程：(Ik−I0)x² + 2I0Tk x − I0Tk² = 0
-            double a = Ik - I0;
-            double b = 2 * I0 * Tk;
-            double c = -I0 * Tk * Tk;
-            double discriminant = b * b - 4 * a * c;
-            double maxEffTorque = 0;
+            decimal a = Ik - I0;
+            decimal b = 2 * I0 * Tk;
+            decimal c = -I0 * Tk * Tk;
+            decimal discriminant = b * b - 4 * a * c;
+            decimal maxEffTorque = 0;
             
             if (discriminant >= 0 && a != 0)
             {
-                maxEffTorque = (-b + Math.Sqrt(discriminant)) / (2 * a);
+                maxEffTorque = (-b + DecimalSqrt(discriminant)) / (2 * a);
                 // 确保扭矩在合理范围内
-                maxEffTorque = Math.Max(0, Math.Min(maxEffTorque, Tk));
+                maxEffTorque = DecimalMax(0, DecimalMin(maxEffTorque, Tk));
             }
             
             // 计算对应转速（精准）
-            double maxEffSpeed = n0 * (1 - maxEffTorque / Tk);
+            decimal maxEffSpeed = n0 * (1 - maxEffTorque / Tk);
             
             // 计算对应电流（精准）
-            double maxEffCurrent = I0 + (Ik - I0) * maxEffTorque / Tk;
+            decimal maxEffCurrent = I0 + (Ik - I0) * maxEffTorque / Tk;
             
             // 计算最大效率（精准）
-            double maxEff = 0;
+            decimal maxEff = 0;
             if (maxEffCurrent != 0)
             {
                 maxEff = (maxEffSpeed * maxEffTorque) / (K * U * maxEffCurrent);
             }
             
             // 导数方程（显示用）
-            string derivativeEquation = $"dη/dt = {n0*Tk/(K*U):F4} * ({I0:F4}*t² - {2*I0*Tk:F4}*t + {I0*Tk*Tk:F4}) / [(Ik-I0)*t + I0*Tk]^2";
+            string derivativeEquation = $"dη/dt = {(double)(n0*Tk/(K*U)):F4} * ({(double)I0:F4}*t² - {(double)(2*I0*Tk):F4}*t + {(double)(I0*Tk*Tk):F4}) / [(Ik-I0)*t + I0*Tk]^2";
             
             return new MaxEfficiencyResult
             {
-                Torque = maxEffTorque,
-                Speed = maxEffSpeed,
-                Current = maxEffCurrent,
-                Efficiency = maxEff,
+                Torque = (double)maxEffTorque,
+                Speed = (double)maxEffSpeed,
+                Current = (double)maxEffCurrent,
+                Efficiency = (double)maxEff,
                 EfficiencyDerivativeEquation = derivativeEquation
             };
         }
@@ -379,7 +431,7 @@ namespace YX.Services
         /// <param name="loadTorque">负载扭矩</param>
         /// <param name="stallTorque">堵转扭矩</param>
         /// <returns>负载转速</returns>
-        public static double CalTorqueRpm(double noLoadRpm, double loadTorque, double stallTorque)
+        public static decimal CalTorqueRpm(decimal noLoadRpm, decimal loadTorque, decimal stallTorque)
         {
             return noLoadRpm - noLoadRpm * loadTorque / stallTorque;
         }

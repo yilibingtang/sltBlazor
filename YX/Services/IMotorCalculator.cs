@@ -14,7 +14,7 @@ namespace YX.Services
         /// <param name="coeffs">多项式系数</param>
         /// <param name="x">自变量值</param>
         /// <returns>计算结果</returns>
-        double EvalPoly(double[] coeffs, double x);
+        decimal EvalPoly(decimal[] coeffs, decimal x);
         
         /// <summary>
         /// 计算电机数据拟合结果
@@ -30,7 +30,7 @@ namespace YX.Services
         /// <param name="voltage">电压</param>
         /// <param name="speedStep">转速步长</param>
         /// <returns>性能曲线数据列表</returns>
-        List<PerformanceCurvePoint> GeneratePerformanceCurve(MotorFitResult fitResult, decimal voltage, double speedStep = 0.1);
+        List<PerformanceCurvePoint> GeneratePerformanceCurve(MotorFitResult fitResult, decimal voltage, decimal speedStep = 0.1m);
         
         /// <summary>
         /// 计算负载转速
@@ -39,7 +39,7 @@ namespace YX.Services
         /// <param name="loadTorque">负载扭矩</param>
         /// <param name="stallTorque">堵转扭矩</param>
         /// <returns>负载转速</returns>
-        double CalculateLoadSpeed(double noLoadRpm, double loadTorque, double stallTorque);
+        decimal CalculateLoadSpeed(decimal noLoadRpm, decimal loadTorque, decimal stallTorque);
         
         /// <summary>
         /// 计算理论最大效率点

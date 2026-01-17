@@ -9,12 +9,12 @@ namespace YX.Services
         /// 电机效率计算常数
         /// 公式：效率 = 转速 * 扭矩 / (K * 电流 * 电压)
         /// </summary>
-        public const double MotorEfficiencyConstant = 9.5493;
+        public const decimal MotorEfficiencyConstant = 9.5493m;
         
         /// <summary>
         /// 重力加速度 (m/s²)
         /// </summary>
-        public const double GravitationalAcceleration = 9.80665;
+        public const decimal GravitationalAcceleration = 9.80665m;
         
 
     }

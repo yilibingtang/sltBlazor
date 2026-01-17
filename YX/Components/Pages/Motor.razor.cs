@@ -86,11 +86,11 @@ public partial class MotorBase : ComponentBase
     protected List<MotorDataPoint> EditingPoints { get; set; } = new List<MotorDataPoint>();
 
     // 拟合结果
-    double[] CurrentCoeffs = Array.Empty<double>();
-    double[] SpeedCoeffs = Array.Empty<double>();
+    decimal[] CurrentCoeffs = Array.Empty<decimal>();
+    decimal[] SpeedCoeffs = Array.Empty<decimal>();
     protected bool HasFit { get; set; } = false;
-    double plotXMin, plotXMax, plotYMin, plotYMax;
-    protected double NoLoadSpeed, StallTorque, NoLoadCurrent, StallCurrent;
+    decimal plotXMin, plotXMax, plotYMin, plotYMax;
+    protected decimal NoLoadSpeed, StallTorque, NoLoadCurrent, StallCurrent;
 
     // validation messages for UI
     protected List<string> ErrorMessages { get; set; } = new List<string>();

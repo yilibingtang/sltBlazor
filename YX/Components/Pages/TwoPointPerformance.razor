@@ -1,11 +1,11 @@
-@page "/DongJianMotor"
+@page "/TwoPointPerformance"
 @rendermode InteractiveServer
 @using YX.Services
 @using YX.Models
-<PageTitle>东箭电机数据分析</PageTitle>
+<PageTitle>两点计算性能</PageTitle>
 
 <div class="container">
-    <h2>东箭电机数据分析</h2>
+    <h2>两点计算性能</h2>
     
     <!-- 基本信息输入 -->
     <div class="input-row">
@@ -97,7 +97,6 @@
     <!-- 计算按钮 -->
     <div class="button-group">
         <button class="btn btn-primary" @onclick="CalculateFits">计算拟合直线</button>
-        <button class="btn export-btn" @onclick="ExportData">导出数据 (CSV)</button>
     </div>
     
     <!-- 拟合结果 -->
@@ -136,52 +135,7 @@
                 <span class="equation-label">堵转电流(Iₖ)：</span>
                 <span class="equation-value">@((OutputCurrentUnit == CurrentUnit.A ? FitResult.StallCurrent : FitResult.StallCurrent * 1000m).ToString("F6")) @(OutputCurrentUnit.ToString())</span>
             </div>
-            
-            <h4>拟合质量分析</h4>
-            <div class="fit-quality">
-                <div class="quality-row">
-                    <div class="quality-group">
-                        <h5>电流-扭矩拟合</h5>
-                        <div class="result-item">
-                            <span class="result-label">决定系数(R²)：</span>
-                            <span class="result-value">@FitResult.CurrentR2.ToString("F8")</span>
-                        </div>
-                        <div class="result-item">
-                            <span class="result-label">均方误差(MSE)：</span>
-                            <span class="result-value">@FitResult.CurrentMSE.ToString("F8")</span>
-                        </div>
-                        <div class="result-item">
-                            <span class="result-label">均方根误差(RMSE)：</span>
-                            <span class="result-value">@FitResult.CurrentRMSE.ToString("F8")</span>
-                        </div>
-                        <div class="result-item">
-                            <span class="result-label">平均绝对误差(MAE)：</span>
-                            <span class="result-value">@FitResult.CurrentMAE.ToString("F8")</span>
-                        </div>
-                    </div>
-                    
-                    <div class="quality-group">
-                        <h5>转速-扭矩拟合</h5>
-                        <div class="result-item">
-                            <span class="result-label">决定系数(R²)：</span>
-                            <span class="result-value">@FitResult.SpeedR2.ToString("F8")</span>
-                        </div>
-                        <div class="result-item">
-                            <span class="result-label">均方误差(MSE)：</span>
-                            <span class="result-value">@FitResult.SpeedMSE.ToString("F8")</span>
-                        </div>
-                        <div class="result-item">
-                            <span class="result-label">均方根误差(RMSE)：</span>
-                            <span class="result-value">@FitResult.SpeedRMSE.ToString("F8")</span>
-                        </div>
-                        <div class="result-item">
-                            <span class="result-label">平均绝对误差(MAE)：</span>
-                            <span class="result-value">@FitResult.SpeedMAE.ToString("F8")</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     }
     
     <!-- 特性点结果 -->

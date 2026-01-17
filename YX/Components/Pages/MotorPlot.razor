@@ -43,8 +43,8 @@
                         <!-- Plot points -->
                         @for (int i = 0; i < Torques.Length; i++)
                         {
-                            double x = 20 + (Torques[i] - Torques.Min()) * (560 / (Torques.Max() - Torques.Min() > 0 ? Torques.Max() - Torques.Min() : 1));
-                            double y = 280 - (Speeds[i] - Speeds.Min()) * (260 / (Speeds.Max() - Speeds.Min() > 0 ? Speeds.Max() - Speeds.Min() : 1));
+                            double x = 20 + ((double)Torques[i] - (double)Torques.Min()) * (560 / ((double)Torques.Max() - (double)Torques.Min() > 0 ? (double)Torques.Max() - (double)Torques.Min() : 1));
+                            double y = 280 - ((double)Speeds[i] - (double)Speeds.Min()) * (260 / ((double)Speeds.Max() - (double)Speeds.Min() > 0 ? (double)Speeds.Max() - (double)Speeds.Min() : 1));
                             <circle cx="@x" cy="@y" r="4" fill="#1f77b4" />
                         }
                     </svg>
@@ -88,8 +88,8 @@
                         <!-- Plot points -->
                         @for (int i = 0; i < Torques.Length; i++)
                         {
-                            double x = 20 + (Torques[i] - Torques.Min()) * (560 / (Torques.Max() - Torques.Min() > 0 ? Torques.Max() - Torques.Min() : 1));
-                            double y = 280 - (Currents[i] - Currents.Min()) * (260 / (Currents.Max() - Currents.Min() > 0 ? Currents.Max() - Currents.Min() : 1));
+                            double x = 20 + ((double)Torques[i] - (double)Torques.Min()) * (560 / ((double)Torques.Max() - (double)Torques.Min() > 0 ? (double)Torques.Max() - (double)Torques.Min() : 1));
+                            double y = 280 - ((double)Currents[i] - (double)Currents.Min()) * (260 / ((double)Currents.Max() - (double)Currents.Min() > 0 ? (double)Currents.Max() - (double)Currents.Min() : 1));
                             <circle cx="@x" cy="@y" r="4" fill="#ff7f0e" />
                         }
                     </svg>
@@ -125,8 +125,8 @@
 </style>
 
 @code {
-    [Parameter] public double[]? Torques { get; set; }
-    [Parameter] public double[]? Speeds { get; set; }
-    [Parameter] public double[]? Currents { get; set; }
+    [Parameter] public decimal[]? Torques { get; set; }
+    [Parameter] public decimal[]? Speeds { get; set; }
+    [Parameter] public decimal[]? Currents { get; set; }
     [Parameter] public string? Title { get; set; }
 }

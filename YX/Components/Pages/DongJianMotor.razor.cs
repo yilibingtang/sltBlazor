@@ -47,7 +47,7 @@ namespace YX.Components.Pages
         
         // 效率计算结果（理论精准值）
         public MotorDataPoint MaxEfficiencyPoint { get; set; } = new MotorDataPoint();
-        public double MaxEfficiencyValue { get; set; } = 0;
+        public decimal MaxEfficiencyValue { get; set; } = 0;
         public string EfficiencyDerivativeEquation { get; set; } = string.Empty;
         
         // 性能曲线数据列表
@@ -56,10 +56,10 @@ namespace YX.Components.Pages
         // 性能曲线数据点类
         public class PerformanceCurvePoint
         {
-            public double Torque { get; set; }
-            public double Speed { get; set; }
-            public double Current { get; set; }
-            public double Efficiency { get; set; }
+            public decimal Torque { get; set; }
+            public decimal Speed { get; set; }
+            public decimal Current { get; set; }
+            public decimal Efficiency { get; set; }
         }
         
         // 扭矩单位转换：将输入单位转换为标准单位（Nm）
@@ -70,7 +70,7 @@ namespace YX.Components.Pages
                 TorqueUnit.Nm => value,
                 TorqueUnit.mNm => value / 1000m,
                 TorqueUnit.Kgcm => value * 0.0980665m,
-                TorqueUnit.gcm => value * 0.0000980665m,
+                TorqueUnit.gcm => value *0.001m*0.0980665m,
                 _ => value
             };
         }
@@ -83,7 +83,7 @@ namespace YX.Components.Pages
                 TorqueUnit.Nm => value,
                 TorqueUnit.mNm => value * 1000m,
                 TorqueUnit.Kgcm => value / 0.0980665m,
-                TorqueUnit.gcm => value / 0.0000980665m,
+                TorqueUnit.gcm => value /(1000m*0.0980665m) ,
                 _ => value
             };
         }
@@ -164,18 +164,18 @@ namespace YX.Components.Pages
         private async Task CalculateEfficiencyResults()
         {
             // 从拟合结果中获取基础参数
-            double n0 = FitResult.NoLoadSpeed;       // 空载转速
-            double I0 = FitResult.NoLoadCurrent;     // 空载电流
-            double Tk = FitResult.StallTorque;       // 堵转扭矩
-            double Ik = FitResult.StallCurrent;      // 堵转电流
-            double U = (double)Motor.Voltage;        // 电压，转换为double用于计算
-            double K = PhysicalConstants.MotorEfficiencyConstant; // 9.5493
+            decimal n0 = FitResult.NoLoadSpeed;       // 空载转速
+            decimal I0 = FitResult.NoLoadCurrent;     // 空载电流
+            decimal Tk = FitResult.StallTorque;       // 堵转扭矩
+            decimal Ik = FitResult.StallCurrent;      // 堵转电流
+            decimal U = Motor.Voltage;                // 电压
+            decimal K = PhysicalConstants.MotorEfficiencyConstant; // 9.5493
 
             // 更新模型中的特性点
-            Motor.NoLoadPoint.Speed = (decimal)n0;
-            Motor.NoLoadPoint.Current = (decimal)I0;
-            Motor.StallPoint.Torque = (decimal)Tk;
-            Motor.StallPoint.Current = (decimal)Ik;
+            Motor.NoLoadPoint.Speed = n0;
+            Motor.NoLoadPoint.Current = I0;
+            Motor.StallPoint.Torque = Tk;
+            Motor.StallPoint.Current = Ik;
             Motor.StallPoint.Speed = 0m; // 堵转时转速为0
 
             // 调试输出
@@ -190,29 +190,29 @@ namespace YX.Components.Pages
 
             // ========== 理论精准公式计算最大效率扭矩 ==========
             // 核心方程：(Ik−I0)x² + 2I0Tk x − I0Tk² = 0
-            double a = Ik - I0;
-            double b = 2 * I0 * Tk;
-            double c = -I0 * Tk * Tk;
-            double discriminant = b * b - 4 * a * c;
-            double maxEffTorque = 0;
+            decimal a = Ik - I0;
+            decimal b = 2 * I0 * Tk;
+            decimal c = -I0 * Tk * Tk;
+            decimal discriminant = b * b - 4 * a * c;
+            decimal maxEffTorque = 0;
             if (discriminant >= 0 && a != 0)
             {
-                maxEffTorque = (-b + Math.Sqrt(discriminant)) / (2 * a);
+                maxEffTorque = (-b + (decimal)Math.Sqrt((double)discriminant)) / (2 * a);
                 // 确保扭矩在合理范围内
-                maxEffTorque = Math.Max(0, Math.Min(maxEffTorque, Tk));
+                maxEffTorque = Math.Max(0m, Math.Min(maxEffTorque, Tk));
             }
 
             // ========== 计算对应转速（精准） ==========
             // 转速公式：n = n0 * (1 - x / Tk)
-            double maxEffSpeed = n0 * (1 - maxEffTorque / Tk);
+            decimal maxEffSpeed = n0 * (1 - maxEffTorque / Tk);
 
             // ========== 计算对应电流（精准） ==========
             // 电流公式：I = I0 + (Ik - I0) * x / Tk
-            double maxEffCurrent = I0 + (Ik - I0) * maxEffTorque / Tk;
+            decimal maxEffCurrent = I0 + (Ik - I0) * maxEffTorque / Tk;
 
             // ========== 计算最大效率（精准） ==========
             // 效率公式：η = (n * x) / (K * U * I)
-            double maxEff = 0;
+            decimal maxEff = 0;
             if (maxEffCurrent != 0)
             {
                 maxEff = (maxEffSpeed * maxEffTorque) / (K * U * maxEffCurrent);
@@ -220,12 +220,12 @@ namespace YX.Components.Pages
             
             // ========== 验证公式 ==========
             // 验证：空载电流 = 最大效率点电流 × (1 - √(最大效率点效率))
-            double verification = maxEffCurrent * (1 - Math.Sqrt(maxEff));
+            decimal verification = maxEffCurrent * (1 - (decimal)Math.Sqrt((double)maxEff));
             System.Console.WriteLine($"=== 验证结果 ===");
             System.Console.WriteLine($"空载电流 = {I0}");
             System.Console.WriteLine($"验证值 = {verification}");
-            System.Console.WriteLine($"误差 = {Math.Abs(I0 - verification)}");
-            string verificationResult = Math.Abs(I0 - verification) < 0.01 ? "通过" : "失败";
+            System.Console.WriteLine($"误差 = {Math.Abs((double)(I0 - verification))}");
+            string verificationResult = Math.Abs((double)(I0 - verification)) < 0.01 ? "通过" : "失败";
             System.Console.WriteLine($"验证 {verificationResult}");
             System.Console.WriteLine($"==============");
 
@@ -238,16 +238,16 @@ namespace YX.Components.Pages
             System.Console.WriteLine($"==============");
 
             // ========== 结果保留8位小数 ==========
-            MaxEfficiencyPoint.Torque = (decimal)Math.Round(maxEffTorque, 8);
-            MaxEfficiencyPoint.Speed = (decimal)Math.Round(maxEffSpeed, 8);
-            MaxEfficiencyPoint.Current = (decimal)Math.Round(maxEffCurrent, 8);
+            MaxEfficiencyPoint.Torque = Math.Round(maxEffTorque, 8);
+            MaxEfficiencyPoint.Speed = Math.Round(maxEffSpeed, 8);
+            MaxEfficiencyPoint.Current = Math.Round(maxEffCurrent, 8);
             MaxEfficiencyValue = Math.Round(maxEff, 8);
 
             // 更新模型效率（百分比）
-            Motor.MotorEfficiency = (decimal)(MaxEfficiencyValue * 100);
+            Motor.MotorEfficiency = MaxEfficiencyValue * 100;
 
             // 导数方程（显示用）
-            EfficiencyDerivativeEquation = $"dη/dt = {n0*Tk/(K*U):F4} * ({I0:F4}*t² - {2*I0*Tk:F4}*t + {I0*Tk*Tk:F4}) / [(Ik-I0)*t + I0*Tk]^2";
+            EfficiencyDerivativeEquation = $"dη/dt = {(double)(n0*Tk/(K*U)):F4} * ({(double)I0:F4}*t² - {(double)(2*I0*Tk):F4}*t + {(double)(I0*Tk*Tk):F4}) / [(Ik-I0)*t + I0*Tk]^2";
             
             // 生成性能曲线数据：从空载转速到0，每次减少1
             GeneratePerformanceCurveData(n0, I0, Tk, Ik, U, K);
@@ -256,23 +256,23 @@ namespace YX.Components.Pages
         }
         
         // 生成性能曲线数据
-        private void GeneratePerformanceCurveData(double n0, double I0, double Tk, double Ik, double U, double K)
+        private void GeneratePerformanceCurveData(decimal n0, decimal I0, decimal Tk, decimal Ik, decimal U, decimal K)
         {
             PerformanceCurveData.Clear();
             
             // 从空载转速开始，每次减少0.1，直到转速为0
-            for (decimal speed = (decimal)Math.Floor(n0); speed >= 0; speed --)
+            for (decimal speed = Math.Floor(n0); speed >= 0; speed --)
             {
-                double currentSpeed = Math.Round(speed, 1);
+                decimal currentSpeed = Math.Round(speed, 1);
                 
                 // 计算扭矩：x = Tk * (1 - n / n0)
-                double torque = Tk * (1 - currentSpeed / n0);
+                decimal torque = Tk * (1 - currentSpeed / n0);
                 
                 // 计算电流：I = I0 + (Ik - I0) * x / Tk
-                double current = I0 + (Ik - I0) * torque / Tk;
+                decimal current = I0 + (Ik - I0) * torque / Tk;
                 
                 // 计算效率：η = (n * x) / (K * U * I)
-                double efficiency = 0;
+                decimal efficiency = 0;
                 if (current != 0)
                 {
                     efficiency = (currentSpeed * torque) / (K * U * current);
@@ -398,20 +398,20 @@ namespace YX.Components.Pages
                         int pointsCount = 50;
                         for (int i = 0; i <= pointsCount; i++)
                         {
-                            double torque = i * FitResult.StallTorque / pointsCount;
+                            decimal torque = i * FitResult.StallTorque / pointsCount;
                             
                             // 计算转速：n = n0 * (1 - torque / Tk)
-                            double speed = FitResult.NoLoadSpeed * (1 - torque / FitResult.StallTorque);
+                            decimal speed = FitResult.NoLoadSpeed * (1 - torque / FitResult.StallTorque);
                             
                             // 计算电流：I = I0 + (Ik - I0) * torque / Tk
-                            double current = FitResult.NoLoadCurrent + (FitResult.StallCurrent - FitResult.NoLoadCurrent) * torque / FitResult.StallTorque;
+                            decimal current = FitResult.NoLoadCurrent + (FitResult.StallCurrent - FitResult.NoLoadCurrent) * torque / FitResult.StallTorque;
                             
                             // 计算效率：η = (speed * torque) / (K * U * current)
-                            double K = PhysicalConstants.MotorEfficiencyConstant; // 9.5493
-                            double efficiency = 0;
+                            decimal K = PhysicalConstants.MotorEfficiencyConstant; // 9.5493
+                            decimal efficiency = 0;
                             if (current != 0)
                             {
-                                efficiency = (speed * torque) / (K * (double)Motor.Voltage * current);
+                                efficiency = (speed * torque) / (K * Motor.Voltage * current);
                             }
                             
                             csv.WriteField(torque);

@@ -25,20 +25,20 @@ namespace YX.Components.Pages
         /// <summary>
         /// 转速比 (负载转速/空载转速)
         /// </summary>
-        public double SpeedRatio => (double)Motor.LoadPoint.Speed / (double)Motor.NoLoadPoint.Speed;
+        public decimal SpeedRatio => Motor.LoadPoint.Speed / Motor.NoLoadPoint.Speed;
         
         /// <summary>
         /// 使用 MotorCalculatorHelper 计算负载转速
         /// </summary>
-        public double CalculatedLoadSpeed => MotorCalculatorHelper.CalTorqueRpm(
-            (double)Motor.NoLoadPoint.Speed, 
-            (double)Motor.LoadPoint.Torque, 
-            (double)Motor.StallPoint.Torque);
+        public decimal CalculatedLoadSpeed => MotorCalculatorHelper.CalTorqueRpm(
+            Motor.NoLoadPoint.Speed, 
+            Motor.LoadPoint.Torque, 
+            Motor.StallPoint.Torque);
         
         /// <summary>
         /// 堵转扭矩计算：堵转扭矩 = 空载转速 * 负载扭矩 / (空载转速 - 负载转速)
         /// </summary>
-        public double CalculatedStallTorque
+        public decimal CalculatedStallTorque
         {
             get
             {
@@ -48,11 +48,11 @@ namespace YX.Components.Pages
                     return 0;
                 }
                 
-                double stallTorque = ((double)Motor.NoLoadPoint.Speed * (double)Motor.LoadPoint.Torque) / 
-                                   ((double)Motor.NoLoadPoint.Speed - (double)Motor.LoadPoint.Speed);
+                decimal stallTorque = (Motor.NoLoadPoint.Speed * Motor.LoadPoint.Torque) / 
+                                   (Motor.NoLoadPoint.Speed - Motor.LoadPoint.Speed);
                 
                 // 将计算结果写入到 Motor.StallPoint.Torque
-                Motor.StallPoint.Torque = (decimal)stallTorque;
+                Motor.StallPoint.Torque = stallTorque;
                 
                 return stallTorque;
             }
