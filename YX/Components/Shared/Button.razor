@@ -1,0 +1,7 @@
+<button class="btn @CssClass" @onclick="OnClick">@ChildContent</button>
+
+@code{
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string CssClass { get; set; } = "btn-primary";
+    [Parameter] public EventCallback OnClick { get; set; }
+}

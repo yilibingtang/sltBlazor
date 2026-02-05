@@ -1,7 +1,9 @@
 using YX.Components;
+using YX.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,45 +14,12 @@ builder.Logging.AddDebug();
 builder.Logging.AddEventSourceLogger();
 builder.Logging.SetMinimumLevel(LogLevel.Information);
 
-// Add services to the container.
-builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
-
-// EF Core - SQLite DbContext for motor persistence
-builder.Services.AddDbContext<MotorDbContext>(options =>
-    options.UseSqlite("Data Source=motors.db"));
-
-// Notification service for Blazor toasts
-builder.Services.AddSingleton<YX.Services.NotificationService>();
-// Motor services
-builder.Services.AddScoped<YX.Services.MotorManager>();
-builder.Services.AddSingleton<YX.Services.MotorValidator>();
-builder.Services.AddScoped<YX.Services.IMotorCalculator, YX.Services.MotorCalculator>();
-builder.Services.AddScoped<YX.Services.ICsvExportService, YX.Services.CsvExportService>();
+// Add services to the container (moved to extension for decoupling)
+builder.Services.AddYXServices(builder.Configuration);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
-app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
-app.UseHttpsRedirection();
-
-app.UseAntiforgery();
-
-app.MapStaticAssets();
-app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
-
-// Ensure database is created on startup
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<MotorDbContext>();
-    db.Database.EnsureCreated();
-}
+// Configure the HTTP request pipeline (moved to extension for decoupling)
+app.UseYXDefaults();
 
 app.Run();

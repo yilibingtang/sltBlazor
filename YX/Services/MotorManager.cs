@@ -3,24 +3,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using YX.Models;
+using YX.Data;
 
 namespace YX.Services
 {
-    public class MotorManager
+    public class MotorManager : IMotorManager
     {
-        readonly MotorDbContext _db;
+        readonly IMotorRepository _repo;
 
-        public MotorManager(MotorDbContext db) => _db = db;
+        public MotorManager(IMotorRepository repo) => _repo = repo;
        
         public async Task<List<MotorModel>> GetAllMotorsAsync()
         {
-            return await _db.Motors.AsNoTracking().OrderBy(m => m.Id).ToListAsync();
+            return await _repo.GetAllAsync();
         }
 
         public async Task<(MotorModel?, List<MotorDataPoint>)> GetMotorWithPointsAsync(int id)
         {
-            var m = await _db.Motors.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
-            var pts = await _db.DataPoints.AsNoTracking().Where(d => d.MotorId == id).OrderBy(d => d.Id).ToListAsync();
+            var m = await _repo.GetByIdAsync(id);
+            var pts = await _repo.GetPointsByMotorIdAsync(id);
             return (m, pts);
         }
 
@@ -37,62 +38,29 @@ namespace YX.Services
                 ReductionStageCount = motor.ReductionStageCount,
                 TotalEfficiency = motor.TotalEfficiency
             };
-            _db.Motors.Add(added);
-            
-            if (points?.Count > 0)
-            {
-                foreach (var p in points)
-                {
-                    _db.DataPoints.Add(new MotorDataPoint { MotorId = added.Id, Torque = p.Torque, Speed = p.Speed, Current = p.Current, Type = p.Type });
-                }
-            }
-            
-            await _db.SaveChangesAsync();
-            return added.Id;
+            return await _repo.AddAsync(motor, points);
         }
 
         public async Task UpdateMotorAsync(int id, MotorModel editingMotor, List<MotorDataPoint> points)
         {
-            var entity = await _db.Motors.FindAsync(id);
-            if (entity != null)
-            {
-                // 更新电机基本信息
-                entity.MotorName = editingMotor.MotorName;
-                entity.MotorType = editingMotor.MotorType;
-                entity.Voltage = editingMotor.Voltage;
-                entity.MotorEfficiency = editingMotor.MotorEfficiency;
-                entity.MaxEfficiencyLoadRatio = editingMotor.MaxEfficiencyLoadRatio;
-                entity.TotalReductionRatio = editingMotor.TotalReductionRatio;
-                entity.ReductionStageCount = editingMotor.ReductionStageCount;
-                entity.TotalEfficiency = editingMotor.TotalEfficiency;
-                
-                // 更新测试数据点
-                var existing = _db.DataPoints.Where(d => d.MotorId == entity.Id);
-                _db.DataPoints.RemoveRange(existing);
-                
-                if (points?.Count > 0)
-                {
-                    foreach (var p in points)
-                    {
-                        _db.DataPoints.Add(new MotorDataPoint { MotorId = entity.Id, Torque = p.Torque, Speed = p.Speed, Current = p.Current, Type = p.Type });
-                    }
-                }
-                
-                // 单次保存所有更改
-                await _db.SaveChangesAsync();
-            }
+            await _repo.UpdateAsync(new MotorModel {
+                Id = id,
+                MotorName = editingMotor.MotorName,
+                MotorType = editingMotor.MotorType,
+                Voltage = editingMotor.Voltage,
+                MotorEfficiency = editingMotor.MotorEfficiency,
+                MaxEfficiencyLoadRatio = editingMotor.MaxEfficiencyLoadRatio,
+                TotalReductionRatio = editingMotor.TotalReductionRatio,
+                ReductionStageCount = editingMotor.ReductionStageCount,
+                TotalEfficiency = editingMotor.TotalEfficiency
+            }, points);
         }
 
         public async Task DeleteMotorAsync(int id)
         {
             try
             {
-                var entity = await _db.Motors.FindAsync(id);
-                if (entity != null)
-                {
-                    _db.Motors.Remove(entity);
-                    await _db.SaveChangesAsync();
-                }
+                await _repo.DeleteAsync(id);
             }
             catch (Exception)
             {

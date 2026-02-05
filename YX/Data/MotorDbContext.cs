@@ -1,24 +1,27 @@
 using Microsoft.EntityFrameworkCore;
 using YX.Models;
 
-public class MotorDbContext : DbContext
+namespace YX.Data
 {
-    public MotorDbContext(DbContextOptions<MotorDbContext> options) : base(options)
+    public class MotorDbContext : DbContext
     {
-    }
+        public MotorDbContext(DbContextOptions<MotorDbContext> options) : base(options)
+        {
+        }
 
-    public DbSet<MotorModel> Motors { get; set; } = null!;
-    public DbSet<MotorDataPoint> DataPoints { get; set; } = null!;
+        public DbSet<MotorModel> Motors { get; set; } = null!;
+        public DbSet<MotorDataPoint> DataPoints { get; set; } = null!;
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
-        modelBuilder.Entity<MotorModel>().HasKey(m => m.Id);
-        modelBuilder.Entity<MotorDataPoint>().HasKey(d => d.Id);
-        modelBuilder.Entity<MotorDataPoint>()
-            .HasOne<MotorModel>()
-            .WithMany()
-            .HasForeignKey(d => d.MotorId)
-            .OnDelete(DeleteBehavior.Cascade);
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<MotorModel>().HasKey(m => m.Id);
+            modelBuilder.Entity<MotorDataPoint>().HasKey(d => d.Id);
+            modelBuilder.Entity<MotorDataPoint>()
+                .HasOne<MotorModel>()
+                .WithMany()
+                .HasForeignKey(d => d.MotorId)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
     }
 }

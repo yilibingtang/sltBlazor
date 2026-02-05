@@ -1,0 +1,33 @@
+@if (Visible)
+{
+    <div class="confirm-backdrop">
+        <div class="confirm-dialog card">
+            <div class="card-body">
+                <h5>@Title</h5>
+                <p>@Message</p>
+                <div class="d-flex justify-content-end gap-2">
+                    <button class="btn btn-secondary" @onclick="Cancel">取消</button>
+                    <button class="btn btn-primary" @onclick="Confirm">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code{
+    [Parameter] public bool Visible { get; set; }
+    [Parameter] public string Title { get; set; } = "确认";
+    [Parameter] public string Message { get; set; } = string.Empty;
+    [Parameter] public EventCallback OnConfirmed { get; set; }
+    [Parameter] public EventCallback OnCancelled { get; set; }
+
+    private async Task Confirm()
+    {
+        await OnConfirmed.InvokeAsync(null);
+    }
+
+    private async Task Cancel()
+    {
+        await OnCancelled.InvokeAsync(null);
+    }
+}

@@ -16,7 +16,7 @@ namespace YX.Models
     /// 电机基础抽象模型
     /// </summary>
     public abstract class BaseMotorModel
-{
+    {
     /// <summary>
     /// 电机名称
     /// </summary>
