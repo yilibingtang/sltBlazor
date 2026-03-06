@@ -11,12 +11,14 @@ namespace YX.Data
 
         public DbSet<MotorModel> Motors { get; set; } = null!;
         public DbSet<MotorDataPoint> DataPoints { get; set; } = null!;
+        public DbSet<ThreadDataModel> ThreadData { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<MotorModel>().HasKey(m => m.Id);
             modelBuilder.Entity<MotorDataPoint>().HasKey(d => d.Id);
+            modelBuilder.Entity<ThreadDataModel>().HasKey(t => t.Id);
             modelBuilder.Entity<MotorDataPoint>()
                 .HasOne<MotorModel>()
                 .WithMany()

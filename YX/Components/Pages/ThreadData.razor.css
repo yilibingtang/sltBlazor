@@ -1,0 +1,109 @@
+/* 全局样式 */
+    .container {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 0 20px;
+        font-family: Arial, sans-serif;
+    }
+    
+    h2 {
+        color: #333;
+        margin-bottom: 30px;
+        text-align: center;
+        font-weight: 600;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+    }
+    
+    /* 表格样式 */
+    .table-container {
+        margin-bottom: 30px;
+        overflow-x: auto;
+    }
+    
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    .data-table th,
+    .data-table td {
+        padding: 10px 12px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    .data-table th {
+        background-color: #333;
+        color: white;
+        font-weight: 500;
+        font-size: 14px;
+    }
+    
+    .data-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+    
+    .data-table tr:hover {
+        background-color: #e6e6e6;
+    }
+    
+    /* 表头样式 */
+    .header-row th {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+    
+    /* 搜索框样式 */
+    .search-container {
+        margin-bottom: 20px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    
+    .search-group {
+        flex: 1;
+        min-width: 200px;
+    }
+    
+    .search-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 500;
+        color: #666;
+    }
+    
+    .search-group input {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+    
+    .search-group input:focus {
+        outline: none;
+        border-color: #333;
+        box-shadow: 0 0 0 2px rgba(51, 51, 51, 0.25);
+    }
+    
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+        .container {
+            padding: 0 15px;
+        }
+        
+        .data-table {
+            font-size: 12px;
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: 8px 10px;
+        }
+    }
