@@ -1,4 +1,4 @@
-.motor-efficiency-calculator {
+.lead-screw-calculator {
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
@@ -19,7 +19,7 @@
 
 .input-grid, .result-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 15px;
     margin: 20px 0;
 }
@@ -49,6 +49,21 @@
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
+.input-with-unit, .result-with-unit {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.input-with-unit input {
+    flex: 1;
+}
+
+.unit {
+    font-size: 14px;
+    color: #666;
+}
+
 .calculate-button {
     background-color: #007bff;
     color: white;
@@ -67,34 +82,12 @@
 .result-group span {
     font-size: 14px;
     color: #333;
+}
+
+.result-group input {
     padding: 8px 12px;
-    background-color: #ffffff;
     border: 1px solid #ced4da;
     border-radius: 4px;
-}
-
-.result-emphasis {
-    grid-column: 1 / -1;
-}
-
-.efficiency-value {
-    font-size: 24px;
-    font-weight: bold;
-    color: #007bff;
-    padding: 10px 15px;
-    background-color: #e7f3ff;
-    border: 1px solid #b3d7ff;
-    border-radius: 4px;
-    text-align: center;
-}
-
-.error-message {
-    margin-top: 15px;
-    padding: 10px 15px;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-    border-radius: 4px;
-    color: #721c24;
     font-size: 14px;
 }
 
@@ -102,6 +95,13 @@ h2 {
     font-size: 18px;
     margin-top: 0;
     color: #333;
+}
+
+h3 {
+    font-size: 16px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #555;
 }
 
 @media (max-width: 768px) {

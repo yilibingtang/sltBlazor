@@ -1,92 +1,80 @@
-﻿@page "/motorefficiency"
-@rendermode InteractiveServer
-<PageTitle>MotorEfficiencyCalculator</PageTitle>
-<h2>计算效率</h2>
-<h3>实测数据</h3>
-<table>
-    <tr>
-        <td><label>空载转速</label></td>
-        <td><input class="w-120" @bind-value="NoLoadRpm" @bind-value:event="oninput" type="number" /></td>
-        <td class="unit">rpm</td>
-        <td width="50"></td>
-        <td><label>效率扭矩</label></td>
-        <td><input class="w-120" @bind-value="EffTorque" @bind-value:event="oninput" type="number" /></td>
-        <td class="unit">g.cm</td>
-    </tr>
-    <tr>
-        <td><label>效率转速</label></td>
-        <td><input class="w-120" value="@EffRpm.ToString("F2")" readonly /></td>
-        <td class="unit">rpm</td>
-        <td width="50"></td>
-        <td><label>堵转力矩</label></td>
-        <td><input class="w-120" @bind-value="StallTorque" @bind-value:event="oninput" type="number" /></td>
-        <td class="unit">g.cm</td>
-    </tr>
-    <tr>
-        <td><label>减速比</label></td>
-        <td><input class="w-120" @bind-value="GearRatio" @bind-value:event="oninput" type="number" step="any" /></td>
-        <td></td>
-        <td width="50"></td>
-        <td><label>电压</label></td>
-        <td><input class="w-120" @bind-value="Voltage" @bind-value:event="oninput" type="number" step="any" /></td>
-        <td class="unit">V</td>
-    </tr>
-</table>
+﻿@page "/MotorEfficiencyCalculator"
 
-<h3>单电机数据</h3>
-<table>
-    <tr>
-        <td><label>空载转速</label></td>
-        <td><input class="w-120" value="@SingleNoLoadRpm.ToString("F2")" readonly /></td>
-        <td class="unit">rpm</td>
-        <td width="50"></td>
-        <td><label>效率扭矩</label></td>
-        <td><input class="w-120" value="@SingleEffTorque.ToString("F2")" readonly /></td>
-        <td class="unit">g.cm</td>
-    </tr>
-    <tr>
-        <td><label>效率转速</label></td>
-        <td><input class="w-120" value="@SingleEffRpm.ToString("F2")" readonly /></td>
-        <td class="unit">rpm</td>
-        <td width="50"></td>
-        <td><label>堵转力矩</label></td>
-        <td><input class="w-120" value="@SingleStallTorque.ToString("F2")" readonly /></td>
-        <td class="unit">g.cm</td>
-    </tr>
-</table>
+<PageTitle>电机效率计算</PageTitle>
 
-<h3>效率计算</h3>
-<table>
-    <tr>
-        <td><label>总效率</label></td>
-        <td><input class="w-120" value="@TotalEfficiency.ToString("F3")" readonly /></td>
-    </tr>
-    <tr>
-        <td><label>假设电机效率</label></td>
-        <td><input class="w-120" @bind-value="AssumedMotorEff" @bind-value:event="oninput" type="number" step="any" /></td>
-    </tr>
-    <tr>
-        <td><label>计算齿轮箱效率</label></td>
-        <td><input class="w-120" value="@GearboxEfficiency.ToString("F3")" readonly /></td>
-    </tr>
-    <tr>
-        <td><label>齿轮箱级数</label></td>
-        <td><input class="w-120" @bind-value="GearStages" @bind-value:event="oninput" type="number" /></td>
-    </tr>
-    <tr>
-        <td><label>效率位置</label></td>
-        <td><input class="w-120" value="@EffPosition.ToString("F3")" readonly /></td>
-    </tr>
-    <tr>
-        <td><label>效率电流</label></td>
-        <td><input class="w-120" value="@EffCurrent.ToString("F2")" readonly /></td>
-    </tr>
-    <tr>
-        <td><label>空载电流</label></td>
-        <td><input class="w-120" value="@NoLoadCurrent.ToString("F2")" readonly /></td>
-    </tr>
-    <tr>
-        <td><label>堵转</label></td>
-        <td><input class="w-120" @bind-value="StallValue" @bind-value:event="oninput" type="number" step="any" /></td>
-    </tr>
-</table>
+<h1>电机效率计算</h1>
+
+<div class="motor-efficiency-calculator">
+    <div class="calculator-container">
+        <!-- 输入参数部分 -->
+        <div class="input-section">
+            <h2>输入参数</h2>
+            <div class="input-grid">
+                <div class="input-group">
+                    <label for="no-load-speed">整机空载转速 (rpm)</label>
+                    <input type="number" id="no-load-speed" @bind="整机空载转速" step="1"  />
+                </div>
+                <div class="input-group">
+                    <label for="efficiency-torque">整机效率扭矩 (N·m)</label>
+                    <input type="number" id="efficiency-torque" @bind="整机效率扭矩" step="0.1"  />
+                </div>
+                <div class="input-group">
+                    <label for="stall-torque">整机堵转扭矩 (N·m)</label>
+                    <input type="number" id="stall-torque" @bind="整机堵转扭矩" step="0.1"  />
+                </div>
+                <div class="input-group">
+                    <label for="reduction-ratio">减速比</label>
+                    <input type="number" id="reduction-ratio" @bind="减速比" step="0.1"  />
+                </div>
+                <div class="input-group">
+                    <label for="total-efficiency">总效率</label>
+                    <input type="number" id="total-efficiency" @bind="总效率" step="0.01" min="0" max="1" />
+                </div>
+                <div class="input-group">
+                    <label for="voltage">电压 (V)</label>
+                    <input type="number" id="voltage" @bind="电压" step="0.1"  />
+                </div>
+                <div class="input-group">
+                    <label for="no-load-current">单电机空载电流 (A)</label>
+                    <input type="number" id="no-load-current" @bind="单电机空载电流" step="0.01"  />
+                </div>
+            </div>
+            <button class="calculate-button" @onclick="Calculate">计算</button>
+        </div>
+
+        <!-- 计算结果部分 -->
+        <div class="result-section">
+            <h2>计算结果</h2>
+            <div class="result-grid">
+                <div class="result-group">
+                    <label>整机效率转速 (rpm)</label>
+                    <span>@整机效率转速.ToString("F2")</span>
+                </div>
+                <div class="result-group">
+                    <label>公式分子</label>
+                    <span>@分子.ToString("F2")</span>
+                </div>
+                <div class="result-group">
+                    <label>公式分母</label>
+                    <span>@分母.ToString("F2")</span>
+                </div>
+                <div class="result-group">
+                    <label>中间项</label>
+                    <span>@中间项.ToString("F6")</span>
+                </div>
+                <div class="result-group result-emphasis">
+                    <label>电机效率</label>
+                    <div class="efficiency-value">
+                        <span>@电机效率.ToString("P2")</span>
+                    </div>
+                </div>
+            </div>
+            @if (!string.IsNullOrEmpty(错误信息))
+            {
+                <div class="error-message">
+                    <span>@错误信息</span>
+                </div>
+            }
+        </div>
+    </div>
+</div>

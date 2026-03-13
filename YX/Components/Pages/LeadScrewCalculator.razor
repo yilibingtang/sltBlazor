@@ -1,0 +1,140 @@
+@page "/LeadScrewCalculator"
+
+<PageTitle>丝杆参数计算</PageTitle>
+
+<h1>丝杆参数计算</h1>
+
+<div class="lead-screw-calculator">
+    <div class="calculator-container">
+        <!-- 输入参数部分 -->
+        <div class="input-section">
+            <h2>输入参数</h2>
+            <div class="input-grid">
+                <div class="input-group">
+                    <label for="diameter">直径d</label>
+                    <input type="number" id="diameter" @bind="diameter" step="0.1"  />
+                </div>
+                <div class="input-group">
+                    <label for="lead">导程S</label>
+                    <input type="number"
+                           id="lead"
+                           @bind-value="lead"
+                           step="0.1"
+                           @bind-value:event="SCalP" />
+                </div>
+                <div class="input-group">
+                    <label for="starts">头数n</label>
+                    <input type="number" id="starts" @bind="starts" step="1"  />
+                </div>
+                <div class="input-group">
+                    <label for="threadAngle">螺纹角</label>
+                    <div class="input-with-unit">
+                        <input type="number" id="threadAngle" @bind="threadAngle" step="0.1" />
+                        <span class="unit">°</span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="pitch">螺距p</label>
+                    <input type="number" id="pitch" @bind-value="pitch" step="0.1" @bind-value:event="PCalS" />
+                </div>
+                <div class="input-group">
+                    <label for="friction">摩擦因数</label>
+                    <input type="number" id="friction" @bind="friction" step="0.01" />
+                </div>
+            </div>
+            <button class="calculate-button" @onclick="Calculate">计算</button>
+        </div>
+
+        <!-- 计算结果部分 -->
+        <div class="result-section">
+            <h2>计算结果</h2>
+            <div class="input-group">
+                <label for="pitchDiameter">中径d2</label>
+                <input type="number" id="pitchDiameter" @bind="pitchDiameter" step="0.1" />
+            </div>
+            <div class="result-grid">
+                <div class="result-group">
+                    <label>螺纹升角φ</label>
+                    <div class="result-with-unit">
+                        <span>@threadRiseAngle.ToString("F7")</span>
+                        <span class="unit">°</span>
+                    </div>
+                </div>
+                <div class="result-group">
+                    <label>当量摩擦角φv</label>
+                    <div class="result-with-unit">
+                        <span>@equivalentFrictionAngle.ToString("F7")</span>
+                        <span class="unit">°</span>
+                    </div>
+                </div>
+                <div class="result-group">
+                    <label>tan(φ+φv)</label>
+                    <span>@tanSumAngle.ToString("F9")</span>
+                </div>
+            </div>
+
+            <!-- 齿轮箱输出 -->
+            <h3>齿轮箱输出</h3>
+            <div class="result-grid">
+                <div class="result-group">
+                    <label>额定转速nN</label>
+                    <div class="input-with-unit">
+                        <input type="number" @bind="gearboxRpm" step="1"/>
+                        <span class="unit">rpm</span>
+                    </div>
+                </div>
+                <div class="result-group">
+                    <label>额定扭矩TN</label>
+                    <div class="input-with-unit">
+                        <input type="number" @bind="gearboxTorque" step="0.000001" />
+                        <span class="unit">Nm</span>
+                    </div>
+                </div>
+                <div class="result-group">
+                    <label>减速比</label>
+                    <input type="number" @bind="reductionRatio" step="1"  />
+                </div>
+                <div class="result-group">
+                    <label>额定转速nN</label>
+                    <div class="result-with-unit">
+                        <span>@motorRpm</span>
+                        <span class="unit">rpm</span>
+                    </div>
+                </div>
+                <div class="result-group">
+                    <label>额定扭矩TN</label>
+                    <div class="result-with-unit">
+                        <span>@motorTorque.ToString("E6")</span>
+                        <span class="unit">Nm</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 丝杆输出 -->
+            <h3>丝杆输出</h3>
+            <div class="result-grid">
+                <div class="result-group">
+                    <label>速度</label>
+                    <div class="result-with-unit">
+                        <span>@screwSpeed</span>
+                        <span class="unit">mm/min</span>
+                    </div>
+                </div>
+                <div class="result-group">
+                    <label>推力</label>
+                    <div class="result-with-unit">
+                        <span>@thrustForce</span>
+                        <span class="unit">N</span>
+                    </div>
+                </div>
+                <div class="result-group">
+                    <label></label>
+                    <div class="result-with-unit">
+                        <span>@forceInGrams.ToString("F6")</span>
+                        <span class="unit">g</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
